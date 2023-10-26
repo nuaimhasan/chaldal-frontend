@@ -34,6 +34,62 @@ h2 {
   box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c !important;
 }
 
-.hero_slider {
-  width: calc(100% - 280px);
+@media only screen and (min-width: 1024px) {
+  .hero_slider {
+    width: calc(100% - 280px);
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .menu_wrap {
+    width: 90% !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .overlay {
+    position: fixed;
+    top: -33px;
+    left: 0;
+    background: #00000066;
+    width: 100%;
+    height: 110vh;
+    z-index: 9999;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: all 0.3s ease;
+  }
+
+  .overlay_show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .menu_wrap {
+    position: fixed;
+    top: -33px;
+    left: 0;
+    width: 300px;
+    height: 110vh;
+    z-index: 9999;
+    background: #fff;
+    box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
+
+    transition: all 0.3s ease;
+    transform: translateX(-100%);
+  }
+
+  .menu_wrap_show {
+    transform: translateX(0%);
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .overlay,
+  .menu_wrap {
+    top: 0;
+    height: 100vh;
+  }
 }

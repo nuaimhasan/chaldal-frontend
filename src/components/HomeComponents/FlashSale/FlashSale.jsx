@@ -7,14 +7,16 @@ const FlashSale = () => {
     <div className="mt-4">
       <div className="container bg-base-100 p-4 rounded-lg shadow-lg">
         <div className="flex justify-between sm:items-center border-b pb-2 border-primary">
-          <h1 className="text-xl font-semibold text-neutral">FlashSale</h1>
+          <h1 className="md:text-xl font-medium md:font-semibold text-neutral">
+            FlashSale
+          </h1>
 
           <div>
             <Link
               to="/shops/flash-sale"
-              className="w-max flex items-center text-primary font-semibold hover-go "
+              className="w-max flex items-center text-primary font-semibold hover-go"
             >
-              <h1>Shop More</h1>
+              <h1 className="text-sm md:text-[15px] font-normal">Shop More</h1>
               <MdKeyboardArrowRight className="text-[22px] pt-px duration-200" />
             </Link>
           </div>

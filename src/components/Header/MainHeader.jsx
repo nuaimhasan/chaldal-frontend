@@ -1,71 +1,39 @@
 import { Link } from "react-router-dom";
-import { BsSearch } from "react-icons/bs";
+import { useState } from "react";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { FiHeart, FiLogIn } from "react-icons/fi";
-import { useState } from "react";
-import { useEffect } from "react";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import MobileMenuSidebar from "./MobileMenuSidebar";
+import SearchBox from "./SearchBox";
 
 const MainHeader = () => {
-  const [searchDropdown, setSearchDropdown] = useState(false);
-  const [searchText, setSearchText] = useState("");
-
-  useEffect(() => {
-    document.addEventListener("click", (e) => {
-      if (!e.target.closest(".searchInput")) {
-        setSearchDropdown(false);
-      }
-    });
-  }, []);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   return (
-    <div className="py-2 text-neutral border-b sticky top-0 z-40 bg-[#ffffffcc] lg:backdrop-blur-[30px] backdrop-saturate-[200%]">
+    <div className="py-2 text-neutral border-b sticky top-0 z-40 bg-[#ffffffcc] backdrop-blur-[10px]">
       <div className="container">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <div>
             <Link to="/">
-              <img src="/images/logo/logo.png" alt="" className="w-28" />
+              <img
+                src="/images/logo/logo.png"
+                alt=""
+                className="w-20 sm:w-28"
+              />
             </Link>
           </div>
-          <div className="w-full lg:w-3/5">
-            <div className="relative flex">
-              <input
-                type="text"
-                onChange={(e) => setSearchText(e.target.value)}
-                onClick={() => setSearchDropdown(true)}
-                placeholder="search Product..."
-                className="searchInput border w-full px-3 py-1.5 outline-none"
-              />
-              <div className="px-3 text-lg text-base-100 bg-primary flex justify-center items-center rounded-r">
-                <BsSearch />
-              </div>
 
-              {searchDropdown && (
-                <div className="searchDropdown absolute w-full bg-base-100 p-4 shadow-lg max-h-96 overflow-y-auto top-full">
-                  <ul>
-                    <li
-                      onClick={() => setSearchDropdown(false)}
-                      className="hover:bg-gray-100 p-1"
-                    >
-                      <Link
-                        to={`/products/slug`}
-                        className="flex gap-2 items-center"
-                      >
-                        <img src="" alt="" className="w-12" />
-                        <h6>title</h6>
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+          <div className="hidden md:block w-1/2 lg:w-3/5">
+            <SearchBox />
           </div>
-          <div className="hidden lg:flex gap-6 items-center">
+
+          <div className="flex gap-4 lg:gap-6 items-center">
             <Link
               to="/account/wishlist"
               className="flex gap-1 items-center text-neutral hover:text-primary duration-300"
             >
-              <FiHeart className="text-[17px]" />
-              <h1 className="font-medium">wishlist</h1>
+              <FiHeart className="text-lg sm:text-[17px]" />
+              <h1 className="font-medium hidden sm:block">wishlist</h1>
             </Link>
 
             <Link
@@ -78,19 +46,33 @@ const MainHeader = () => {
                   <span className="mt-px">0</span>
                 </div>
               </div>
-              <h1 className="font-medium">৳00</h1>
+              <h1 className="font-medium hidden sm:block">৳00</h1>
             </Link>
 
             <Link
               to="/account/wishlist"
               className="flex gap-1.5 items-center text-neutral hover:text-primary duration-300"
             >
-              <FiLogIn className="text-[17px]" />
-              <h1 className="font-medium">Login</h1>
+              <FiLogIn className="text-xl sm:text-[17px]" />
+              <h1 className="font-medium hidden sm:block">Login</h1>
             </Link>
+
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenu(true)}
+                className="text-[22px] text-neutral mt-1.5"
+              >
+                <HiOutlineMenuAlt3 />
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      <MobileMenuSidebar
+        mobileMenu={mobileMenu}
+        setMobileMenu={setMobileMenu}
+      />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { MdOutlineEmail } from "react-icons/md";
 
 const TopHeader = () => {
   return (
-    <div className="hidden lg:block bg-primary py-1.5 border-b text-base-100">
+    <div className="hidden sm:block bg-primary py-1.5 border-b text-base-100">
       <div className="container mx-auto font-medium">
         <div className="flex justify-between items-center text-sm">
           <div className="flex items-center">

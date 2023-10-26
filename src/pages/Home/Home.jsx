@@ -10,10 +10,10 @@ export default function Home() {
     <>
       <Menu />
       <Hero />
-      <Services />
       <FlashSale />
       <ChooseByCategory />
       <PopularProducts />
+      <Services />
     </>
   );
 }

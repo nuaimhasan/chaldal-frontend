@@ -5,7 +5,7 @@ const ChooseByCategory = () => {
     <div className="mt-6">
       <div className="container">
         <div className="sm:flex gap-8 items-center border-b pb-2 border-primary">
-          <h1 className="text-xl font-semibold text-neutral mb-2 sm:mb-0">
+          <h1 className="md:text-xl font-medium md:font-semibold text-neutral">
             Choose By Category
           </h1>
         </div>
