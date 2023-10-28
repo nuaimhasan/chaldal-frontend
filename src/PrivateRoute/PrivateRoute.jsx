@@ -6,17 +6,17 @@ const PrivateRoute = ({ children }) => {
   const { loggedUser, loading } = UseContext();
   const location = useLocation();
 
-  if (loading) {
-    return <Spinner></Spinner>;
-  }
+  const token = localStorage.getItem("eshop_jwt");
 
-  if (!loggedUser?.success && !loading && loggedUser === null) {
+  if (!loggedUser?.success && !token) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (loggedUser?.success) {
+  if (loggedUser?.success && token) {
     return children;
   }
+
+  return <Spinner></Spinner>;
 };
 
 export default PrivateRoute;

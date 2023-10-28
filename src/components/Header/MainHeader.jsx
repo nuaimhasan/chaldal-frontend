@@ -1,15 +1,27 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiShoppingCartLine } from "react-icons/ri";
-import { FiHeart, FiLogIn } from "react-icons/fi";
+import { FiHeart, FiLogIn, FiMonitor } from "react-icons/fi";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { BiUser, BiLogOutCircle } from "react-icons/bi";
 import MobileMenuSidebar from "./MobileMenuSidebar";
 import SearchBox from "./SearchBox";
 import { UseContext } from "../../ContextApi/ContextApi";
+import { AiOutlineHeart } from "react-icons/ai";
+import { IoBagCheckOutline } from "react-icons/io5";
 
 const MainHeader = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
-  const { loggedUser } = UseContext();
+  const { loggedUser, logout } = UseContext();
+
+  const [profileDropdown, setProfileDropdown] = useState(false);
+  useEffect(() => {
+    window.addEventListener("click", (e) => {
+      if (!e.target.closest(".profileDropdownBtn")) {
+        setProfileDropdown(false);
+      }
+    });
+  }, []);
 
   return (
     <div className="py-2 text-neutral border-b sticky top-0 z-40 bg-[#ffffffcc] backdrop-blur-[10px]">
@@ -52,11 +64,63 @@ const MainHeader = () => {
             </Link>
 
             {loggedUser?.success ? (
-              <>
-                <button>
-                  <img src="" alt="" className="w-8 h-8 rounded-full border" />
+              <div className="relative">
+                <button
+                  onClick={() => setProfileDropdown(!profileDropdown)}
+                  className="flex items-center gap-2 profileDropdownBtn"
+                >
+                  <img
+                    src=""
+                    alt=""
+                    className="w-6 h-6 rounded-full border border-base-100"
+                  />
+                  <p className="pt-px">Name</p>
                 </button>
-              </>
+
+                {profileDropdown && (
+                  <ul className="absolute w-40 bg-base-100 right-0 top-[130%] shadow-lg rounded z-50 text-sm overflow-hidden text-neutral">
+                    <li>
+                      <Link
+                        to="/account/profile"
+                        className="duration-200 px-3 py-1.5 flex items-center gap-1 hover:bg-gray-200 w-full"
+                      >
+                        <FiMonitor className="text-lg" />
+                        View Profile
+                      </Link>
+                    </li>
+
+                    <li>
+                      <Link
+                        to="/account/wishlist"
+                        className="duration-200 px-3 py-1.5 flex items-center gap-1 hover:bg-gray-200 w-full"
+                      >
+                        <AiOutlineHeart className="text-xl" />
+                        My Wishlist
+                      </Link>
+                    </li>
+
+                    <li>
+                      <Link
+                        to="/account/orders"
+                        className="duration-200 px-3 py-1.5 flex items-center gap-1 hover:bg-gray-200 w-full"
+                      >
+                        <IoBagCheckOutline className="text-xl" />
+                        My Order List
+                      </Link>
+                    </li>
+
+                    <li>
+                      <button
+                        onClick={logout}
+                        className="duration-200 px-3 py-1.5 flex items-center gap-1 hover:bg-gray-200 w-full text-primary border-t"
+                      >
+                        <BiLogOutCircle className="text-base" />
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                )}
+              </div>
             ) : (
               <Link
                 to="/login"

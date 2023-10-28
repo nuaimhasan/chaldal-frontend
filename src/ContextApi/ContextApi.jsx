@@ -62,6 +62,11 @@ const ContextProvider = ({ children }) => {
       });
   }, []);
 
+  const logout = () => {
+    setLoggedUser(null);
+    localStorage.removeItem("eshop_jwt");
+  };
+
   //------- Handel cart
   const localStorageCart = JSON.parse(localStorage.getItem("eshop_cart"));
   const [carts, setCarts] = useState([]);
@@ -191,6 +196,7 @@ const ContextProvider = ({ children }) => {
     login,
     loginError,
     loading,
+    logout,
     carts,
     handelAddToCart,
     handelIncreaseCart,
