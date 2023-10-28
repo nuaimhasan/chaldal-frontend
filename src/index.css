@@ -131,3 +131,20 @@ h2 {
     width: 100%;
   }
 }
+
+/* ----------------Account --------------------- */
+.account_sidebar {
+  width: 300px;
+  min-height: 70vh;
+  background: #fff;
+  box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
+  padding: 10px;
+  border-radius: 5px;
+}
+.account_content {
+  width: calc(100% - 300px);
+  background: #fff;
+  box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
+  padding: 10px;
+  border-radius: 5px;
+}
