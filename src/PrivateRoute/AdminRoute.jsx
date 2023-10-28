@@ -5,7 +5,7 @@ import { UseContext } from "../ContextApi/ContextApi";
 
 const AdminRoute = ({ children }) => {
   const { loggedUser, loading } = UseContext();
-  const [isAdmin] = useAdmin(user?.email);
+  const [isAdmin] = useAdmin(loggedUser?.email);
   const location = useLocation();
 
   if (loading) {

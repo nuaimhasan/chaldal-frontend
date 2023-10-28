@@ -9,6 +9,7 @@ import SearchBox from "./SearchBox";
 import { UseContext } from "../../ContextApi/ContextApi";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
+import { RxDashboard } from "react-icons/rx";
 
 const MainHeader = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -79,6 +80,18 @@ const MainHeader = () => {
 
                 {profileDropdown && (
                   <ul className="absolute w-40 bg-base-100 right-0 top-[130%] shadow-lg rounded z-50 text-sm overflow-hidden text-neutral">
+                    {loggedUser?.data?.role === "admin" && (
+                      <li>
+                        <Link
+                          to="/admin/dashboard"
+                          className="duration-200 px-3 py-1.5 flex items-center gap-1 hover:bg-gray-200 w-full"
+                        >
+                          <RxDashboard className="text-lg" />
+                          Dashboard
+                        </Link>
+                      </li>
+                    )}
+
                     <li>
                       <Link
                         to="/account/profile"

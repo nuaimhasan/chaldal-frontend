@@ -14,6 +14,8 @@ import Orders from "../pages/Account/Orders/Orders";
 import Setting from "../pages/Account/Setting/Setting";
 import Cart from "../pages/Cart/Cart";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
+import AdminLayout from "../Layout/AdminLayout";
+import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 
 export const routes = createBrowserRouter([
   {
@@ -77,6 +79,16 @@ export const routes = createBrowserRouter([
       {
         path: "/account/setting",
         element: <Setting />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "/admin/dashboard",
+        element: <Dashboard />,
       },
     ],
   },
