@@ -50,7 +50,7 @@ const MainHeader = () => {
             </Link>
 
             <Link
-              to="/account/wishlist"
+              to="/login"
               className="flex gap-1.5 items-center text-neutral hover:text-primary duration-300"
             >
               <FiLogIn className="text-xl sm:text-[17px]" />
