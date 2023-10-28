@@ -12,6 +12,7 @@ import EditePeofile from "../pages/Account/EditePeofile/EditePeofile";
 import Wishlist from "../pages/Account/Wishlist/Wishlist";
 import Orders from "../pages/Account/Orders/Orders";
 import Setting from "../pages/Account/Setting/Setting";
+import Cart from "../pages/Cart/Cart";
 
 export const routes = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ export const routes = createBrowserRouter([
       {
         path: "/faq",
         element: <FAQ />,
+      },
+      {
+        path: "/cart",
+        // element: <Cart />,
       },
     ],
   },
