@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 const CartDetails = ({ carts }) => {
   // Subtotal - discount amount
@@ -41,7 +41,7 @@ const CartDetails = ({ carts }) => {
 
       <div className="my-2 mt-8">
         <Link
-          href="/checkout"
+          to="/checkout"
           className="block text-center bg-primary text-base-100 p-2 font-semibold text-sm rounded scale-[.98] hover:scale-[1] duration-300"
         >
           PROCEED TO CHECKOUT

@@ -1,6 +1,6 @@
-import CartItems from "./CartItems/CartItems";
-import CartDetails from "./CartDetails/CartDetails";
-import { UseContext } from "@/app/context/context";
+// import CartItems from "./CartItems/CartItems";
+// import CartDetails from "./CartDetails/CartDetails";
+import { UseContext } from "../../ContextApi/ContextApi";
 
 export default function Cart() {
   const { carts } = UseContext();
@@ -14,10 +14,10 @@ export default function Cart() {
         </p>
         <div className="lg:flex gap-6">
           <div className="lg:w-[75%] pt-6 shadow-lg border rounded">
-            <CartItems carts={carts} />
+            {/* <CartItems carts={carts} /> */}
           </div>
           <div className="lg:w-[25%]">
-            <CartDetails carts={carts} />
+            {/* <CartDetails carts={carts} /> */}
           </div>
         </div>
       </div>

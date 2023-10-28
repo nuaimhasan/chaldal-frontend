@@ -13,6 +13,7 @@ import Wishlist from "../pages/Account/Wishlist/Wishlist";
 import Orders from "../pages/Account/Orders/Orders";
 import Setting from "../pages/Account/Setting/Setting";
 import Cart from "../pages/Cart/Cart";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 export const routes = createBrowserRouter([
   {
@@ -45,13 +46,17 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/cart",
-        // element: <Cart />,
+        element: <Cart />,
       },
     ],
   },
   {
     path: "/",
-    element: <AccountLayout />,
+    element: (
+      <PrivateRoute>
+        <AccountLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/account/profile",

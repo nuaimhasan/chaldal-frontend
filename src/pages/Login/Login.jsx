@@ -1,9 +1,39 @@
-import { AiFillUnlock } from "react-icons/ai";
+import { AiFillEye, AiFillEyeInvisible, AiFillUnlock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
+import { UseContext } from "../../ContextApi/ContextApi";
+import { useState } from "react";
+import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
+import { toast } from "react-toastify";
 
 export default function Login() {
+  const { login, loginError, loading, loggedUser } = UseContext();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  if (loggedUser?.success || loggedUser !== null) {
+    navigate(from, { replace: true });
+  }
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    const loginInfo = {
+      email,
+      password,
+    };
+
+    login(loginInfo);
+  };
+
   return (
     <div className="py-6 bg-gray-50">
       <div className="container">
@@ -13,7 +43,7 @@ export default function Login() {
             Log In
           </h6>
 
-          <form>
+          <form onSubmit={handleLogin}>
             <div className="mt-10 text-neutral">
               <div className="mb-6 relative">
                 <span className="absolute bottom-2 text-neutral/80">
@@ -28,18 +58,37 @@ export default function Login() {
                 />
               </div>
 
-              <div className="mb-2 relative">
-                <span className="absolute bottom-2 text-neutral/80">
-                  <AiFillUnlock className="text-lg" />
-                </span>
-                <input
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  className="w-full border-b focus:border-b-primary outline-none pl-8 pb-1 placeholder:font-light"
-                  required
-                />
+              <div className="mb-2">
+                <div className="relative">
+                  <span className="absolute bottom-2 text-neutral/80">
+                    <AiFillUnlock className="text-lg" />
+                  </span>
+
+                  <input
+                    type={`${showPassword ? "text" : "password"}`}
+                    name="password"
+                    placeholder="Password"
+                    className="w-full border-b focus:border-b-primary outline-none pl-8 pb-1 placeholder:font-light"
+                    required
+                  />
+
+                  <div
+                    className="absolute right-2 bottom-2 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <span className={`${showPassword ? "block" : "hidden"}`}>
+                      <AiFillEye />
+                    </span>
+                    <span className={`${showPassword ? "hidden" : "block"}`}>
+                      <AiFillEyeInvisible />
+                    </span>
+                  </div>
+                </div>
               </div>
+
+              {loginError && (
+                <p className="text-sm text-red-500">{loginError}</p>
+              )}
 
               <div className="mt-2 flex justify-end">
                 <Link
@@ -55,7 +104,7 @@ export default function Login() {
                   type="submit"
                   className="w-full py-2 font-semibold text-base-100 bg-primary rounded hover:bg-opacity-90 duration-300 flex justify-center"
                 >
-                  Log In
+                  {loading ? <ButtonSpinner /> : "Log In"}
                 </button>
               </div>
             </div>
