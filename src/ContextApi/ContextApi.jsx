@@ -8,6 +8,8 @@ const ContextProvider = ({ children }) => {
   const [loginError, setLoginError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [categories, setCategories] = useState([]);
+
   const login = (loginInfo) => {
     setLoading(true);
 
@@ -66,6 +68,17 @@ const ContextProvider = ({ children }) => {
     setLoggedUser(null);
     localStorage.removeItem("eshop_jwt");
   };
+
+  // Load categories
+  useEffect(() => {
+    fetch("https://eshop-server-api.vercel.app/v1/category/all-categories")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success) {
+          setCategories(data);
+        }
+      });
+  }, []);
 
   //------- Handel cart
   const localStorageCart = JSON.parse(localStorage.getItem("eshop_cart"));
@@ -202,6 +215,8 @@ const ContextProvider = ({ children }) => {
     handelIncreaseCart,
     handelDecreaseCart,
     handelDeleteCart,
+
+    categories,
   };
   return <Context.Provider value={contextInfo}>{children}</Context.Provider>;
 };

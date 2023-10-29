@@ -34,6 +34,18 @@ h2 {
   box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c !important;
 }
 
+.form_group input,
+.form_group textarea,
+.form_group select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px;
+  outline: none;
+  font-size: 15px;
+  margin-top: 3px;
+}
+
 @media only screen and (min-width: 1024px) {
   .hero_slider {
     width: calc(100% - 280px);
@@ -157,6 +169,7 @@ h2 {
   width: 300px;
   left: 0;
   top: 0;
+  box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
 }
 
 .admin_content {
@@ -172,4 +185,72 @@ h2 {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 5px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.admin_siderbar ul li a:hover {
+  color: #f47c20;
+}
+
+.admin_siderbar .active {
+  box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .admin_sidebar {
+    transform: translateX(-100%);
+    z-index: 9999;
+    background: #fff;
+    transition: all 0.3s ease;
+  }
+
+  .admin_sidebar_show {
+    transform: translateX(0%);
+  }
+
+  .admin_content {
+    width: 100%;
+    left: 0;
+    padding: 10px;
+  }
+}
+
+table {
+  width: 100%;
+  font-size: 15px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+table thead th {
+  background: #dddddd94;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #404145e6;
+  text-transform: uppercase;
+  text-align: start;
+  white-space: nowrap;
+}
+
+table tbody td {
+  padding: 10px;
+  text-align: start;
+  border-bottom: 1px solid #dddddd94;
+}
+
+.add_product input[type="file"] {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 1;
+  position: absolute;
+  top: -31px;
+  left: 0;
+  z-index: 1;
 }
