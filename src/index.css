@@ -148,3 +148,28 @@ h2 {
   padding: 10px;
   border-radius: 5px;
 }
+
+/* ----------------Admin------------------- */
+.admin_sidebar {
+  height: 100vh;
+  overflow-y: auto;
+  position: fixed;
+  width: 300px;
+  left: 0;
+  top: 0;
+}
+
+.admin_content {
+  width: calc(100% - 310px);
+  background: #fff;
+  min-height: 100vh;
+  position: relative;
+  left: 310px;
+  padding: 0px 20px;
+}
+
+.admin_siderbar ul li a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

@@ -1,20 +1,21 @@
 import { Outlet } from "react-router-dom";
-import Footer from "../components/Footer/Footer";
-import Header from "../components/Header/Header";
+import AdminHeader from "../components/AdminHeader/AdminHeader";
+import AdminSidebar from "../components/AdminSidebar/AdminSidebar";
 
 export default function AdminLayout() {
   return (
     <>
-      <Header />
-      <section className="min-h-[70vh] container py-5">
+      <section>
         <div className="flex gap-5">
-          <aside className="account_sidebar"></aside>
-          <main className="account_content">
+          <aside className="admin_sidebar">
+            <AdminSidebar />
+          </aside>
+          <main className="admin_content">
+            <AdminHeader />
             <Outlet />
           </main>
         </div>
       </section>
-      <Footer />
     </>
   );
 }

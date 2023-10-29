@@ -10,10 +10,13 @@ import { UseContext } from "../../ContextApi/ContextApi";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
+import { FaUserCircle } from "react-icons/fa";
 
 const MainHeader = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const { loggedUser, logout } = UseContext();
+
+  console.log(loggedUser?.data?.image !== "");
 
   const [profileDropdown, setProfileDropdown] = useState(false);
   useEffect(() => {
@@ -68,18 +71,23 @@ const MainHeader = () => {
               <div className="relative">
                 <button
                   onClick={() => setProfileDropdown(!profileDropdown)}
-                  className="flex items-center gap-2 profileDropdownBtn"
+                  className="flex items-center gap-1 profileDropdownBtn"
                 >
-                  <img
-                    src=""
-                    alt=""
-                    className="w-6 h-6 rounded-full border border-base-100"
-                  />
-                  <p className="pt-px">Name</p>
+                  {loggedUser?.data?.image === "" ? (
+                    <FaUserCircle className="text-lg" />
+                  ) : (
+                    <img
+                      src={loggedUser?.data?.image}
+                      alt=""
+                      className="w-6 h-6 rounded-full border border-base-100"
+                    />
+                  )}
+
+                  <p className="pt-px">{loggedUser?.data?.firstName}</p>
                 </button>
 
                 {profileDropdown && (
-                  <ul className="absolute w-40 bg-base-100 right-0 top-[130%] shadow-lg rounded z-50 text-sm overflow-hidden text-neutral">
+                  <ul className="absolute w-48 text-[15px] bg-base-100 right-0 top-[130%] shadow-lg rounded z-50 overflow-hidden text-neutral">
                     {loggedUser?.data?.role === "admin" && (
                       <li>
                         <Link
