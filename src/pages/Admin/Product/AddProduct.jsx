@@ -4,6 +4,7 @@ import JoditEditor from "jodit-react";
 import Select from "react-dropdown-select";
 import { UseContext } from "../../../ContextApi/ContextApi";
 import Swal from "sweetalert2";
+import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
 const sizes = [
   { id: 1, name: "36" },
   { id: 2, name: "38" },
@@ -17,7 +18,7 @@ const sizes = [
 ];
 
 export default function AddProduct() {
-  const { categories } = UseContext();
+  const { data: categories } = useGetCategoriesQuery();
   const editor = useRef(null);
   const [image, setImage] = useState("");
   const [details, setDetails] = useState("");
