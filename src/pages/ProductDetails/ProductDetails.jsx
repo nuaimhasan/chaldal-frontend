@@ -13,7 +13,6 @@ export default function ProductDetails() {
   const { data, isLoading, isError, error, isSuccess } = useGetProductQuery(id);
 
   const description = isSuccess ? data?.data?.description : "";
-  console.log(description);
   const parcerDescription = parcer(description);
 
   let content = null;

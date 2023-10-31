@@ -8,7 +8,7 @@ export const productApi = apiSlice.injectEndpoints({
       }),
     }),
     getProducts: builder.query({
-      query: ({ limit, page, category }) => ({
+      query: ({ limit, page, category = "" }) => ({
         url: `/product/all-products?limit=${limit}&page=${page}&category=${category}`,
       }),
     }),

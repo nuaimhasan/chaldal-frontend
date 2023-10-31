@@ -11,6 +11,8 @@ const PopularProducts = () => {
     page,
   });
 
+  console.log(data);
+
   let content = null;
   if (isLoading) {
     content = <p>Loading...</p>;

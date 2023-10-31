@@ -5,8 +5,7 @@ const CartDetails = ({ carts }) => {
   const subTotal = carts?.reduce(
     (price, item) =>
       price +
-      item.quantity *
-        parseInt(item.price - (item.price * item.discountPercentage) / 100),
+      item.quantity * parseInt(item.price - (item.price * item.discount) / 100),
     0
   );
 

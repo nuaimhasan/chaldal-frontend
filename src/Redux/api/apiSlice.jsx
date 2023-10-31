@@ -4,6 +4,7 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     // baseUrl: "http://localhost:5000/v1",
+    // baseUrl: "https://eshop-server-api.vercel.app/v1",
     baseUrl: "https://eshop-server-api.onrender.com/v1",
     prepareHeaders: async (headers) => {
       const token = localStorage.getItem("eshop_jwt");

@@ -1,41 +1,33 @@
 import { FiHeart, FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { FaOpencart, FaStar, FaStarHalfAlt } from "react-icons/fa";
-
-// import { PhotoProvider, PhotoView } from 'react-photo-view';
-// import 'react-photo-view/dist/react-photo-view.css';
+import { useState } from "react";
+import { UseContext } from "../../ContextApi/ContextApi";
 
 const ProductInfo = ({ product }) => {
-  // const { carts, handelAddToCart, handelIncreaseCart, handelDecreaseCart } =
-  //   UseContext();
+  const { carts, handelAddToCart } = UseContext();
 
-  const { _id, title, image, discount, brand, category, price, sizes } =
-    product;
+  const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState("");
 
-  // const handelIncrease = () => {
-  //   setQuantity(quantity + 1);
-  // };
+  const { title, image, discount, brand, category, price, sizes } = product;
 
-  // const handelDecrease = () => {
-  //   if (quantity >= 1) {
-  //     setQuantity(quantity - 1);
-  //   }
-  // };
+  const handelIncrease = () => {
+    setQuantity(quantity + 1);
+  };
 
-  // const handelSelectSize = (size) => {
-  //   if (selectedSize === size) {
-  //     setSelectedSize("");
-  //   } else {
-  //     setSelectedSize(size);
-  //   }
-  // };
+  const handelDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
 
-  // const handelColorSelect = (clr) => {
-  //   if (selectedColor === clr) {
-  //     setSelectedColor("");
-  //   } else {
-  //     setSelectedColor(clr);
-  //   }
-  // };
+  const handelSelectSize = (size) => {
+    if (selectedSize === size) {
+      setSelectedSize("");
+    } else {
+      setSelectedSize(size);
+    }
+  };
 
   // Rating number to start convert
   const ratingStar = Array.from({ length: 5 }, (element, index) => {
@@ -116,7 +108,7 @@ const ProductInfo = ({ product }) => {
             <p>Sizes :</p>
 
             <div className="flex gap-2 items-center">
-              {product?.size?.map((size) => (
+              {sizes[0].split(",")?.map((size) => (
                 <button
                   key={size}
                   onClick={() => handelSelectSize(size)}
@@ -137,16 +129,16 @@ const ProductInfo = ({ product }) => {
 
           <div className="flex gap-2">
             <button
-              // onClick={handelDecrease}
+              onClick={handelDecrease}
               className="text-2xl hover:text-neutral duration-200"
             >
               <FiMinusCircle />
             </button>
             <div>
-              <p className="w-14 font-semibold text-center">1</p>
+              <p className="w-10 font-semibold text-center">{quantity}</p>
             </div>
             <button
-              // onClick={handelIncrease}
+              onClick={handelIncrease}
               className="text-2xl hover:text-neutral duration-200"
             >
               <FiPlusCircle />
@@ -157,14 +149,13 @@ const ProductInfo = ({ product }) => {
         {/* Buttons */}
         <div className="flex gap-4 items-center mt-6">
           <button
-            // onClick={() =>
-            //   handelAddToCart({
-            //     product,
-            //     selectedSize: selectedSize,
-            //     selectedColor: selectedColor,
-            //     quantity,
-            //   })
-            // }
+            onClick={() =>
+              handelAddToCart({
+                product,
+                selectedSize,
+                quantity,
+              })
+            }
             className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
           >
             <FaOpencart />

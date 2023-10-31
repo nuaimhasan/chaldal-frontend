@@ -8,8 +8,6 @@ const ContextProvider = ({ children }) => {
   const [loginError, setLoginError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [categories, setCategories] = useState([]);
-
   const login = (loginInfo) => {
     setLoading(true);
 
@@ -69,20 +67,9 @@ const ContextProvider = ({ children }) => {
     localStorage.removeItem("eshop_jwt");
   };
 
-  // Load categories
-  useEffect(() => {
-    fetch("https://eshop-server-api.vercel.app/v1/category/all-categories")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.success) {
-          setCategories(data);
-        }
-      });
-  }, []);
-
   //------- Handel cart
   const localStorageCart = JSON.parse(localStorage.getItem("eshop_cart"));
-  const [carts, setCarts] = useState([]);
+  const [carts, setCarts] = useState(localStorageCart || []);
 
   // Set Local Cart
   useEffect(() => {
@@ -90,27 +77,13 @@ const ContextProvider = ({ children }) => {
   }, [carts]);
 
   // // Add Cart
-  const handelAddToCart = ({
-    product,
-    quantity,
-    selectedSize,
-    selectedColor,
-  }) => {
-    if (product.size.length > 0 && !selectedSize) {
+  const handelAddToCart = ({ product, quantity, selectedSize }) => {
+    if (product.sizes.length > 0 && product?.sizes[0] !== "" && !selectedSize) {
       return Swal.fire("Please Select Size", "", "warning");
     }
-
-    if (product.color.length > 0 && !selectedColor) {
-      return Swal.fire("Please Select Color", "", "warning");
-    }
-
     const existed = carts?.find(
-      (item) =>
-        item._id === product._id &&
-        item.size === selectedSize &&
-        item.color === selectedColor
+      (item) => item._id === product._id && item.size === selectedSize
     );
-
     if (existed) {
       return Swal.fire(
         "Already Added This Product",
@@ -118,19 +91,16 @@ const ContextProvider = ({ children }) => {
         "warning"
       );
     }
-
     const cartProduct = {
       _id: product._id,
       title: product.title,
       slug: product.slug,
-      thumbnail: product.thumbnail,
-      discountPercentage: product.discountPercentage,
+      image: product.image,
+      discount: product.discount,
       price: product.price,
       quantity: quantity || 1,
       size: selectedSize,
-      color: selectedColor,
     };
-
     if (!existed) {
       setCarts([...carts, { ...cartProduct }]);
       toast.success("Add to Cart Success", {
@@ -143,18 +113,13 @@ const ContextProvider = ({ children }) => {
   // Handel Increase Cart Quantity
   const handelIncreaseCart = (product) => {
     const existed = carts?.find(
-      (item) =>
-        item._id === product._id &&
-        item.size === product.size &&
-        item.color === product.color
+      (item) => item._id === product._id && item.size === product.size
     );
 
     if (existed) {
       setCarts(
         carts.map((item) =>
-          item._id === product._id &&
-          item.size === product.size &&
-          item.color === product.color
+          item._id === product._id && item.size === product.size
             ? { ...existed, quantity: existed.quantity + 1 }
             : item
         )
@@ -189,16 +154,8 @@ const ContextProvider = ({ children }) => {
     const confirm = window.confirm("Are you sure delete this item");
     if (confirm) {
       const newCart = carts?.filter(
-        (item) =>
-          item._id === product._id &&
-          (product.color === ""
-            ? item.color === product.color
-            : item.color !== product.color) &&
-          (product.size === ""
-            ? item.size === product.size
-            : item.size !== product.size)
+        (item) => item._id !== product._id || item.size !== product.size
       );
-
       setCarts(newCart);
     }
   };
@@ -215,8 +172,6 @@ const ContextProvider = ({ children }) => {
     handelIncreaseCart,
     handelDecreaseCart,
     handelDeleteCart,
-
-    categories,
   };
   return <Context.Provider value={contextInfo}>{children}</Context.Provider>;
 };

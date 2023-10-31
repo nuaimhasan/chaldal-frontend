@@ -14,7 +14,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 const MainHeader = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
-  const { loggedUser, logout } = UseContext();
+  const { loggedUser, logout, carts } = UseContext();
 
   const [profileDropdown, setProfileDropdown] = useState(false);
   useEffect(() => {
@@ -59,10 +59,19 @@ const MainHeader = () => {
               <div className="relative">
                 <RiShoppingCartLine className="text-xl" />
                 <div className="absolute flex items-center justify-center w-4 h-4 text-xs font-bold bg-primary text-base-100 rounded-full -top-2 -right-2">
-                  <span className="mt-px">0</span>
+                  <span className="mt-px">{carts?.length || 0}</span>
                 </div>
               </div>
-              <h1 className="font-medium hidden sm:block">৳00</h1>
+              <h1 className="font-medium hidden sm:block">
+                ৳
+                {carts?.reduce(
+                  (price, item) =>
+                    price +
+                    item.quantity *
+                      parseInt(item.price - (item.price * item.discount) / 100),
+                  0
+                )}
+              </h1>
             </Link>
 
             {loggedUser?.success ? (

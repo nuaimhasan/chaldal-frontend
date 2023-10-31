@@ -41,8 +41,9 @@ export default function AddProduct() {
     const brand = form.brand.value;
     const description = details;
     const service = form.service.value;
-    const sizes = [];
-    size?.length > 0 && size.map((s) => sizes.push(s.name));
+    const sizes = JSON.stringify(size);
+
+    console.log(sizes);
 
     const formData = new FormData();
     formData.append("image", image);
@@ -56,43 +57,42 @@ export default function AddProduct() {
     formData.append("sizes", sizes);
     formData.append("service", service);
 
-    // setLoading(true);
+    setLoading(true);
 
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: {
-    //     authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-    //   },
-    //   body: formData,
-    // };
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+      },
+      body: formData,
+    };
 
-    // try {
-    //   const response = await fetch(
-    //     "http://localhost:5000/v1/product/post-product",
-    //     requestOptions
-    //   );
+    try {
+      const response = await fetch(
+        "https://eshop-server-api.onrender.com/v1/product/post-product",
+        requestOptions
+      );
 
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-    //   const result = await response.json();
-    //   if (result?.success) {
-    //     Swal.fire("Product add success", "", "success");
-    //     form.reset();
-    //     setImage("");
-    //     setDetails("");
-    //     setSize([]);
-    //     setColor([]);
-    //   }
+      const result = await response.json();
+      if (result?.success) {
+        Swal.fire("Product add success", "", "success");
+        form.reset();
+        setImage("");
+        setDetails("");
+        setSize([]);
+      }
 
-    //   setLoading(false);
-    // } catch (error) {
-    //   console.error("Fetch Error:", error);
-    //   setLoading(false);
-    // }
+      setLoading(false);
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      setLoading(false);
+    }
 
-    // setLoading(false);
+    setLoading(false);
   };
 
   return (
