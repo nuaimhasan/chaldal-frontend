@@ -19,6 +19,7 @@ import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import ProductList from "../pages/Admin/Product/ProductList";
 import AddProduct from "../pages/Admin/Product/AddProduct";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
+import Checkout from "../pages/Checkout/Checkout";
 
 export const routes = createBrowserRouter([
   {
@@ -60,6 +61,14 @@ export const routes = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+      },
+      {
+        path: "/checkout",
+        element: (
+          <PrivateRoute>
+            <Checkout />
+          </PrivateRoute>
+        ),
       },
     ],
   },

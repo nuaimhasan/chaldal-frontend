@@ -1,4 +1,50 @@
+import { useState } from "react";
+import { useGetMyOrdersQuery } from "../../../Redux/order/orderApi";
+
 export default function Orders() {
+  const { data, isLoading, isError, error } = useGetMyOrdersQuery();
+
+  let content = null;
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
+  if (!isLoading && isError) {
+    content = <p>{error}</p>;
+  }
+  if (!isLoading && !isError && data?.data?.length > 0) {
+    content = data?.data?.map((order) => (
+      <tr key={order?._id}>
+        <td className="py-2 px-4">
+          <div className="w-max">
+            <p>
+              <span className="text-primary">#{order?._id}</span>
+            </p>
+            <p className="text-xs text-neutral/70">
+              Placed on {order?.createdAt}
+            </p>
+          </div>
+        </td>
+
+        <td className="py-2 px-4">
+          <div className="flex flex-col gap-1">
+            {order?.products?.map((product) => (
+              <div className="w-max flex items-center gap-1">
+                <img
+                  src="https://static-01.daraz.com.bd/p/51bbf8f46780bc334a79dbc386dd35f3.jpg"
+                  alt=""
+                  className="w-6 h-6 rounded-full"
+                />
+                <p className="text-sm">Hart Hagerty</p>
+              </div>
+            ))}
+          </div>
+        </td>
+
+        <td className="py-2 px-4 text-sm">Proccesing</td>
+      </tr>
+    ));
+  }
+
   return (
     <div>
       <div className="border-b pb-1 mb-3">
@@ -7,85 +53,14 @@ export default function Orders() {
 
       <div className="overflow-x-auto">
         <table className="w-full">
-          <tbody>
-            {/* row 1 */}
+          <thead>
             <tr>
-              <td className="py-2 px-4">
-                <div className="w-max flex items-center space-x-3">
-                  <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                      <img
-                        src="https://static-01.daraz.com.bd/p/51bbf8f46780bc334a79dbc386dd35f3.jpg"
-                        alt=""
-                        className="w-14 h-14"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Hart Hagerty</div>
-                    <div className="text-sm opacity-50">United States</div>
-                  </div>
-                </div>
-              </td>
-              <td className="py-2 px-4">
-                <div className="w-max">
-                  <p>
-                    Order <span className="text-primary">#600734770046582</span>
-                  </p>
-                  <p className="text-xs text-neutral/70">
-                    Placed on 29 Jan 2019 00:35:39
-                  </p>
-                </div>
-              </td>
-              <td className="py-2 px-4">
-                <p className="w-max">Qty: 1</p>
-              </td>
-              <td className="py-2 px-4">
-                <p className=" bg-error w-max px-4 py-1 rounded-md text-xs">
-                  Cancelled
-                </p>
-              </td>
+              <th className="px-4">Order Id</th>
+              <th className="px-4">Products</th>
+              <th className="px-4"> Status</th>
             </tr>
-
-            {/* row 2 */}
-            <tr>
-              <td className="py-2 px-4">
-                <div className="w-max flex items-center space-x-3">
-                  <div className="avatar">
-                    <div className="mask mask-squircle w-12 h-12">
-                      <img
-                        src="https://static-01.daraz.com.bd/p/51bbf8f46780bc334a79dbc386dd35f3.jpg"
-                        alt=""
-                        className="w-14 h-14"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold">Hart Hagerty</div>
-                    <div className="text-sm opacity-50">United States</div>
-                  </div>
-                </div>
-              </td>
-              <td className="py-2 px-4">
-                <div className="w-max">
-                  <p>
-                    Order <span className="text-primary">#600734770046582</span>
-                  </p>
-                  <p className="text-xs text-neutral/70">
-                    Placed on 29 Jan 2019 00:35:39
-                  </p>
-                </div>
-              </td>
-              <td className="py-2 px-4">
-                <p className="w-max">Qty: 1</p>
-              </td>
-              <td className="py-2 px-4">
-                <p className=" bg-success w-max px-4 py-1 rounded-md text-xs">
-                  Delivered
-                </p>
-              </td>
-            </tr>
-          </tbody>
+          </thead>
+          <tbody>{content}</tbody>
         </table>
       </div>
     </div>

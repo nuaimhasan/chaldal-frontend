@@ -11,7 +11,7 @@ const ContextProvider = ({ children }) => {
   const login = (loginInfo) => {
     setLoading(true);
 
-    fetch("https://eshop-server-api.vercel.app/v1/user/login", {
+    fetch("https://eshop-server-api.onrender.com/v1/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +26,7 @@ const ContextProvider = ({ children }) => {
         if (data?.success) {
           toast.success("Login Success");
           localStorage.setItem("eshop_jwt", data?.data?.token);
-          fetch("https://eshop-server-api.vercel.app/v1/user/me", {
+          fetch("https://eshop-server-api.onrender.com/v1/user/me", {
             headers: {
               authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
             },
@@ -49,7 +49,7 @@ const ContextProvider = ({ children }) => {
 
   // Get Logged user
   useEffect(() => {
-    fetch("https://eshop-server-api.vercel.app/v1/user/me", {
+    fetch("https://eshop-server-api.onrender.com/v1/user/me", {
       headers: {
         authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
       },
@@ -65,9 +65,44 @@ const ContextProvider = ({ children }) => {
   const logout = () => {
     setLoggedUser(null);
     localStorage.removeItem("eshop_jwt");
+    window.location.reload();
   };
 
-  //------- Handel cart
+  //----------------------- Handel wishtlist-----------------
+  const localWishlist = JSON.parse(localStorage.getItem("eshop_wishlist"));
+  const [wishlists, setWishlists] = useState(localWishlist || []);
+
+  // Set Local Wishlist
+  useEffect(() => {
+    localStorage.setItem("eshop_wishlist", JSON.stringify(wishlists));
+  }, [wishlists]);
+
+  //------ Add Wishlist
+  const handelAddToWishlist = (product) => {
+    const existed = wishlists?.find((item) => item._id === product._id);
+    if (existed) {
+      return Swal.fire("", "Already Added Wishlist This Product", "warning");
+    }
+
+    if (!existed) {
+      setWishlists([...wishlists, product]);
+      toast.success("Add to Wishlist Success", {
+        position: "top-center",
+        autoClose: 1500,
+      });
+    }
+  };
+
+  // Handel Delete Wishlist
+  const handelDeleteWishlist = (product) => {
+    const confirm = window.confirm("Are you sure delete this item");
+    if (confirm) {
+      const newWishlist = wishlists?.filter((item) => item._id !== product._id);
+      setWishlists(newWishlist);
+    }
+  };
+
+  //------------------------Handel cart----------------------
   const localStorageCart = JSON.parse(localStorage.getItem("eshop_cart"));
   const [carts, setCarts] = useState(localStorageCart || []);
 
@@ -168,10 +203,14 @@ const ContextProvider = ({ children }) => {
     loading,
     logout,
     carts,
+    setCarts,
     handelAddToCart,
     handelIncreaseCart,
     handelDecreaseCart,
     handelDeleteCart,
+    handelAddToWishlist,
+    handelDeleteWishlist,
+    wishlists,
   };
   return <Context.Provider value={contextInfo}>{children}</Context.Provider>;
 };

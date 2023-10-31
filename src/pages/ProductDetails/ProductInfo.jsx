@@ -4,7 +4,9 @@ import { useState } from "react";
 import { UseContext } from "../../ContextApi/ContextApi";
 
 const ProductInfo = ({ product }) => {
-  const { carts, handelAddToCart } = UseContext();
+  const { wishlists, handelAddToCart, handelAddToWishlist } = UseContext();
+
+  const isWishlist = wishlists?.find((item) => item._id === product._id);
 
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
@@ -83,7 +85,12 @@ const ProductInfo = ({ product }) => {
         <div className="flex justify-between items-center">
           <div className="flex gap-px text-sm">{ratingStar}</div>
 
-          <button className={`shadow-lg p-3 rounded-full`}>
+          <button
+            onClick={() => handelAddToWishlist(product)}
+            className={`shadow-lg p-3 rounded-full ${
+              isWishlist && "bg-primary text-base-100"
+            }`}
+          >
             <FiHeart />
           </button>
         </div>
