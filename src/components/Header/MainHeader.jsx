@@ -16,8 +16,6 @@ const MainHeader = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const { loggedUser, logout } = UseContext();
 
-  console.log(loggedUser?.data?.image !== "");
-
   const [profileDropdown, setProfileDropdown] = useState(false);
   useEffect(() => {
     window.addEventListener("click", (e) => {

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 const ProductCard = ({ product }) => {
-  const { thumbnail, title, price, rating, discountPercentage } = product;
+  const { _id, image, title, slug, price, rating, discount } = product;
   const ratingStar = Array.from({ length: 5 }, (element, index) => {
     return (
       <span key={index}>
@@ -19,29 +19,29 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="mt-4 hover:shadow-lg rounded overflow-hidden product-card duration-300">
-      <Link to={`/products/${title}`}>
+      <Link to={`/products/${slug}/${_id}`}>
         <div className="overflow-hidden relative">
           <img
-            src={thumbnail}
+            src={`http://localhost:5000/images/products/${image}`}
             alt=""
             className="w-full h-48 sm:h-56 duration-500"
           />
           {/* Discount */}
-          {discountPercentage > 0 && (
+          {discount > 0 && (
             <div className="absolute top-1 text-base-100 right-0 bg-red-600 w-max rounded-l-full px-2 py-px">
-              <p>{discountPercentage}%</p>
+              <p>{discount}%</p>
             </div>
           )}
         </div>
         <div className="p-2">
-          <h1 className="text-lg font-semibold mb-1">
+          <h1 className="font-medium mb-1">
             {title.length > 40 ? `${title.slice(0, 40)}...` : title}
           </h1>
           <div className="flex items-center gap-2">
             <p className="text-primary text-lg">
-              ৳{parseInt(price - (price * discountPercentage) / 100)}
+              ৳{parseInt(price - (price * discount) / 100)}
             </p>
-            {discountPercentage > 0 && (
+            {discount > 0 && (
               <del className="text-neutral/70 text-sm ">৳{price}</del>
             )}
           </div>

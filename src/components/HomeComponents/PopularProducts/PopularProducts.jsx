@@ -1,7 +1,29 @@
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { useGetProductsQuery } from "../../../Redux/product/productApi";
+import ProductCard from "../../ProductCard/ProductCard";
 
 const PopularProducts = () => {
+  let limit = 20;
+  let page = 1;
+  const { data, isLoading, isError, error } = useGetProductsQuery({
+    limit,
+    page,
+  });
+
+  let content = null;
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
+  if (!isLoading && isError) {
+    content = <p>{error}</p>;
+  }
+  if (!isLoading && !isError && data?.data?.length > 0) {
+    content = data?.data?.map((product) => (
+      <ProductCard key={product._id} product={product} />
+    ));
+  }
+
   return (
     <div className="mt-6">
       <div className="container bg-base-100 p-4 rounded-lg shadow-lg">
@@ -22,7 +44,9 @@ const PopularProducts = () => {
         </div>
 
         {/* Product Card */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-2"></div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-2">
+          {content}
+        </div>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { BsUpload } from "react-icons/bs";
 import JoditEditor from "jodit-react";
 import Select from "react-dropdown-select";
 import { UseContext } from "../../../ContextApi/ContextApi";
+import Swal from "sweetalert2";
 const sizes = [
   { id: 1, name: "36" },
   { id: 2, name: "38" },
@@ -11,18 +12,8 @@ const sizes = [
   { id: 5, name: "44" },
   { id: 6, name: "sm" },
   { id: 7, name: "lg" },
-  { id: 7, name: "xl" },
-  { id: 7, name: "xxl" },
-];
-
-const colors = [
-  { id: 1, name: "red" },
-  { id: 2, name: "orange" },
-  { id: 3, name: "yellow" },
-  { id: 4, name: "green" },
-  { id: 5, name: "blue" },
-  { id: 6, name: "indigo" },
-  { id: 7, name: "violet" },
+  { id: 8, name: "xl" },
+  { id: 9, name: "xxl" },
 ];
 
 export default function AddProduct() {
@@ -31,7 +22,6 @@ export default function AddProduct() {
   const [image, setImage] = useState("");
   const [details, setDetails] = useState("");
   const [size, setSize] = useState([]);
-  const [color, setColor] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleImageChange = (event) => {
@@ -39,7 +29,7 @@ export default function AddProduct() {
     setImage(file);
   };
 
-  const handleAddProduct = (e) => {
+  const handleAddProduct = async (e) => {
     e.preventDefault();
 
     const form = e.target;
@@ -50,52 +40,59 @@ export default function AddProduct() {
     const stock = form.stock.value;
     const brand = form.brand.value;
     const description = details;
-    const colors = color;
-    const sizes = size;
     const service = form.service.value;
+    const sizes = [];
+    size.map((s) => sizes.push(s.name));
 
     const formData = new FormData();
     formData.append("image", image);
-
-    const product = {
-      title,
-      category,
-      price,
-      discount,
-      stock,
-      brand,
-      description,
-      colors,
-      sizes,
-      service,
-    };
+    formData.append("title", title);
+    formData.append("category", category);
+    formData.append("price", price);
+    formData.append("discount", discount);
+    formData.append("stock", stock);
+    formData.append("brand", brand);
+    formData.append("description", description);
+    formData.append("sizes", sizes);
+    formData.append("service", service);
 
     setLoading(true);
 
-    fetch("http://localhost:5000/v1/product/post-product", {
+    const requestOptions = {
       method: "POST",
       headers: {
-        "content-type": "application/json",
         authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
       },
       body: formData,
-      dataType: "multipart/form-data",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        // if (data.acknowledged) {
-        //   toast("product successfuly added");
-        //   setLoading(false);
-        //   reset();
-        // }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    };
+
+    try {
+      const response = await fetch(
+        "http://localhost:5000/v1/product/post-product",
+        requestOptions
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result?.success) {
+        Swal.fire("Product add success", "", "success");
+        form.reset();
+        setImage("");
+        setDetails("");
+        setSize([]);
+        setColor([]);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      setLoading(false);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -110,7 +107,11 @@ export default function AddProduct() {
             <div>
               <p className="text-sm">Add Image</p>
               <div className="border border-dashed rounded mt-2 h-40 relative overflow-hidden">
-                <input type="file" name="image" onChange={handleImageChange} />
+                <input
+                  type="file"
+                  name="productImage"
+                  onChange={handleImageChange}
+                />
 
                 <div className="absolute w-full h-full top-0 left-0 flex flex-col justify-center items-center gap-6">
                   <img src="/images/gallery.png" alt="" className="w-16" />
@@ -137,20 +138,6 @@ export default function AddProduct() {
           </div>
 
           <div className="mt-4 border rounded p-4 flex flex-col gap-3">
-            <div>
-              <p className="text-sm">Color</p>
-              <Select
-                options={colors}
-                onChange={(e) => setColor(e)}
-                values={color}
-                labelField="name"
-                valueField="id"
-                multi={true}
-                searchBy="name"
-                closeOnSelect={true}
-              />
-            </div>
-
             <div>
               <p className="text-sm">Size</p>
               <Select
