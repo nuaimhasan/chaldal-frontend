@@ -1,8 +1,10 @@
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { UseContext } from "../../ContextApi/ContextApi";
 
 export default function AdminHeader({ setSidebar }) {
   const { pathname } = useLocation();
+  const { loggedUser } = UseContext();
 
   return (
     <header className="px-3 py-2 rounded bg-primary text-base-100">
@@ -15,16 +17,22 @@ export default function AdminHeader({ setSidebar }) {
             <HiOutlineMenuAlt2 className="text-xl" />
           </button>
           <div className="flex items-center text-[15px]">
-            <p>Dashboard</p>
+            <Link to="/admin/dashboard">Dashboard</Link>
             {pathname !== "/admin/dashboard" && (
               <p className="hidden sm:block">{pathname}</p>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <img src="" alt="" className="w-8 h-8 rounded-full" />
-          <p className="hidden sm:block">Full Name</p>
+        <div className="flex items-center gap-2">
+          <img
+            src={`https://eshop-server-api.onrender.com/images/users/${loggedUser?.data?.image}`}
+            alt=""
+            className="w-8 h-8 rounded-full"
+          />
+          <p className="hidden sm:block">
+            {loggedUser?.data?.firstName} {loggedUser?.data?.lastName}
+          </p>
         </div>
       </div>
     </header>

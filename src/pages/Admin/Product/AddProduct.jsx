@@ -98,7 +98,7 @@ export default function AddProduct() {
       <h3 className="text-lg">Add Product</h3>
       <form
         onSubmit={handleAddProduct}
-        className="mt-2 grid grid-cols-3 gap-4 items-start"
+        className="mt-2 grid sm:grid-cols-2 md:grid-cols-3 gap-4 items-start"
       >
         <div>
           <div className="border rounded p-4">
@@ -164,7 +164,7 @@ export default function AddProduct() {
           </div>
         </div>
 
-        <div className="col-span-2 border rounded p-4 form_group flex flex-col gap-3">
+        <div className="md:col-span-2 border rounded p-4 form_group flex flex-col gap-3">
           <div>
             <p className="text-sm">Product Title</p>
             <input type="text" name="title" />

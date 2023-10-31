@@ -34,7 +34,7 @@ const PopularProducts = () => {
 
           <div>
             <Link
-              to="/shops/flash-sale"
+              to="/shops"
               className="w-max flex items-center text-primary font-semibold hover-go"
             >
               <h1 className="text-sm md:text-[15px] font-normal">Shop More</h1>

@@ -28,14 +28,14 @@ export default function AccountLayout() {
     <>
       <Header />
       <section className="min-h-[70vh] container py-2 lg:py-5">
-        <div className="flex gap-5">
+        <div className="lg:flex gap-5">
           <aside
             className={`account_sidebar ${sidebar && "account_sidebar_show"}`}
           >
             <AccountSidebar />
           </aside>
-          <main className="w-full">
-            <div className="pb-2 flex items-center gap-2 text-neutral">
+          <>
+            <div className="lg:hidden pb-2 flex items-center gap-2 text-neutral">
               <button
                 className="account_Sidebar_btn"
                 onClick={() => setSidebar(true)}
@@ -44,10 +44,10 @@ export default function AccountLayout() {
               </button>
               <p>{join}</p>
             </div>
-            <div className="account_content">
+            <main className="account_content">
               <Outlet />
-            </div>
-          </main>
+            </main>
+          </>
         </div>
       </section>
       <Footer />

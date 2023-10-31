@@ -60,6 +60,10 @@ h2 {
   .account_sidebar {
     width: 90% !important;
   }
+
+  .admin_sidebar {
+    width: 90% !important;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -276,4 +280,8 @@ table tbody td {
   top: -31px;
   left: 0;
   z-index: 1;
+}
+
+.jodit-wysiwyg {
+  min-height: 200px !important;
 }

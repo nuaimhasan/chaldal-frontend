@@ -8,7 +8,7 @@ import { IoBagCheckOutline } from "react-icons/io5";
 export default function AdminSidebar() {
   return (
     <div className="p-6">
-      <Link to="/admin/dashboard" className="block border-b pb-4">
+      <Link to="/" className="block border-b pb-4">
         <img src="/images/logo/logo.png" alt="" className="w-24 mx-auto" />
       </Link>
 
