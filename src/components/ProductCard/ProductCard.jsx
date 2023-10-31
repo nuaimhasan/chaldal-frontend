@@ -19,10 +19,10 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="mt-4 hover:shadow-lg rounded overflow-hidden product-card duration-300">
-      <Link to={`/products/${slug}/${_id}`}>
+      <Link to={`/product/${slug}/${_id}`}>
         <div className="overflow-hidden relative">
           <img
-            src={`http://localhost:5000/images/products/${image}`}
+            src={`https://eshop-server-api.onrender.com/images/products/${image}`}
             alt=""
             className="w-full h-48 sm:h-56 duration-500"
           />

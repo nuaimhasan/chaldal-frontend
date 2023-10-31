@@ -8,11 +8,20 @@ export const productApi = apiSlice.injectEndpoints({
       }),
     }),
     getProducts: builder.query({
-      query: ({ limit, page }) => ({
-        url: `/product/all-products?limit=${limit}&page=${page}`,
+      query: ({ limit, page, category }) => ({
+        url: `/product/all-products?limit=${limit}&page=${page}&category=${category}`,
+      }),
+    }),
+    getProduct: builder.query({
+      query: (id) => ({
+        url: `/product/${id}`,
       }),
     }),
   }),
 });
 
-export const { useGetFlashProductsQuery, useGetProductsQuery } = productApi;
+export const {
+  useGetFlashProductsQuery,
+  useGetProductsQuery,
+  useGetProductQuery,
+} = productApi;

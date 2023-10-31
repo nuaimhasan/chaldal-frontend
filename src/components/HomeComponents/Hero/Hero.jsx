@@ -1,4 +1,4 @@
-import HeroCategories from "./HeroCategories/HeroCategories";
+import CategoryLists from "../../CategoryLists/CategoryLists";
 
 export default function Hero() {
   return (
@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="container">
         <div className="lg:flex items-start gap-4">
           <div className="hidden lg:block w-[270px] border rounded-b">
-            <HeroCategories />
+            <CategoryLists />
           </div>
 
           <div className="hero_slider md:h-[402px] mt-2 lg:mt-0">

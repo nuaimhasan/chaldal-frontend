@@ -18,6 +18,7 @@ import AdminLayout from "../Layout/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import ProductList from "../pages/Admin/Product/ProductList";
 import AddProduct from "../pages/Admin/Product/AddProduct";
+import ProductDetails from "../pages/ProductDetails/ProductDetails";
 
 export const routes = createBrowserRouter([
   {
@@ -31,6 +32,14 @@ export const routes = createBrowserRouter([
       {
         path: "/shops",
         element: <Shop />,
+      },
+      {
+        path: "/shops/:slug",
+        element: <Shop />,
+      },
+      {
+        path: "/product/:slug/:id",
+        element: <ProductDetails />,
       },
       {
         path: "/login",

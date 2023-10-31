@@ -15,7 +15,7 @@ const ChooseByCategory = () => {
     content = data?.data?.map((category) => (
       <Link
         key={category?._id}
-        to={`category/slug`}
+        to={`shops/${category.slug}`}
         className="shadow border rounded p-4 flex  justify-center items-center text-center hover:bg-accent/20 duration-200"
       >
         <div>
