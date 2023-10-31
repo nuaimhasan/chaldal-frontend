@@ -94,7 +94,7 @@ const MainHeader = () => {
                     <img
                       src={`https://eshop-server-api.onrender.com/images/users/${loggedUser?.data?.image}`}
                       alt=""
-                      className="w-6 h-6 rounded-full border border-base-100"
+                      className="w-7 h-7 rounded-full border border-base-100"
                     />
                   )}
 

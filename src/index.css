@@ -56,6 +56,10 @@ h2 {
   .menu_wrap {
     width: 90% !important;
   }
+
+  .account_sidebar {
+    width: 90% !important;
+  }
 }
 
 @media only screen and (max-width: 768px) {
@@ -202,6 +206,25 @@ h2 {
 }
 
 @media only screen and (max-width: 1024px) {
+  .account_sidebar {
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    z-index: 9999;
+    background: #fff;
+    transition: all 0.3s ease;
+  }
+
+  .account_sidebar_show {
+    transform: translateX(0%);
+  }
+
+  .account_content {
+    width: 100%;
+  }
+
   .admin_sidebar {
     transform: translateX(-100%);
     z-index: 9999;
