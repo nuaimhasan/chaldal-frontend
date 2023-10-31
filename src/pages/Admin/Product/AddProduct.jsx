@@ -43,8 +43,6 @@ export default function AddProduct() {
     const service = form.service.value;
     const sizes = JSON.stringify(size);
 
-    console.log(sizes);
-
     const formData = new FormData();
     formData.append("image", image);
     formData.append("title", title);

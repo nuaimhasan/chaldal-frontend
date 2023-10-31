@@ -9,7 +9,7 @@ export default function Hero() {
             <CategoryLists />
           </div>
 
-          <div className="hero_slider md:h-[402px] mt-2 lg:mt-0">
+          <div className="hero_slider h-40 md:h-[402px] mt-2 lg:mt-0">
             <img
               src="/images/hero/hero1.jpg"
               alt=""
