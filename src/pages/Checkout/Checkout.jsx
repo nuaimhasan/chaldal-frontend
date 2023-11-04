@@ -125,7 +125,7 @@ export default function Checkout() {
 
     const order = { orderBy, sippingAddress, products };
 
-    fetch("https://eshop-server-api.onrender.com/v1/order", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/order`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

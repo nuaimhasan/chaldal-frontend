@@ -52,7 +52,7 @@ const ProductInfo = ({ product }) => {
       <div className="lg:w-[42%]">
         <div className="relative">
           <img
-            src={`https://eshop-server-api.onrender.com/images/products/${image}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/images/products/${image}`}
             alt=""
             className="w-full h-[350px] rounded"
           />

@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { BsUpload } from "react-icons/bs";
 import JoditEditor from "jodit-react";
 import Select from "react-dropdown-select";
-import { UseContext } from "../../../ContextApi/ContextApi";
 import Swal from "sweetalert2";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
 const sizes = [
@@ -68,7 +67,7 @@ export default function AddProduct() {
 
     try {
       const response = await fetch(
-        "https://eshop-server-api.onrender.com/v1/product/post-product",
+        "http://localhost:5000/product/post-product",
         requestOptions
       );
 

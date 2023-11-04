@@ -39,7 +39,7 @@ export default function Signup() {
 
     setLoading(true);
 
-    fetch("https://eshop-server-api.onrender.com/v1/user/process-register", {
+    fetch("http://localhost:5000/user/process-register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -16,7 +16,7 @@ export default function CartItem({ product }) {
       <td className="p-3">
         <div className="w-max flex gap-2 items-center">
           <img
-            src={`https://eshop-server-api.onrender.com/images/products/${image}`}
+            src={`http://localhost:5000/images/products/${image}`}
             alt={title}
             className="w-10 h-10 rounded-lg"
           />

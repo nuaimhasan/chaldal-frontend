@@ -22,7 +22,7 @@ const ProductCard = ({ product }) => {
       <Link to={`/product/${slug}/${_id}`}>
         <div className="overflow-hidden relative">
           <img
-            src={`https://eshop-server-api.onrender.com/images/products/${image}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/images/products/${image}`}
             alt=""
             className="w-full h-48 sm:h-56 duration-500"
           />

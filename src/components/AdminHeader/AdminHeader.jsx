@@ -26,7 +26,9 @@ export default function AdminHeader({ setSidebar }) {
 
         <div className="flex items-center gap-2">
           <img
-            src={`https://eshop-server-api.onrender.com/images/users/${loggedUser?.data?.image}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/images/users/${
+              loggedUser?.data?.image
+            }`}
             alt=""
             className="w-8 h-8 rounded-full"
           />

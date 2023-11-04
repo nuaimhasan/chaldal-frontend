@@ -1,11 +1,11 @@
 import { apiSlice } from "../api/apiSlice";
-import { userLoggedIn } from "./authSlice";
+import { userLoggedIn } from "./userSlice";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (loginInfo) => ({
-        url: "/auth/login",
+        url: "/user/login",
         method: "POST",
         body: loginInfo,
       }),
@@ -14,14 +14,12 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
 
-          localStorage.setItem("WorkStation_jwt", result?.data?.data?.token);
+          localStorage.setItem("eshop_jwt", result?.data?.data?.token);
 
           dispatch(
             userLoggedIn({
               token: result?.data?.data?.token,
-              loading: false,
-              status: true,
-              data: result?.data?.data?.user,
+              data: result?.data,
             })
           );
         } catch (error) {

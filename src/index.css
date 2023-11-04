@@ -66,27 +66,27 @@ h2 {
   }
 }
 
+.overlay {
+  position: fixed;
+  top: -33px;
+  left: 0;
+  background: #00000066;
+  width: 100%;
+  height: 110vh;
+  z-index: 9999;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: all 0.3s ease;
+}
+
+.overlay_show {
+  opacity: 1;
+  visibility: visible;
+}
+
 @media only screen and (max-width: 768px) {
-  .overlay {
-    position: fixed;
-    top: -33px;
-    left: 0;
-    background: #00000066;
-    width: 100%;
-    height: 110vh;
-    z-index: 9999;
-
-    opacity: 0;
-    visibility: hidden;
-
-    transition: all 0.3s ease;
-  }
-
-  .overlay_show {
-    opacity: 1;
-    visibility: visible;
-  }
-
   .menu_wrap {
     position: fixed;
     top: -33px;
@@ -284,4 +284,50 @@ table tbody td {
 
 .jodit-wysiwyg {
   min-height: 200px !important;
+}
+
+/* -----------Profile----------- */
+.update_image_wrap {
+  position: relative;
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+}
+.update_image_btn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background: #0000004e;
+  opacity: 0;
+  transition: 0.3s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.update_image_wrap:hover .update_image_btn {
+  opacity: 1;
+}
+
+/* --------------Modal------------ */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 10px;
+  z-index: 9999;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal_show {
+  opacity: 1;
+  visibility: visible;
 }

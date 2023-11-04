@@ -1,9 +1,9 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { UseContext } from "../ContextApi/ContextApi";
 import Spinner from "../components/Spinner/Spinner";
+import { useSelector } from "react-redux";
 
 const PrivateRoute = ({ children }) => {
-  const { loggedUser, loading } = UseContext();
+  const { loggedUser } = useSelector((state) => state.user);
   const location = useLocation();
 
   const token = localStorage.getItem("eshop_jwt");

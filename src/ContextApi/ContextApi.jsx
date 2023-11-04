@@ -4,70 +4,6 @@ import { toast } from "react-toastify";
 export const Context = createContext();
 
 const ContextProvider = ({ children }) => {
-  const [loggedUser, setLoggedUser] = useState(null);
-  const [loginError, setLoginError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const login = (loginInfo) => {
-    setLoading(true);
-
-    fetch("https://eshop-server-api.onrender.com/v1/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginInfo),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data?.success) {
-          setLoginError(data.message);
-        }
-        if (data?.success) {
-          toast.success("Login Success");
-          localStorage.setItem("eshop_jwt", data?.data?.token);
-          fetch("https://eshop-server-api.onrender.com/v1/user/me", {
-            headers: {
-              authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-            },
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data?.success) {
-                setLoggedUser(data);
-              }
-            });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  // Get Logged user
-  useEffect(() => {
-    fetch("https://eshop-server-api.onrender.com/v1/user/me", {
-      headers: {
-        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.success) {
-          setLoggedUser(data);
-        }
-      });
-  }, []);
-
-  const logout = () => {
-    setLoggedUser(null);
-    localStorage.removeItem("eshop_jwt");
-    window.location.reload();
-  };
-
   //----------------------- Handel wishtlist-----------------
   const localWishlist = JSON.parse(localStorage.getItem("eshop_wishlist"));
   const [wishlists, setWishlists] = useState(localWishlist || []);
@@ -196,12 +132,6 @@ const ContextProvider = ({ children }) => {
   };
 
   const contextInfo = {
-    loggedUser,
-    setLoggedUser,
-    login,
-    loginError,
-    loading,
-    logout,
     carts,
     setCarts,
     handelAddToCart,

@@ -1,12 +1,159 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FcEditImage } from "react-icons/fc";
+import { AiFillDelete, AiOutlineCloseCircle } from "react-icons/ai";
+import ImageUploading from "react-images-uploading";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 export default function Profile() {
+  const { loggedUser } = useSelector((state) => state.user);
+  const [modal, setModal] = useState(false);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const { firstName, lastName, phone, email, city, district, street } =
+    loggedUser?.data;
+
+  const handleUploadImage = async () => {
+    if (images?.length <= 0) {
+      return alert("Please Select an Image");
+    }
+
+    let image = images[0].file;
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const requestOptions = {
+      method: "PUT",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+      },
+      body: formData,
+    };
+
+    let url = `${import.meta.env.VITE_BACKEND_URL}/user/update-image/${
+      loggedUser?.data?._id
+    }`;
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const result = await response.json();
+      if (result?.success) {
+        Swal.fire("Image update success", "", "success");
+        setModal(false);
+        location.reload();
+      } else {
+        Swal.fire("Something went worng", "", "error");
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <div className="bg-primary/20 rounded-md lg:grid grid-cols-3 gap-6">
         <div className="bg-primary/70 rounded-md flex flex-col justify-center items-center py-4 text-base-100 font-medium">
-          <img src="" alt="" className="w-24 h-24 rounded-full border" />
-          <h1 className="mt-2 text-xl">Jack Ma</h1>
+          <div className="update_image_wrap">
+            <img
+              src={
+                loggedUser?.data?.image === ""
+                  ? "/public/images/demo_user.jpg"
+                  : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
+                      loggedUser?.data?.image
+                    }`
+              }
+              alt=""
+              className="w-full h-full rounded-full"
+            />
+
+            <button onClick={() => setModal(true)} className="update_image_btn">
+              <FcEditImage className="text-2xl" />
+            </button>
+
+            <>
+              <button className={`overlay ${modal && "overlay_show"}`}></button>
+              <div
+                className={`modal w-[90%] sm:w-[500px] ${
+                  modal && "modal_show"
+                }`}
+              >
+                <div className="bg-primary/10 p-5 text-center text-neutral flex justify-between">
+                  <h1 className="text-xl">Update Profile Photo</h1>
+                  <button onClick={() => setModal(false)}>
+                    <AiOutlineCloseCircle className="text-2xl text-neutral-content" />
+                  </button>
+                </div>
+
+                <div className="p-4">
+                  <ImageUploading
+                    value={images}
+                    onChange={(img) => setImages(img)}
+                    dataURLKey="data_url"
+                  >
+                    {({ onImageUpload, onImageRemove, dragProps }) => (
+                      <div
+                        className="border rounded border-dashed p-4 w-max"
+                        {...dragProps}
+                      >
+                        <div className="flex flex-col items-center gap-2">
+                          <span
+                            onClick={onImageUpload}
+                            className="px-4 py-1.5 rounded-2xl text-base-100 bg-primary cursor-pointer text-sm"
+                          >
+                            Choose Image
+                          </span>
+
+                          <p className="text-neutral-content">or Drop here</p>
+                        </div>
+
+                        <div className={`${images?.length > 0 && "mt-4"} `}>
+                          {images?.map((img, index) => (
+                            <div key={index} className="image-item relative">
+                              <img
+                                src={img["data_url"]}
+                                alt=""
+                                className="w-40"
+                              />
+                              <div
+                                onClick={() => onImageRemove(index)}
+                                className="w-7 h-7 bg-primary rounded-full flex justify-center items-center text-base-100 absolute top-0 right-0 cursor-pointer"
+                              >
+                                <AiFillDelete />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </ImageUploading>
+
+                  <div className="mt-4">
+                    <button
+                      onClick={handleUploadImage}
+                      className="bg-primary text-base-100 px-6 py-1.5 rounded"
+                      disabled={loading && "disabled"}
+                    >
+                      {loading ? "Loading.." : "Upload"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </>
+          </div>
+          <h1 className="mt-2 text-xl">
+            {loggedUser?.data?.firstName} {loggedUser?.data?.lastName}
+          </h1>
         </div>
 
         <div className="col-span-2 grid grid-cols-2 gap-4 items-center text-center py-5">
@@ -28,7 +175,7 @@ export default function Profile() {
             <input
               type="text"
               className="w-full border outline-none rounded px-3 py-1.5 mb-4 "
-              defaultValue="Jack Ma"
+              defaultValue={`${firstName} ${lastName}`}
               disabled
             />
           </div>
@@ -36,7 +183,7 @@ export default function Profile() {
             <input
               type="text"
               className="w-full border outline-none rounded px-3 py-1.5 mb-4 bg-gray-100"
-              defaultValue="01618004406"
+              defaultValue={phone}
               disabled
             />
           </div>
@@ -45,7 +192,7 @@ export default function Profile() {
             <input
               type="email"
               className="w-full border outline-none rounded px-3 py-1.5 mb-4"
-              defaultValue="jackma@gmail.com"
+              defaultValue={email}
               disabled
             />
           </div>
@@ -55,7 +202,7 @@ export default function Profile() {
             <div>
               <input
                 className="w-full border outline-none rounded px-3 py-1.5 mb-4"
-                defaultValue="State"
+                defaultValue={city}
                 disabled
               />
             </div>
@@ -63,7 +210,7 @@ export default function Profile() {
             <div>
               <input
                 className="w-full border outline-none rounded px-3 py-1.5 mb-4"
-                defaultValue="City"
+                defaultValue={district}
                 disabled
               />
             </div>
@@ -72,7 +219,7 @@ export default function Profile() {
           <div>
             <textarea
               className="w-full border outline-none rounded px-3 py-1.5 mb-4"
-              defaultValue="Full Address"
+              defaultValue={street}
               disabled
             />
           </div>

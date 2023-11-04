@@ -11,10 +11,14 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
 import { FaUserCircle } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogout } from "../../Redux/user/userSlice";
 
 const MainHeader = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
-  const { loggedUser, logout, carts } = UseContext();
+  const { carts } = UseContext();
+  const dispatch = useDispatch();
+  const { loggedUser } = useSelector((state) => state.user);
 
   const [profileDropdown, setProfileDropdown] = useState(false);
   useEffect(() => {
@@ -92,7 +96,13 @@ const MainHeader = () => {
                     <FaUserCircle className="text-[22px]" />
                   ) : (
                     <img
-                      src={`https://eshop-server-api.onrender.com/images/users/${loggedUser?.data?.image}`}
+                      src={
+                        loggedUser?.data?.image === ""
+                          ? "/public/images/demo_user.jpg"
+                          : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
+                              loggedUser?.data?.image
+                            }`
+                      }
                       alt=""
                       className="w-7 h-7 rounded-full border border-base-100"
                     />
@@ -149,7 +159,7 @@ const MainHeader = () => {
 
                     <li>
                       <button
-                        onClick={logout}
+                        onClick={() => dispatch(userLogout())}
                         className="duration-200 px-3 py-1.5 flex items-center gap-1 hover:bg-gray-200 w-full text-primary border-t"
                       >
                         <BiLogOutCircle className="text-base" />

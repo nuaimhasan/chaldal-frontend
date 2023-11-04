@@ -2,14 +2,27 @@ import { NavLink } from "react-router-dom";
 import { FiMonitor } from "react-icons/fi";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { AiOutlineHeart, AiOutlineSetting } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 export default function AccountSidebar() {
+  const { loggedUser } = useSelector((state) => state.user);
+
   return (
     <div>
       <div>
-        <img src="" alt="" className="w-28 h-28 border rounded-full mx-auto" />
+        <img
+          src={
+            loggedUser?.data?.image === ""
+              ? "/public/images/demo_user.jpg"
+              : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
+                  loggedUser?.data?.image
+                }`
+          }
+          alt=""
+          className="w-28 h-28 border rounded-full mx-auto"
+        />
         <h3 className="text-center text-lg font-medium text-neutral-content">
-          Nasim Uddin
+          {loggedUser?.data?.firstName} {loggedUser?.data?.lastName}
         </h3>
       </div>
 

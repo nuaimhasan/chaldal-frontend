@@ -2,20 +2,23 @@ import { AiFillEye, AiFillEyeInvisible, AiFillUnlock } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
-import { UseContext } from "../../ContextApi/ContextApi";
 import { useState } from "react";
 import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useLoginMutation } from "../../Redux/user/authApi";
 
 export default function Login() {
-  const { login, loginError, loading, loggedUser } = UseContext();
   const [showPassword, setShowPassword] = useState(false);
+
+  const { loggedUser } = useSelector((state) => state.user);
+  const [login, { isLoading, isError, error }] = useLoginMutation();
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  if (loggedUser?.success || loggedUser !== null) {
+  if (loggedUser?.success || loggedUser !== undefined) {
     navigate(from, { replace: true });
   }
 
@@ -86,9 +89,7 @@ export default function Login() {
                 </div>
               </div>
 
-              {loginError && (
-                <p className="text-sm text-red-500">{loginError}</p>
-              )}
+              {isError && <p className="text-sm text-red-500">{error}</p>}
 
               <div className="mt-2 flex justify-end">
                 <Link
@@ -104,7 +105,7 @@ export default function Login() {
                   type="submit"
                   className="w-full py-2 font-semibold text-base-100 bg-primary rounded hover:bg-opacity-90 duration-300 flex justify-center"
                 >
-                  {loading ? <ButtonSpinner /> : "Log In"}
+                  {isLoading ? <ButtonSpinner /> : "Log In"}
                 </button>
               </div>
             </div>
