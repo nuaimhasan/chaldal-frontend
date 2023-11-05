@@ -47,7 +47,7 @@ export default function AdminSidebar() {
           <h3>Users</h3>
           <ul className="pl-4">
             <li>
-              <NavLink to="/admin/user/all-user">
+              <NavLink to="/admin/user/all-users">
                 <FiUsers className="text-lg" />
                 User List
               </NavLink>

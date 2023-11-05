@@ -21,6 +21,9 @@ import AddProduct from "../pages/Admin/Product/AddProduct";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import Checkout from "../pages/Checkout/Checkout";
 import EditProduct from "../pages/Admin/Product/EditProduct";
+import AllUsers from "../pages/Admin/user/AllUsers";
+import AllOrders from "../pages/Admin/Order/AllOrders";
+import OrderDetails from "../pages/Admin/Order/OrderDetails";
 
 export const routes = createBrowserRouter([
   {
@@ -122,6 +125,18 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/product/edit-product/:id",
         element: <EditProduct />,
+      },
+      {
+        path: "/admin/user/all-users",
+        element: <AllUsers />,
+      },
+      {
+        path: "/admin/order/all-order",
+        element: <AllOrders />,
+      },
+      {
+        path: "/admin/order/:id",
+        element: <OrderDetails />,
       },
     ],
   },
