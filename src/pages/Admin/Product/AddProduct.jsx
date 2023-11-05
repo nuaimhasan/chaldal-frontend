@@ -41,53 +41,75 @@ export default function AddProduct() {
     const brand = form.brand.value;
     const description = details;
     const service = form.service.value;
-    const sizes = JSON.stringify(size);
+    let sizes = [];
+    size?.length > 0 ? size.map((s) => sizes.push(s?.name)) : [];
 
     const formData = new FormData();
     formData.append("image", image);
-    formData.append("title", title);
-    formData.append("category", category);
-    formData.append("price", price);
-    formData.append("discount", discount);
-    formData.append("stock", stock);
-    formData.append("brand", brand);
-    formData.append("description", description);
-    formData.append("sizes", sizes);
-    formData.append("service", service);
 
     setLoading(true);
 
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-      },
-      body: formData,
-    };
-
-    try {
-      const response = await fetch(
-        "http://localhost:5000/product/post-product",
-        requestOptions
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+    const imageRes = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/product/post-product-image`,
+      {
+        method: "POST",
+        headers: {
+          authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+        },
+        body: formData,
       }
+    );
+    const ImageResult = await imageRes.json();
 
-      const result = await response.json();
-      if (result?.success) {
-        Swal.fire("Product add success", "", "success");
+    if (ImageResult?.success) {
+      const productInfo = {
+        title,
+        image: ImageResult?.data,
+        category,
+        price,
+        discount,
+        stock,
+        brand,
+        description,
+        service,
+        sizes,
+      };
+
+      const productRes = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/product/post-product`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+          },
+          body: JSON.stringify(productInfo),
+        }
+      );
+      const productResult = await productRes.json();
+
+      if (productResult?.success) {
+        Swal.fire("", "product upload success", "success");
         form.reset();
         setImage("");
         setDetails("");
         setSize([]);
-      }
+        setLoading(false);
+      } else {
+        let image = ImageResult?.data;
 
-      setLoading(false);
-    } catch (error) {
-      console.error("Fetch Error:", error);
-      setLoading(false);
+        const imageDeleteRes = await fetch(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/product/fail-post-product/${image}`
+        );
+
+        const imageDeleteResult = await imageDeleteRes.json();
+        if (imageDeleteResult?.success) {
+          Swal.fire("", "somethin went wrong, please try again", "error");
+          setLoading(false);
+        }
+      }
     }
 
     setLoading(false);
@@ -121,7 +143,7 @@ export default function AddProduct() {
               </div>
 
               {image && (
-                <div className="mt-2 border rounded border-dashed p-2">
+                <div className="mt-2 border rounded border-dashed p-2 overflow-hidden">
                   <div className="flex items-center gap-2">
                     <img
                       src={URL.createObjectURL(image)}

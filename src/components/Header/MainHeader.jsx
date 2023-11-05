@@ -23,7 +23,10 @@ const MainHeader = () => {
   const [profileDropdown, setProfileDropdown] = useState(false);
   useEffect(() => {
     window.addEventListener("click", (e) => {
-      if (!e.target.closest(".profileDropdownBtn")) {
+      if (
+        !e.target.closest(".profileDropdownBtn") &&
+        !e.target.closest(".user_info")
+      ) {
         setProfileDropdown(false);
       }
     });
@@ -92,21 +95,17 @@ const MainHeader = () => {
                   onClick={() => setProfileDropdown(!profileDropdown)}
                   className="flex items-center gap-1 profileDropdownBtn"
                 >
-                  {loggedUser?.data?.image === "" ? (
-                    <FaUserCircle className="text-[22px]" />
-                  ) : (
-                    <img
-                      src={
-                        loggedUser?.data?.image === ""
-                          ? "/public/images/demo_user.jpg"
-                          : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
-                              loggedUser?.data?.image
-                            }`
-                      }
-                      alt=""
-                      className="w-7 h-7 rounded-full border border-base-100"
-                    />
-                  )}
+                  <img
+                    src={
+                      loggedUser?.data?.image === ""
+                        ? "/public/images/demo_user.jpg"
+                        : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
+                            loggedUser?.data?.image
+                          }`
+                    }
+                    alt=""
+                    className="w-7 h-7 rounded-full border border-base-100"
+                  />
 
                   <p className="pt-px hidden sm:block">
                     {loggedUser?.data?.firstName}
@@ -114,7 +113,32 @@ const MainHeader = () => {
                 </button>
 
                 {profileDropdown && (
-                  <ul className="absolute w-48 text-[15px] bg-base-100 right-0 top-[130%] shadow-lg rounded z-50 overflow-hidden text-neutral">
+                  <ul className="absolute w-max min-w-[190px] text-[15px] bg-base-100 right-0 top-[130%] shadow-lg rounded z-50 overflow-hidden text-neutral">
+                    <li className="user_info px-2 py-1 border-b">
+                      <div className="flex items-center gap-2">
+                        <img
+                          src={
+                            loggedUser?.data?.image === ""
+                              ? "/public/images/demo_user.jpg"
+                              : `${
+                                  import.meta.env.VITE_BACKEND_URL
+                                }/images/users/${loggedUser?.data?.image}`
+                          }
+                          alt=""
+                          className="w-9 h-9 rounded-full border border-base-100"
+                        />
+                        <div>
+                          <h1 className="text-[17px]">
+                            {loggedUser?.data?.firstName}{" "}
+                            {loggedUser?.data?.lastName}
+                          </h1>
+                          <p className="text-sm text-neutral-content">
+                            {loggedUser?.data?.email}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+
                     {loggedUser?.data?.role === "admin" && (
                       <li>
                         <Link

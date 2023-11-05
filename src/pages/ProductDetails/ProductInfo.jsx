@@ -2,16 +2,18 @@ import { FiHeart, FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { FaOpencart, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { useState } from "react";
 import { UseContext } from "../../ContextApi/ContextApi";
+import Swal from "sweetalert2";
 
 const ProductInfo = ({ product }) => {
   const { wishlists, handelAddToCart, handelAddToWishlist } = UseContext();
-
   const isWishlist = wishlists?.find((item) => item._id === product._id);
 
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
 
   const { title, image, discount, brand, category, price, sizes } = product;
+
+  console.log(sizes);
 
   const handelIncrease = () => {
     setQuantity(quantity + 1);
@@ -45,6 +47,12 @@ const ProductInfo = ({ product }) => {
       </span>
     );
   });
+
+  const handleBuyNow = () => {
+    if (sizes.length > 0 && !selectedSize) {
+      return Swal.fire("Please Select Size", "", "warning");
+    }
+  };
 
   return (
     <div className="lg:flex gap-6">
@@ -110,12 +118,12 @@ const ProductInfo = ({ product }) => {
         </div>
 
         {/* Size */}
-        {sizes?.length > 0 && sizes[0] !== "" && (
+        {sizes?.length > 0 && (
           <div className="flex gap-4 items-center my-4">
             <p>Sizes :</p>
 
             <div className="flex gap-2 items-center">
-              {sizes[0].split(",")?.map((size) => (
+              {sizes.map((size) => (
                 <button
                   key={size}
                   onClick={() => handelSelectSize(size)}
@@ -154,7 +162,14 @@ const ProductInfo = ({ product }) => {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 items-center mt-6">
+        <div className="flex gap-3 items-center mt-6">
+          <button
+            onClick={handleBuyNow}
+            className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded scale-[.97] hover:scale-[1] duration-300"
+          >
+            Buy Now
+          </button>
+
           <button
             onClick={() =>
               handelAddToCart({

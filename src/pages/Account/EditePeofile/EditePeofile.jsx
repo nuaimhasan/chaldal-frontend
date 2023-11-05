@@ -34,7 +34,7 @@ export default function EditePeofile() {
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItp("eshop_jwt")}`,
+        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
       },
       body: JSON.stringify(userInfo),
     })
