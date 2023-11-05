@@ -101,7 +101,12 @@ export default function AddProduct() {
         const imageDeleteRes = await fetch(
           `${
             import.meta.env.VITE_BACKEND_URL
-          }/product/fail-post-product/${image}`
+          }/product/fail-post-product/${image}`,
+          {
+            headers: {
+              authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+            },
+          }
         );
 
         const imageDeleteResult = await imageDeleteRes.json();

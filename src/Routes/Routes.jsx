@@ -20,6 +20,7 @@ import ProductList from "../pages/Admin/Product/ProductList";
 import AddProduct from "../pages/Admin/Product/AddProduct";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import Checkout from "../pages/Checkout/Checkout";
+import EditProduct from "../pages/Admin/Product/EditProduct";
 
 export const routes = createBrowserRouter([
   {
@@ -117,6 +118,10 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/product/add-product",
         element: <AddProduct />,
+      },
+      {
+        path: "/admin/product/edit-product/:id",
+        element: <EditProduct />,
       },
     ],
   },

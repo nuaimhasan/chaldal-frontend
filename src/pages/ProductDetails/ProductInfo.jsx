@@ -13,8 +13,6 @@ const ProductInfo = ({ product }) => {
 
   const { title, image, discount, brand, category, price, sizes } = product;
 
-  console.log(sizes);
-
   const handelIncrease = () => {
     setQuantity(quantity + 1);
   };
@@ -123,7 +121,7 @@ const ProductInfo = ({ product }) => {
             <p>Sizes :</p>
 
             <div className="flex gap-2 items-center">
-              {sizes.map((size) => (
+              {sizes?.map((size) => (
                 <button
                   key={size}
                   onClick={() => handelSelectSize(size)}
