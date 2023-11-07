@@ -1,24 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-
 import { BsUpload } from "react-icons/bs";
 import JoditEditor from "jodit-react";
-import Select from "react-dropdown-select";
 import Swal from "sweetalert2";
 import Spinner from "../../../components/Spinner/Spinner";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
 import { useGetProductQuery } from "../../../Redux/product/productApi";
-const sizes = [
-  { id: 1, name: "36" },
-  { id: 2, name: "38" },
-  { id: 3, name: "40" },
-  { id: 4, name: "42" },
-  { id: 5, name: "44" },
-  { id: 6, name: "sm" },
-  { id: 7, name: "lg" },
-  { id: 8, name: "xl" },
-  { id: 9, name: "xxl" },
-];
 
 export default function EditProduct() {
   const editor = useRef(null);
@@ -29,7 +16,6 @@ export default function EditProduct() {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [details, setDetails] = useState("");
-  const [size, setSize] = useState([]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -47,79 +33,46 @@ export default function EditProduct() {
     const stock = form.stock.value;
     const brand = form.brand.value;
     const description = details;
-    const service = form.service.value;
-    let sizes = [];
-    size?.length > 0 ? size.map((s) => sizes.push(s?.name)) : [];
+    const size = form.size.value;
+    const color = form.color.value;
 
-    const formData = new FormData();
-    formData.append("image", image);
+    const product = {
+      title,
+      category,
+      price,
+      discount,
+      stock,
+      brand,
+      description,
+      size,
+      color,
+    };
 
     setLoading(true);
 
-    const imageRes = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/product/update-product-image/${id}`,
+    fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/product/update/productInfo/${id}`,
       {
-        method: "POST",
+        method: "PUT",
         headers: {
+          "content-type": "application/json",
           authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
         },
-        body: formData,
+        body: JSON.stringify(product),
       }
-    );
-    const ImageResult = await imageRes.json();
-
-    if (ImageResult?.success) {
-      const productInfo = {
-        title,
-        image: ImageResult?.data,
-        category,
-        price,
-        discount,
-        stock,
-        brand,
-        description,
-        service,
-        sizes,
-      };
-
-      const productRes = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/product/update-product/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "content-type": "application/json",
-            authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-          },
-          body: JSON.stringify(productInfo),
-        }
-      );
-      const productResult = await productRes.json();
-
-      if (productResult?.success) {
-        Swal.fire("", "product update success", "success");
-        location.reload();
-        setLoading(false);
-      } else {
-        let image = ImageResult?.data;
-
-        const imageDeleteRes = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/product/fail-post-product/${image}`,
-          {
-            headers: {
-              authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-            },
-          }
-        );
-
-        const imageDeleteResult = await imageDeleteRes.json();
-        if (imageDeleteResult?.success) {
-          Swal.fire("", "somethin went wrong, please try again", "error");
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success) {
+          form.reset();
+          Swal.fire("", "Product update sccess", "success");
           setLoading(false);
         }
-      }
-    }
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
 
     setLoading(false);
   };
@@ -187,35 +140,23 @@ export default function EditProduct() {
               </div>
             </div>
 
-            <div className="mt-4 border rounded p-4 flex flex-col gap-3">
+            <div className="mt-4 border rounded p-4 flex flex-col gap-3 form_group">
               <div>
                 <p className="text-sm">Size</p>
-                <Select
-                  options={
-                    data?.data?.sizes?.length > 0 ? data?.data?.sizes : sizes
-                  }
-                  onChange={(e) => setSize(e)}
-                  values={size}
-                  labelField="name"
-                  valueField="id"
-                  searchBy="name"
-                  closeOnSelect={true}
-                  multi={true}
+                <input
+                  type="text"
+                  name="size"
+                  defaultValue={data?.data?.size}
                 />
               </div>
 
               <div className="form_group">
-                <p className="text-sm">Service</p>
-                <select name="service">
-                  <option value="No Service Avaibale">
-                    No Service Avaibale
-                  </option>
-                  <option value="7 days return">7 days return</option>
-                  <option value="6 month warenty">6 month warenty</option>
-                  <option value="1 year warenty">1 year warenty</option>
-                  <option value="2 year warenty">2 year warenty</option>
-                  <option value="3 year + warenty">3 year + warenty</option>
-                </select>
+                <p className="text-sm">color Name</p>
+                <input
+                  type="text"
+                  name="color"
+                  defaultValue={data?.data?.color}
+                />
               </div>
             </div>
           </div>
@@ -234,7 +175,7 @@ export default function EditProduct() {
               <p className="text-sm">Category</p>
               <select name="category" defaultValue={data?.data?.category}>
                 {categories?.data?.map((category) => (
-                  <option key={category?._id} value={category?.slug}>
+                  <option key={category?.uuid} value={category?.slug}>
                     {category?.name}
                   </option>
                 ))}

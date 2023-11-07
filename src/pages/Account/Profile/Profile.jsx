@@ -7,13 +7,13 @@ import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
 
 export default function Profile() {
+  window.scroll(0, 0);
   const { loggedUser } = useSelector((state) => state.user);
   const [modal, setModal] = useState(false);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { firstName, lastName, phone, email, city, district, street } =
-    loggedUser?.data;
+  const { name, phone, email, city, district, street } = loggedUser?.data;
 
   const handleUploadImage = async () => {
     if (images?.length <= 0) {
@@ -32,8 +32,8 @@ export default function Profile() {
       body: formData,
     };
 
-    let url = `${import.meta.env.VITE_BACKEND_URL}/user/update-image/${
-      loggedUser?.data?._id
+    let url = `${import.meta.env.VITE_BACKEND_URL}/user/updateImage/${
+      loggedUser?.data?.uuid
     }`;
 
     setLoading(true);
@@ -68,7 +68,7 @@ export default function Profile() {
             <img
               src={
                 loggedUser?.data?.image === ""
-                  ? "/public/images/demo_user.jpg"
+                  ? "/images/demo_user.jpg"
                   : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
                       loggedUser?.data?.image
                     }`
@@ -151,9 +151,7 @@ export default function Profile() {
               </div>
             </>
           </div>
-          <h1 className="mt-2 text-xl">
-            {loggedUser?.data?.firstName} {loggedUser?.data?.lastName}
-          </h1>
+          <h1 className="mt-2 text-xl">{loggedUser?.data?.name}</h1>
         </div>
 
         <div className="col-span-2 grid grid-cols-2 gap-4 items-center text-center py-5">
@@ -175,7 +173,7 @@ export default function Profile() {
             <input
               type="text"
               className="w-full border outline-none rounded px-3 py-1.5 mb-4 "
-              defaultValue={`${firstName} ${lastName}`}
+              defaultValue={name}
               disabled
             />
           </div>

@@ -46,11 +46,14 @@ const MainHeader = () => {
         <div className="flex items-center justify-between gap-2">
           <div>
             <Link to="/">
-              <img
+              {/* <img
                 src="/images/logo/logo.png"
                 alt=""
                 className="w-20 sm:w-28"
-              />
+              /> */}
+              <h3 className="text-xl sm:text-3xl font-medium text-primary">
+                AESTHETIC
+              </h3>
             </Link>
           </div>
 
@@ -93,12 +96,12 @@ const MainHeader = () => {
               <div className="relative">
                 <button
                   onClick={() => setProfileDropdown(!profileDropdown)}
-                  className="flex items-center gap-1 profileDropdownBtn"
+                  className="profileDropdownBtn"
                 >
                   <img
                     src={
                       loggedUser?.data?.image === ""
-                        ? "/public/images/demo_user.jpg"
+                        ? "/images/demo_user.jpg"
                         : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
                             loggedUser?.data?.image
                           }`
@@ -106,10 +109,6 @@ const MainHeader = () => {
                     alt=""
                     className="w-7 h-7 rounded-full border border-base-100"
                   />
-
-                  <p className="pt-px hidden sm:block">
-                    {loggedUser?.data?.firstName}
-                  </p>
                 </button>
 
                 {profileDropdown && (
@@ -119,7 +118,7 @@ const MainHeader = () => {
                         <img
                           src={
                             loggedUser?.data?.image === ""
-                              ? "/public/images/demo_user.jpg"
+                              ? "/images/demo_user.jpg"
                               : `${
                                   import.meta.env.VITE_BACKEND_URL
                                 }/images/users/${loggedUser?.data?.image}`
@@ -129,8 +128,7 @@ const MainHeader = () => {
                         />
                         <div>
                           <h1 className="text-[17px]">
-                            {loggedUser?.data?.firstName}{" "}
-                            {loggedUser?.data?.lastName}
+                            {loggedUser?.data?.name}
                           </h1>
                           <p className="text-sm text-neutral-content">
                             {loggedUser?.data?.email}

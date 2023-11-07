@@ -6,18 +6,14 @@ import Spinner from "../../../components/Spinner/Spinner";
 import Swal from "sweetalert2";
 
 export default function ProductList() {
-  let limit = 20;
-  let page = 1;
-  const { data, isLoading, isError, error } = useGetProductsQuery({
-    limit,
-    page,
-  });
+  const { data, isLoading, isError, error } = useGetProductsQuery({});
 
-  const handleDeleteProduct = async (id) => {
+  const handleDeleteProduct = async (uuid) => {
+    console.log(uuid);
     const isConfirm = window.confirm("Are you sure delete this product?");
     if (isConfirm) {
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/product/delete-product/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/product/delete/${uuid}`,
         {
           method: "DELETE",
           headers: {
@@ -32,7 +28,7 @@ export default function ProductList() {
         Swal.fire("", "Product Delete Success", "success");
         location.reload();
       } else {
-        Swal.fire("", "something went worng, please try again", "success");
+        Swal.fire("", "something went worng, please try again", "error");
       }
     }
   };
@@ -46,7 +42,7 @@ export default function ProductList() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <tr key={product?._id}>
+      <tr key={product?.uuid}>
         <td>
           <div className="flex items-center gap-2">
             <img
@@ -66,14 +62,14 @@ export default function ProductList() {
         <td>
           <div className="flex items-center gap-4">
             <Link
-              to={`/admin/product/edit-product/${product?._id}`}
+              to={`/admin/product/edit-product/${product?.uuid}`}
               className="flex gap-1 items-center hover:text-green-700 duration-300"
             >
               <BiSolidPencil />
               Edit
             </Link>
             <button
-              onClick={() => handleDeleteProduct(product?._id)}
+              onClick={() => handleDeleteProduct(product?.uuid)}
               className="flex gap-1 items-center text-red-500"
             >
               <AiOutlineDelete />

@@ -2,7 +2,7 @@ import Spinner from "../../../components/Spinner/Spinner";
 import { useAllUsersQuery } from "../../../Redux/user/userApi";
 
 export default function AllUsers() {
-  const { data, isLoading, isError, error } = useAllUsersQuery({});
+  const { data, isLoading, isError, error } = useAllUsersQuery();
 
   let content = null;
   if (isLoading) {
@@ -13,7 +13,7 @@ export default function AllUsers() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((user) => (
-      <tr key={user?._id}>
+      <tr key={user?.uuid}>
         <td>
           <div className="flex items-center gap-2">
             <img

@@ -6,6 +6,7 @@ import PopularProducts from "../../components/HomeComponents/PopularProducts/Pop
 import Services from "../../components/HomeComponents/Services/Services";
 
 export default function Home() {
+  window.scroll(0, 0);
   return (
     <>
       <Menu />

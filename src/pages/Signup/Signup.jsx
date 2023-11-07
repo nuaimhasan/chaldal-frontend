@@ -14,10 +14,9 @@ export default function Signup() {
     e.preventDefault();
 
     const form = e.target;
-    const firstName = form.firstName.value;
-    const lastName = form.lastName.value;
+    const name = form.name.value;
     const email = form.email.value;
-    const number = form.number.value;
+    const phone = form.number.value;
     const password = form.password.value;
     const re_password = form.re_password.value;
 
@@ -30,19 +29,18 @@ export default function Signup() {
     }
 
     const userInfo = {
-      firstName,
-      lastName,
+      name,
       email,
       password,
-      number,
+      phone,
     };
 
     setLoading(true);
 
-    fetch("http://localhost:5000/user/process-register", {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/user/process-register`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "content-Type": "application/json",
       },
       body: JSON.stringify(userInfo),
     })
@@ -79,32 +77,17 @@ export default function Signup() {
 
           <form onSubmit={handleRegister} className="mt-10 text-neutral">
             <div>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="mb-6 relative">
-                  <span className="absolute bottom-2 text-neutral/80">
-                    <HiUser />
-                  </span>
-                  <input
-                    name="firstName"
-                    type="text"
-                    placeholder="First Name"
-                    className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
-                    required
-                  />
-                </div>
-
-                <div className="mb-6 relative">
-                  <span className="absolute bottom-2 text-neutral/80">
-                    <HiUser />
-                  </span>
-                  <input
-                    name="lastName"
-                    type="text"
-                    placeholder="Last Name"
-                    className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
-                    required
-                  />
-                </div>
+              <div className="mb-6 relative">
+                <span className="absolute bottom-2 text-neutral/80">
+                  <HiUser />
+                </span>
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Full Name"
+                  className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
+                  required
+                />
               </div>
 
               {/* Email */}

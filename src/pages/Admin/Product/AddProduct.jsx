@@ -1,27 +1,14 @@
 import { useRef, useState } from "react";
 import { BsUpload } from "react-icons/bs";
 import JoditEditor from "jodit-react";
-import Select from "react-dropdown-select";
 import Swal from "sweetalert2";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
-const sizes = [
-  { id: 1, name: "36" },
-  { id: 2, name: "38" },
-  { id: 3, name: "40" },
-  { id: 4, name: "42" },
-  { id: 5, name: "44" },
-  { id: 6, name: "sm" },
-  { id: 7, name: "lg" },
-  { id: 8, name: "xl" },
-  { id: 9, name: "xxl" },
-];
 
 export default function AddProduct() {
   const { data: categories } = useGetCategoriesQuery();
   const editor = useRef(null);
   const [image, setImage] = useState("");
   const [details, setDetails] = useState("");
-  const [size, setSize] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const handleImageChange = (event) => {
@@ -40,84 +27,43 @@ export default function AddProduct() {
     const stock = form.stock.value;
     const brand = form.brand.value;
     const description = details;
-    const service = form.service.value;
-    let sizes = [];
-    size?.length > 0 ? size.map((s) => sizes.push(s?.name)) : [];
+    const size = form.size.value;
+    const color = form.color.value;
 
     const formData = new FormData();
     formData.append("image", image);
+    formData.append("title", title);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("discount", discount);
+    formData.append("stock", stock);
+    formData.append("brand", brand);
+    formData.append("description", description);
+    formData.append("size", size);
+    formData.append("color", color);
 
     setLoading(true);
 
-    const imageRes = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/product/post-product-image`,
-      {
-        method: "POST",
-        headers: {
-          authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-        },
-        body: formData,
-      }
-    );
-    const ImageResult = await imageRes.json();
-
-    if (ImageResult?.success) {
-      const productInfo = {
-        title,
-        image: ImageResult?.data,
-        category,
-        price,
-        discount,
-        stock,
-        brand,
-        description,
-        service,
-        sizes,
-      };
-
-      const productRes = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/product/post-product`,
-        {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-          },
-          body: JSON.stringify(productInfo),
-        }
-      );
-      const productResult = await productRes.json();
-
-      if (productResult?.success) {
-        Swal.fire("", "product upload success", "success");
-        form.reset();
-        setImage("");
-        setDetails("");
-        setSize([]);
-        setLoading(false);
-      } else {
-        let image = ImageResult?.data;
-
-        const imageDeleteRes = await fetch(
-          `${
-            import.meta.env.VITE_BACKEND_URL
-          }/product/fail-post-product/${image}`,
-          {
-            headers: {
-              authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-            },
-          }
-        );
-
-        const imageDeleteResult = await imageDeleteRes.json();
-        if (imageDeleteResult?.success) {
-          Swal.fire("", "somethin went wrong, please try again", "error");
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/product/add-product`, {
+      method: "POST",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+      },
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.success) {
+          form.reset();
+          setImage("");
+          Swal.fire("", "Product add sccess", "success");
           setLoading(false);
         }
-      }
-    }
-
-    setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   };
 
   return (
@@ -162,31 +108,15 @@ export default function AddProduct() {
             </div>
           </div>
 
-          <div className="mt-4 border rounded p-4 flex flex-col gap-3">
+          <div className="mt-4 border rounded p-4 flex flex-col gap-3 form_group">
             <div>
               <p className="text-sm">Size</p>
-              <Select
-                options={sizes}
-                onChange={(e) => setSize(e)}
-                values={size}
-                labelField="name"
-                valueField="id"
-                searchBy="name"
-                closeOnSelect={true}
-                multi={true}
-              />
+              <input type="text" name="size" />
             </div>
 
-            <div className="form_group">
-              <p className="text-sm">Service</p>
-              <select name="service">
-                <option value="No Service Avaibale">No Service Avaibale</option>
-                <option value="7 days return">7 days return</option>
-                <option value="6 month warenty">6 month warenty</option>
-                <option value="1 year warenty">1 year warenty</option>
-                <option value="2 year warenty">2 year warenty</option>
-                <option value="3 year + warenty">3 year + warenty</option>
-              </select>
+            <div>
+              <p className="text-sm">Color Name</p>
+              <input type="text" name="color" />
             </div>
           </div>
         </div>
@@ -194,14 +124,14 @@ export default function AddProduct() {
         <div className="md:col-span-2 border rounded p-4 form_group flex flex-col gap-3">
           <div>
             <p className="text-sm">Product Title</p>
-            <input type="text" name="title" />
+            <input type="text" name="title" required />
           </div>
 
           <div>
             <p className="text-sm">Category</p>
             <select name="category">
               {categories?.data?.map((category) => (
-                <option key={category?._id} value={category?.slug}>
+                <option key={category?.uuid} value={category?.slug}>
                   {category?.name}
                 </option>
               ))}
@@ -211,7 +141,7 @@ export default function AddProduct() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm">Price</p>
-              <input type="number" name="price" />
+              <input type="number" name="price" required />
             </div>
 
             <div>
@@ -223,7 +153,7 @@ export default function AddProduct() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm">Stock</p>
-              <input type="number" name="stock" />
+              <input type="number" name="stock" required />
             </div>
 
             <div>

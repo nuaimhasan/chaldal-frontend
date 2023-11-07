@@ -14,15 +14,8 @@ export default function CartItems({ carts }) {
           </tr>
         </thead>
         <tbody>
-          {carts?.length > 0 ? (
-            carts?.map((product, i) => <CartItem key={i} product={product} />)
-          ) : (
-            <tr>
-              <td colSpan="5" className="text-center py-24 font-medium">
-                No Product
-              </td>
-            </tr>
-          )}
+          {carts?.length > 0 &&
+            carts?.map((product, i) => <CartItem key={i} product={product} />)}
         </tbody>
       </table>
     </div>

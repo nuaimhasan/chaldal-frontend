@@ -13,7 +13,7 @@ export default function AccountSidebar() {
         <img
           src={
             loggedUser?.data?.image === ""
-              ? "/public/images/demo_user.jpg"
+              ? "/images/demo_user.jpg"
               : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
                   loggedUser?.data?.image
                 }`

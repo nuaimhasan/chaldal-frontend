@@ -1,24 +1,31 @@
 import { Link } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
+import SideCategory from "../Skeleton/SideCategory/SideCategory";
 
 export default function CategoryLists() {
   const { data, isLoading, isError, error } = useGetCategoriesQuery();
 
   let content = null;
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = <SideCategory />;
   }
   if (!isLoading && isError) {
     content = <p>{error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((category) => (
-      <li key={category?._id}>
+      <li key={category?.uuid}>
         <Link
           to={`/shops/${category?.slug}`}
           className="p-2 flex items-center gap-2 hover:bg-gray-100 duration-300"
         >
-          <img src={category?.icon} alt="" className="w-6" />
+          <img
+            src={`${import.meta.env.VITE_BACKEND_URL}/images/categories/${
+              category?.icon
+            }`}
+            alt=""
+            className="w-6"
+          />
           {category?.name}
         </Link>
       </li>

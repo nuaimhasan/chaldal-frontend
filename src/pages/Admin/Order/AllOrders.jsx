@@ -15,8 +15,8 @@ export default function AllOrders() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((order) => (
-      <tr key={order?._id}>
-        <td>{order?._id}</td>
+      <tr key={order?.uuid}>
+        <td>{order?.uuid}</td>
         <td>Items: {order?.products?.length}</td>
         <td>
           {order?.sippingAddress?.street}, {order?.sippingAddress?.district},{" "}
@@ -24,7 +24,7 @@ export default function AllOrders() {
         </td>
         <td>
           <Link
-            to={`/admin/order/${order?._id}`}
+            to={`/admin/order/${order?.uuid}`}
             className="flex gap-1 items-center hover:text-green-700 duration-300"
           >
             <GrView />

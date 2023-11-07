@@ -106,12 +106,12 @@ export default function Footer() {
               </li>
               <li className="mb-1">
                 <Link to="/" className="italic">
-                  +8801706-260994
+                  +8801647-534496
                 </Link>
               </li>
               <li>
                 <Link to="/" className="italic">
-                  nuaim.emanager@gmail.com
+                  aestheticfashion@gmail.com
                 </Link>
               </li>
             </ul>

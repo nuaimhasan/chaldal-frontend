@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useGetProductsQuery } from "../../../Redux/product/productApi";
 import ProductCard from "../../ProductCard/ProductCard";
+import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
 const PopularProducts = () => {
   let limit = 20;
@@ -13,14 +14,14 @@ const PopularProducts = () => {
 
   let content = null;
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = <ProductCards />;
   }
   if (!isLoading && isError) {
     content = <p>{error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <ProductCard key={product._id} product={product} />
+      <ProductCard key={product?.uuid} product={product} />
     ));
   }
 

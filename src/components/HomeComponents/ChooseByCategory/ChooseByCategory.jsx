@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
+import CategoryCard from "../../Skeleton/CategoryCard/CategoryCard";
 
 const ChooseByCategory = () => {
   const { data, isLoading, isError, error } = useGetCategoriesQuery();
 
   let content = null;
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = <CategoryCard />;
   }
   if (!isLoading && isError) {
     content = <p>{error}</p>;
@@ -14,12 +15,18 @@ const ChooseByCategory = () => {
   if (!isLoading && !isError) {
     content = data?.data?.map((category) => (
       <Link
-        key={category?._id}
+        key={category?.uuid}
         to={`shops/${category.slug}`}
-        className="shadow border rounded p-4 flex  justify-center items-center text-center hover:bg-accent/20 duration-200"
+        className="shadow border rounded p-4 flex justify-center items-center text-center hover:bg-accent/20 duration-200"
       >
         <div>
-          <img src={category?.icon} alt="" className="w-20 h-20 mx-auto" />
+          <img
+            src={`${import.meta.env.VITE_BACKEND_URL}/images/categories/${
+              category?.icon
+            }`}
+            alt=""
+            className="w-20 h-20 mx-auto"
+          />
           <h6 className="mt-2 font-medium">{category?.name}</h6>
         </div>
       </Link>

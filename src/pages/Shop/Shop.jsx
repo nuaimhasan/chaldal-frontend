@@ -3,29 +3,27 @@ import ShopCategories from "./ShopCategories/ShopCategories";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { useGetProductsQuery } from "../../Redux/product/productApi";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import ProductCards from "../../components/Skeleton/ProductCards/ProductCards";
 
 export default function Shop() {
   window.scroll(0, 0);
   const params = useParams();
-  let category = params?.slug ? params?.slug : "";
-  let limit = 20;
-  let page = 1;
+  let category = params?.category ? params?.category : "";
+
   const { data, isLoading, isError, error } = useGetProductsQuery({
     category,
-    limit,
-    page,
   });
 
   let content = null;
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = <ProductCards />;
   }
   if (!isLoading && isError) {
     content = <p>{error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <ProductCard key={product._id} product={product} />
+      <ProductCard key={product.uuid} product={product} />
     ));
   }
   if (!isLoading && !isError && data?.data?.length == 0) {

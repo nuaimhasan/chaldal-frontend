@@ -6,12 +6,11 @@ import Swal from "sweetalert2";
 
 const ProductInfo = ({ product }) => {
   const { wishlists, handelAddToCart, handelAddToWishlist } = UseContext();
-  const isWishlist = wishlists?.find((item) => item._id === product._id);
-
+  const isWishlist = wishlists?.find((item) => item.uuid === product.uuid);
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("");
 
-  const { title, image, discount, brand, category, price, sizes } = product;
+  const { title, image, discount, brand, category, price, size, color, stock } =
+    product;
 
   const handelIncrease = () => {
     setQuantity(quantity + 1);
@@ -23,34 +22,7 @@ const ProductInfo = ({ product }) => {
     }
   };
 
-  const handelSelectSize = (size) => {
-    if (selectedSize === size) {
-      setSelectedSize("");
-    } else {
-      setSelectedSize(size);
-    }
-  };
-
-  // Rating number to start convert
-  const ratingStar = Array.from({ length: 5 }, (element, index) => {
-    return (
-      <span key={index}>
-        {product?.rating >= index + 1 ? (
-          <FaStar className="text-yellow-400" />
-        ) : product?.rating >= index + 0.5 ? (
-          <FaStarHalfAlt className="text-yellow-400" />
-        ) : (
-          <FaStar className="text-gray-300" />
-        )}
-      </span>
-    );
-  });
-
-  const handleBuyNow = () => {
-    if (sizes.length > 0 && !selectedSize) {
-      return Swal.fire("Please Select Size", "", "warning");
-    }
-  };
+  const handleBuyNow = () => {};
 
   return (
     <div className="lg:flex gap-6">
@@ -84,12 +56,32 @@ const ProductInfo = ({ product }) => {
               <span className="text-neutral/80">Category:</span>{" "}
               <span>{category}</span>
             </p>
+            <p>
+              <span className="text-neutral/80">Available Stock:</span>{" "}
+              <span>{stock}</span>
+            </p>
+            {size && size !== "" && (
+              <>
+                <p>
+                  <span className="text-neutral/80">Size:</span>{" "}
+                  <span>{size}</span>
+                </p>
+              </>
+            )}
+            {color && color !== "" && (
+              <>
+                <p>
+                  <span className="text-neutral/80">Color:</span>{" "}
+                  <span>{color}</span>
+                </p>
+              </>
+            )}
           </div>
         </div>
 
         {/* rating & wishlist */}
         <div className="flex justify-between items-center">
-          <div className="flex gap-px text-sm">{ratingStar}</div>
+          <p></p>
 
           <button
             onClick={() => handelAddToWishlist(product)}
@@ -114,27 +106,6 @@ const ProductInfo = ({ product }) => {
             </div>
           </div>
         </div>
-
-        {/* Size */}
-        {sizes?.length > 0 && (
-          <div className="flex gap-4 items-center my-4">
-            <p>Sizes :</p>
-
-            <div className="flex gap-2 items-center">
-              {sizes?.map((size) => (
-                <button
-                  key={size}
-                  onClick={() => handelSelectSize(size)}
-                  className={`${
-                    size === selectedSize && "bg-primary text-base-100"
-                  } text-[15px] py-1.5 px-2.5 rounded border scale-[.96] hover:scale-[1] hover:border-primary duration-300`}
-                >
-                  {size}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Quantity */}
         <div className="py-3 flex gap-4 items-center border-y">
@@ -172,7 +143,6 @@ const ProductInfo = ({ product }) => {
             onClick={() =>
               handelAddToCart({
                 product,
-                selectedSize,
                 quantity,
               })
             }

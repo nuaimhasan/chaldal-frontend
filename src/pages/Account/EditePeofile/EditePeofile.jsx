@@ -3,25 +3,23 @@ import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
 export default function EditePeofile() {
+  window.scroll(0, 0);
   const { loggedUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  const { _id, firstName, lastName, phone, pail, city, district, street } =
-    loggedUser?.data;
+  const { uuid, name, phone, email, city, district, street } = loggedUser?.data;
 
   const handleEditProfile = async (e) => {
     e.preventDefault();
 
     const form = e.target;
-    const firstName = form.firstName.value;
-    const lastName = form.lastName.value;
+    const name = form.name.value;
     const phone = form.phone.value;
     const city = form.city.value;
     const district = form.district.value;
     const street = form.street.value;
 
     const userInfo = {
-      firstName,
-      lastName,
+      name,
       phone,
       city,
       district,
@@ -30,7 +28,7 @@ export default function EditePeofile() {
 
     setLoading(true);
 
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/user/update/info/${_id}`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/user/update/info/${uuid}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -40,7 +38,7 @@ export default function EditePeofile() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data?.data?.acknowledged) {
+        if (data?.success) {
           Swal.fire("Update success", "", "success");
           location.reload();
           setLoading(false);
@@ -50,6 +48,7 @@ export default function EditePeofile() {
         console.log(error);
         setLoading(false);
       });
+    setLoading(false);
   };
 
   return (
@@ -58,27 +57,15 @@ export default function EditePeofile() {
         onSubmit={handleEditProfile}
         className="border rounded-md p-4 col-span-2"
       >
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p>First Name</p>
-            <input
-              type="text"
-              className="w-full border outline-none rounded px-3 py-1.5 mb-4 "
-              defaultValue={firstName}
-              name="firstName"
-              required
-            />
-          </div>
-          <div>
-            <p>Last Name</p>
-            <input
-              type="text"
-              className="w-full border outline-none rounded px-3 py-1.5 mb-4 "
-              defaultValue={lastName}
-              name="lastName"
-              required
-            />
-          </div>
+        <div>
+          <p>Full Name</p>
+          <input
+            type="text"
+            className="w-full border outline-none rounded px-3 py-1.5 mb-4 "
+            defaultValue={name}
+            name="name"
+            required
+          />
         </div>
 
         <div>
@@ -97,7 +84,7 @@ export default function EditePeofile() {
           <input
             type="pail"
             className="w-full border outline-none rounded px-3 py-1.5 mb-4"
-            defaultValue={pail}
+            defaultValue={email}
             required
             disabled
           />

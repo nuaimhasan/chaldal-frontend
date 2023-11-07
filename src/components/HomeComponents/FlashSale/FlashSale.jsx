@@ -1,23 +1,22 @@
-import { useEffect } from "react";
-import { useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
 import ProductCard from "../../ProductCard/ProductCard";
 import { useGetFlashProductsQuery } from "../../../Redux/product/productApi";
+import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
 const FlashSale = () => {
   const { data, isLoading, isError, error } = useGetFlashProductsQuery();
 
   let content = null;
   if (isLoading) {
-    content = <p>Loading...</p>;
+    content = <ProductCards />;
   }
   if (!isLoading && isError) {
     content = <p>{error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <ProductCard key={product._id} product={product} />
+      <ProductCard key={product?.uuid} product={product} />
     ));
   }
 

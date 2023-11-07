@@ -45,14 +45,14 @@ const TopHeader = () => {
               <li className="border-r pr-3">
                 <Link to="tel: 01706260994" className="flex items-center gap-2">
                   <BsTelephoneInbound />
-                  +8801706-260994
+                  +8801647-534496
                 </Link>
               </li>
 
               <li>
                 <Link to="" className="flex items-center gap-1.5">
                   <MdOutlineEmail className="text-base" />
-                  nuaim.emanager@gmail.com
+                  aestheticfashion@gmail.com
                 </Link>
               </li>
             </ul>

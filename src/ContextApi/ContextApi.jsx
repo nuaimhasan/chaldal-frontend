@@ -15,7 +15,7 @@ const ContextProvider = ({ children }) => {
 
   //------ Add Wishlist
   const handelAddToWishlist = (product) => {
-    const existed = wishlists?.find((item) => item._id === product._id);
+    const existed = wishlists?.find((item) => item.uuid === product.uuid);
     if (existed) {
       return Swal.fire("", "Already Added Wishlist This Product", "warning");
     }
@@ -33,7 +33,9 @@ const ContextProvider = ({ children }) => {
   const handelDeleteWishlist = (product) => {
     const confirm = window.confirm("Are you sure delete this item");
     if (confirm) {
-      const newWishlist = wishlists?.filter((item) => item._id !== product._id);
+      const newWishlist = wishlists?.filter(
+        (item) => item.uuid !== product.uuid
+      );
       setWishlists(newWishlist);
     }
   };
@@ -48,13 +50,8 @@ const ContextProvider = ({ children }) => {
   }, [carts]);
 
   // // Add Cart
-  const handelAddToCart = ({ product, quantity, selectedSize }) => {
-    if (product.sizes.length > 0 && product?.sizes[0] !== "" && !selectedSize) {
-      return Swal.fire("Please Select Size", "", "warning");
-    }
-    const existed = carts?.find(
-      (item) => item._id === product._id && item.size === selectedSize
-    );
+  const handelAddToCart = ({ product, quantity }) => {
+    const existed = carts?.find((item) => item.uuid === product.uuid);
     if (existed) {
       return Swal.fire(
         "Already Added This Product",
@@ -63,14 +60,12 @@ const ContextProvider = ({ children }) => {
       );
     }
     const cartProduct = {
-      _id: product._id,
+      uuid: product.uuid,
       title: product.title,
-      slug: product.slug,
       image: product.image,
       discount: product.discount,
       price: product.price,
       quantity: quantity || 1,
-      size: selectedSize,
     };
     if (!existed) {
       setCarts([...carts, { ...cartProduct }]);
@@ -84,13 +79,13 @@ const ContextProvider = ({ children }) => {
   // Handel Increase Cart Quantity
   const handelIncreaseCart = (product) => {
     const existed = carts?.find(
-      (item) => item._id === product._id && item.size === product.size
+      (item) => item.uuid === product.uuid && item.size === product.size
     );
 
     if (existed) {
       setCarts(
         carts.map((item) =>
-          item._id === product._id && item.size === product.size
+          item.uuid === product.uuid && item.size === product.size
             ? { ...existed, quantity: existed.quantity + 1 }
             : item
         )
@@ -102,7 +97,7 @@ const ContextProvider = ({ children }) => {
   const handelDecreaseCart = (product) => {
     const existed = carts?.find(
       (item) =>
-        item._id === product._id &&
+        item.uuid === product.uuid &&
         item.size === product.size &&
         item.color === product.color
     );
@@ -110,7 +105,7 @@ const ContextProvider = ({ children }) => {
     if (existed && existed?.quantity > 1) {
       setCarts(
         carts.map((item) =>
-          item._id === product._id &&
+          item.uuid === product.uuid &&
           item.size === product.size &&
           item.color === product.color
             ? { ...existed, quantity: existed.quantity - 1 }
@@ -125,7 +120,7 @@ const ContextProvider = ({ children }) => {
     const confirm = window.confirm("Are you sure delete this item");
     if (confirm) {
       const newCart = carts?.filter(
-        (item) => item._id !== product._id || item.size !== product.size
+        (item) => item.uuid !== product.uuid || item.size !== product.size
       );
       setCarts(newCart);
     }

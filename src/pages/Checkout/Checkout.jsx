@@ -4,9 +4,11 @@ import Swal from "sweetalert2";
 import { UseContext } from "../../ContextApi/ContextApi";
 import { cities, districts } from "../../Data/location";
 import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
+import { useSelector } from "react-redux";
 
 export default function Checkout() {
-  const { carts, setCarts, loggedUser } = UseContext();
+  const { carts, setCarts } = UseContext();
+  const { loggedUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [couponBox, setCouponBox] = useState(false);
   const [coupon, setCoupon] = useState("");
@@ -109,7 +111,7 @@ export default function Checkout() {
     }
 
     const orderBy = {
-      id: loggedUser?.data?._id,
+      id: loggedUser?.data?.uuid,
       email: loggedUser?.data?.email,
       name,
       phone,
@@ -176,11 +178,7 @@ export default function Checkout() {
                     name="name"
                     className="border-2 w-full p-2 mt-2 outline-none rounded"
                     required
-                    defaultValue={
-                      loggedUser?.data?.firstName +
-                      " " +
-                      loggedUser?.data?.lastName
-                    }
+                    defaultValue={loggedUser?.data?.name}
                   />
                 </div>
                 <div>

@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useGetMyOrdersQuery } from "../../../Redux/order/orderApi";
 
 export default function Orders() {
-  const { data, isLoading, isError, error } = useGetMyOrdersQuery();
+  const { loggedUser } = useSelector((state) => state.user);
+  const userId = loggedUser?.data?.uuid;
+  const { data, isLoading, isError, error } = useGetMyOrdersQuery(userId);
+  console.log(data);
 
   let content = null;
   if (isLoading) {
@@ -11,13 +14,13 @@ export default function Orders() {
   if (!isLoading && isError) {
     content = <p>{error}</p>;
   }
-  if (!isLoading && !isError && data?.data?.length > 0) {
-    content = data?.data?.map((order) => (
-      <tr key={order?._id}>
+  if (!isLoading && !isError) {
+    content = data?.data?.orders?.map((order) => (
+      <tr key={order?.uuid}>
         <td className="py-2 px-4">
           <div className="w-max">
             <p>
-              <span className="text-primary">#{order?._id}</span>
+              <span className="text-primary">#{order?.uuid}</span>
             </p>
             <p className="text-xs text-neutral/70">
               Placed on {order?.createdAt}
@@ -26,18 +29,7 @@ export default function Orders() {
         </td>
 
         <td className="py-2 px-4">
-          <div className="flex flex-col gap-1">
-            {order?.products?.map((product) => (
-              <div className="w-max flex items-center gap-1">
-                <img
-                  src="https://static-01.daraz.com.bd/p/51bbf8f46780bc334a79dbc386dd35f3.jpg"
-                  alt=""
-                  className="w-6 h-6 rounded-full"
-                />
-                <p className="text-sm">Hart Hagerty</p>
-              </div>
-            ))}
-          </div>
+          <div className="flex flex-col gap-1">{order?.products?.length}</div>
         </td>
 
         <td className="py-2 px-4 text-sm">Proccesing</td>
@@ -56,7 +48,7 @@ export default function Orders() {
           <thead>
             <tr>
               <th className="px-4">Order Id</th>
-              <th className="px-4">Products</th>
+              <th className="px-4">Total items</th>
               <th className="px-4"> Status</th>
             </tr>
           </thead>
