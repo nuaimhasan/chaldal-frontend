@@ -25,6 +25,18 @@ export default function AdminSidebar() {
         </div>
 
         <div className="mt-4">
+          <h3>Categories</h3>
+          <ul className="pl-4">
+            <li>
+              <NavLink to="/admin/category/category-list">
+                <FaRegWindowRestore />
+                Category List
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+
+        <div className="mt-4">
           <h3>Products</h3>
           <ul className="pl-4">
             <li>

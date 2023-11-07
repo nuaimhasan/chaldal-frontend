@@ -7,7 +7,12 @@ export const categoryApi = apiSlice.injectEndpoints({
         url: "/category/allCategories",
       }),
     }),
+    getCategory: builder.query({
+      query: (id) => ({
+        url: `/category/${id}`,
+      }),
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery } = categoryApi;
+export const { useGetCategoriesQuery, useGetCategoryQuery } = categoryApi;

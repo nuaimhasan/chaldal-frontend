@@ -10,9 +10,6 @@ export default function Checkout() {
   const { carts, setCarts } = UseContext();
   const { loggedUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  const [couponBox, setCouponBox] = useState(false);
-  const [coupon, setCoupon] = useState("");
-  const [discount, setDiscount] = useState(0);
 
   const [cityDropdown, setCityDropdown] = useState(false);
   const [city, setCity] = useState("");
@@ -71,23 +68,7 @@ export default function Checkout() {
   }
 
   const tax = 0;
-  const grandTotal = subTotal + tax + parseInt(shipping) - discount;
-
-  const handelCoupon = () => {
-    if (coupon.toLowerCase() === "eshop100") {
-      setDiscount(100);
-      setCouponBox(false);
-      toast.success("Coupon add success", {
-        autoClose: 1000,
-        position: "top-center",
-      });
-    } else {
-      toast.error("Wrong Coupon Code", {
-        autoClose: 1000,
-        position: "top-center",
-      });
-    }
-  };
+  const grandTotal = subTotal + tax + parseInt(shipping);
 
   const handelPlaceOrder = (e) => {
     e.preventDefault();
@@ -95,12 +76,8 @@ export default function Checkout() {
     setLoading(true);
 
     const form = e.target;
-    const name =
-      loggedUser?.data?.firstName + " " + loggedUser?.data?.lastName ||
-      form.name.value;
-    const phone = loggedUser?.data?.phone || form.number.value;
+
     const street = form.street.value;
-    const note = form.note.value;
 
     if (!city) {
       return alert("Please Provide Your City name");
@@ -110,24 +87,20 @@ export default function Checkout() {
       return alert("Please Provide Your district name");
     }
 
-    const orderBy = {
-      id: loggedUser?.data?.uuid,
-      email: loggedUser?.data?.email,
-      name,
-      phone,
-    };
+    const products = [];
+    carts.map((product) =>
+      products.push({ productId: product.uuid, quantity: product.quantity })
+    );
 
-    const sippingAddress = {
+    const order = {
+      userId: loggedUser?.data?.uuid,
       city,
       district,
       street,
-      note,
+      products,
     };
-    let products = carts;
 
-    const order = { orderBy, sippingAddress, products };
-
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/order`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/order/post-order`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -136,11 +109,9 @@ export default function Checkout() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data?.success) {
+        if (data?.status) {
           setCarts([]);
           form.reset();
-          setCoupon("");
-          setDiscount(0);
           setCity("");
           setDistrict("");
           Swal.fire("success", data?.message, "success");
@@ -296,25 +267,13 @@ export default function Checkout() {
 
               <div className="text-sm mt-2">
                 <h3>Street address</h3>
-                <input
-                  type="text"
+                <textarea
                   name="street"
+                  rows="4"
                   placeholder="House number and street name"
                   className="border-2 w-full p-2 mt-2 outline-none rounded"
                   required
-                />
-              </div>
-
-              <div className="text-sm mt-2">
-                <div>
-                  <h3>Order Notes (optional)</h3>
-                  <textarea
-                    name="note"
-                    rows="5"
-                    placeholder="Notes about your order, e.g. special notes for delivery"
-                    className="border-2 w-full p-2 mt-2 outline-none rounded"
-                  ></textarea>
-                </div>
+                ></textarea>
               </div>
             </div>
           </div>
@@ -386,13 +345,6 @@ export default function Checkout() {
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center border-b py-1.5">
-                  <h3 className="text-[15px]">Discount</h3>
-                  <div className="text-end">
-                    -৳<span>{discount}.00</span>
-                  </div>
-                </div>
-
                 {/* <!-- Total --> */}
                 <div className="flex justify-between border-b py-3 font-semibold text-lg">
                   <h3 className="text-title">Total</h3>
@@ -408,44 +360,6 @@ export default function Checkout() {
               >
                 {loading ? <ButtonSpinner /> : "PLACE ORDER"}
               </button>
-            </div>
-
-            {/* Coupon */}
-            <div>
-              <div className="flex justify-between items-center gap-1 font-medium relative py-1.5 border-b">
-                <p>Have a coupon?</p>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => setCouponBox(!couponBox)}
-                >
-                  <p className="text-secondary underline text-sm">
-                    Click here to enter your code
-                  </p>
-                </div>
-              </div>
-              {couponBox && (
-                <div className="coupon-form">
-                  <div className="p-4 border border-dashed text-center flex flex-col justify-center mt-4">
-                    <p className="text-sm">
-                      If you have a coupon code, please apply it below.
-                    </p>
-                    <div className="md:flex gap-2 items-center justify-center mt-2 text-sm">
-                      <input
-                        onChange={(e) => setCoupon(e.target.value)}
-                        type="text"
-                        placeholder="Enter Coupon Code"
-                        className="border p-2 mt-2 outline-none rounded"
-                      />
-                      <div
-                        onClick={handelCoupon}
-                        className="px-6 py-2 mt-2 bg-primary text-base-100 rounded font-medium cursor-pointer"
-                      >
-                        APPLY
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </form>

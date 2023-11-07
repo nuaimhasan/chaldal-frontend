@@ -9,27 +9,24 @@ export default function ProductList() {
   const { data, isLoading, isError, error } = useGetProductsQuery({});
 
   const handleDeleteProduct = async (uuid) => {
-    console.log(uuid);
     const isConfirm = window.confirm("Are you sure delete this product?");
     if (isConfirm) {
-      const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/product/delete/${uuid}`,
-        {
-          method: "DELETE",
-          headers: {
-            authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-          },
-        }
-      );
-
-      const result = await res.json();
-
-      if (result?.success && result?.data?.acknowledged) {
-        Swal.fire("", "Product Delete Success", "success");
-        location.reload();
-      } else {
-        Swal.fire("", "something went worng, please try again", "error");
-      }
+      fetch(`${import.meta.env.VITE_BACKEND_URL}/product/delete/${uuid}`, {
+        method: "DELETE",
+        headers: {
+          authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data?.success) {
+            Swal.fire("", "Product Delete Success", "success");
+            location.reload();
+          } else {
+            Swal.fire("", "something went worng, please try again", "error");
+          }
+        });
     }
   };
 

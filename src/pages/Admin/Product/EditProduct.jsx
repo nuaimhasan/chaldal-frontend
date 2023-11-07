@@ -22,7 +22,7 @@ export default function EditProduct() {
     setImage(file);
   };
 
-  const handleAddProduct = async (e) => {
+  const handleEditProduct = async (e) => {
     e.preventDefault();
 
     const form = e.target;
@@ -36,37 +36,39 @@ export default function EditProduct() {
     const size = form.size.value;
     const color = form.color.value;
 
-    const product = {
-      title,
-      category,
-      price,
-      discount,
-      stock,
-      brand,
-      description,
-      size,
-      color,
-    };
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("discount", discount);
+    formData.append("stock", stock);
+    formData.append("brand", brand);
+    formData.append("description", description);
+    formData.append("size", size);
+    formData.append("color", color);
+
+    if (image !== "") {
+      formData.append("image", image);
+    }
 
     setLoading(true);
 
-    fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/product/update/productInfo/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "content-type": "application/json",
-          authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
-        },
-        body: JSON.stringify(product),
-      }
-    )
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/product/update-product/${id}`, {
+      method: "PUT",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+      },
+      body: formData,
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data?.success) {
-          form.reset();
-          Swal.fire("", "Product update sccess", "success");
-          setLoading(false);
+          Swal.fire("", "product update success", "success");
+          setInterval(() => {
+            location.reload();
+          }, 1000);
+        } else {
+          Swal.fire("", "something went wrong", "error");
         }
       })
       .catch((error) => {
@@ -89,7 +91,7 @@ export default function EditProduct() {
       <>
         <h3 className="text-lg">Edit Product</h3>
         <form
-          onSubmit={handleAddProduct}
+          onSubmit={handleEditProduct}
           className="mt-2 grid sm:grid-cols-2 md:grid-cols-3 gap-4 items-start"
         >
           <div>

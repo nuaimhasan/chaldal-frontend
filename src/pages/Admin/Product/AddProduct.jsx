@@ -58,6 +58,9 @@ export default function AddProduct() {
           setImage("");
           Swal.fire("", "Product add sccess", "success");
           setLoading(false);
+          setInterval(() => {
+            location.reload();
+          }, 1000);
         }
       })
       .catch((error) => {

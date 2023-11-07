@@ -1,10 +1,10 @@
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { UseContext } from "../../ContextApi/ContextApi";
 
 export default function AdminHeader({ setSidebar }) {
   const { pathname } = useLocation();
-  const { loggedUser } = UseContext();
+  const { loggedUser } = useSelector((state) => state.user);
 
   return (
     <header className="px-3 py-2 rounded bg-primary text-base-100">
@@ -26,9 +26,13 @@ export default function AdminHeader({ setSidebar }) {
 
         <div className="flex items-center gap-2">
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/images/users/${
-              loggedUser?.data?.image
-            }`}
+            src={
+              loggedUser?.data?.image === ""
+                ? "/images/demo_user.jpg"
+                : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
+                    loggedUser?.data?.image
+                  }`
+            }
             alt=""
             className="w-8 h-8 rounded-full"
           />

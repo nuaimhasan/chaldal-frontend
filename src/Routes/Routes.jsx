@@ -29,6 +29,8 @@ import EditProduct from "../pages/Admin/Product/EditProduct";
 import AllUsers from "../pages/Admin/user/AllUsers";
 import AllOrders from "../pages/Admin/Order/AllOrders";
 import OrderDetails from "../pages/Admin/Order/OrderDetails";
+import Categories from "../pages/Admin/Categories/Categories";
+import Editcategory from "../pages/Admin/Categories/Editcategory/Editcategory";
 
 export const routes = createBrowserRouter([
   {
@@ -118,6 +120,14 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "/admin/category/category-list",
+        element: <Categories />,
+      },
+      {
+        path: "/admin/category/edit/:id",
+        element: <Editcategory />,
       },
       {
         path: "/admin/product/product-list",

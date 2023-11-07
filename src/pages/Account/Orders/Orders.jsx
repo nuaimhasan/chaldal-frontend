@@ -4,6 +4,7 @@ import { useGetMyOrdersQuery } from "../../../Redux/order/orderApi";
 export default function Orders() {
   const { loggedUser } = useSelector((state) => state.user);
   const userId = loggedUser?.data?.uuid;
+  console.log(userId);
   const { data, isLoading, isError, error } = useGetMyOrdersQuery(userId);
   console.log(data);
 

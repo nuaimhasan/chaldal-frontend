@@ -3,8 +3,8 @@ import { apiSlice } from "../api/apiSlice";
 export const orderApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMyOrders: builder.query({
-      query: (uuid) => ({
-        url: `/order/user-orders/${uuid}`,
+      query: (userId) => ({
+        url: `/order/user-orders/${userId}`,
       }),
     }),
     getAllOrders: builder.query({
