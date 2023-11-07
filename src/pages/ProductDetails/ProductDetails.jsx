@@ -9,7 +9,6 @@ export default function ProductDetails() {
   window.scroll(0, 0);
   const params = useParams();
   let id = params?.id;
-
   const { data, isLoading, isError, error, isSuccess } = useGetProductQuery(id);
 
   const description = isSuccess ? data?.data?.description : "";
@@ -17,7 +16,7 @@ export default function ProductDetails() {
 
   let content = null;
   if (isLoading) {
-    content = <Spinner />;
+    return (content = <Spinner />);
   }
   if (!isLoading && isError) {
     content = <p>{error}</p>;

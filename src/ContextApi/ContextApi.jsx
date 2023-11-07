@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 export const Context = createContext();
 
 const ContextProvider = ({ children }) => {
@@ -78,14 +79,12 @@ const ContextProvider = ({ children }) => {
 
   // Handel Increase Cart Quantity
   const handelIncreaseCart = (product) => {
-    const existed = carts?.find(
-      (item) => item.uuid === product.uuid && item.size === product.size
-    );
+    const existed = carts?.find((item) => item.uuid === product.uuid);
 
     if (existed) {
       setCarts(
         carts.map((item) =>
-          item.uuid === product.uuid && item.size === product.size
+          item.uuid === product.uuid
             ? { ...existed, quantity: existed.quantity + 1 }
             : item
         )
@@ -95,19 +94,12 @@ const ContextProvider = ({ children }) => {
 
   // Handel Decrease Cart Quantity
   const handelDecreaseCart = (product) => {
-    const existed = carts?.find(
-      (item) =>
-        item.uuid === product.uuid &&
-        item.size === product.size &&
-        item.color === product.color
-    );
+    const existed = carts?.find((item) => item.uuid === product.uuid);
 
     if (existed && existed?.quantity > 1) {
       setCarts(
         carts.map((item) =>
-          item.uuid === product.uuid &&
-          item.size === product.size &&
-          item.color === product.color
+          item.uuid === product.uuid
             ? { ...existed, quantity: existed.quantity - 1 }
             : item
         )
@@ -119,9 +111,7 @@ const ContextProvider = ({ children }) => {
   const handelDeleteCart = (product) => {
     const confirm = window.confirm("Are you sure delete this item");
     if (confirm) {
-      const newCart = carts?.filter(
-        (item) => item.uuid !== product.uuid || item.size !== product.size
-      );
+      const newCart = carts?.filter((item) => item.uuid !== product.uuid);
       setCarts(newCart);
     }
   };

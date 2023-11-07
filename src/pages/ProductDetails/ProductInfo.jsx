@@ -1,11 +1,13 @@
 import { FiHeart, FiMinusCircle, FiPlusCircle } from "react-icons/fi";
-import { FaOpencart, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaOpencart } from "react-icons/fa";
 import { useState } from "react";
 import { UseContext } from "../../ContextApi/ContextApi";
-import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const ProductInfo = ({ product }) => {
-  const { wishlists, handelAddToCart, handelAddToWishlist } = UseContext();
+  const navigate = useNavigate();
+  const { wishlists, setCarts, handelAddToCart, handelAddToWishlist } =
+    UseContext();
   const isWishlist = wishlists?.find((item) => item.uuid === product.uuid);
   const [quantity, setQuantity] = useState(1);
 
@@ -22,7 +24,19 @@ const ProductInfo = ({ product }) => {
     }
   };
 
-  const handleBuyNow = () => {};
+  const handleBuyNow = () => {
+    const cartProduct = {
+      uuid: product.uuid,
+      title: product.title,
+      image: product.image,
+      discount: product.discount,
+      price: product.price,
+      quantity: quantity || 1,
+    };
+
+    setCarts([cartProduct]);
+    navigate("/checkout");
+  };
 
   return (
     <div className="lg:flex gap-6">
@@ -79,7 +93,7 @@ const ProductInfo = ({ product }) => {
           </div>
         </div>
 
-        {/* rating & wishlist */}
+        {/*  wishlist */}
         <div className="flex justify-between items-center">
           <p></p>
 
