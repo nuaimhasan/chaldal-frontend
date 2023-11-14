@@ -5,6 +5,7 @@ import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 export default function Cart() {
+  window.scroll(0, 0);
   const { carts } = UseContext();
 
   return (

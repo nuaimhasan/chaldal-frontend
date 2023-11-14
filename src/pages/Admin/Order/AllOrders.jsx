@@ -5,7 +5,7 @@ import { GrView } from "react-icons/gr";
 
 export default function AllOrders() {
   const { data, isLoading, isError, error } = useGetAllOrdersQuery();
-  console.log(data?.data);
+
   let content = null;
   if (isLoading) {
     return (content = <Spinner />);
@@ -17,11 +17,8 @@ export default function AllOrders() {
     content = data?.data?.map((order) => (
       <tr key={order?.uuid}>
         <td>{order?.uuid}</td>
-        <td>Items: {order?.products?.length}</td>
-        <td>
-          {order?.sippingAddress?.street}, {order?.sippingAddress?.district},{" "}
-          {order?.sippingAddress?.city}
-        </td>
+        <td>{order?.products?.length}</td>
+        <td>{order?.status}</td>
         <td>
           <Link
             to={`/admin/order/${order?.uuid}`}
@@ -41,8 +38,8 @@ export default function AllOrders() {
         <thead>
           <tr>
             <th>Order Id</th>
-            <th>Products</th>
-            <th>Shipping Address</th>
+            <th>Total Products</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>

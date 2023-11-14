@@ -1,4 +1,5 @@
 export default function AboutUs() {
+  window.scroll(0, 0);
   return (
     <section className="py-5">
       <div className="container">
@@ -6,43 +7,13 @@ export default function AboutUs() {
           <div>
             <div className="w-max border-b-2 border-primary">
               <h2 className="text-5xl font-bold">Welcome</h2>
-              <p className="text-neutral-content">
-                Lorem ipsum dolor sit amet.
-              </p>
             </div>
+            <p className="text-neutral-content mt-2 text-lg">Aesthetic cloth</p>
 
             <div className="mt-4 text-neutral-content text-[15px]">
               <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae
-                et quam impedit voluptatibus eius architecto modi ipsum. Aliquid
-                in eaque voluptate veritatis cupiditate id consequuntur, hic
-                placeat tempora incidunt sed quidem deleniti possimus temporibus
-                eum ducimus reiciendis iure atque quo? A quaerat ullam ad
-                voluptas commodi illum id? Fugiat, odio?
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae
-                et quam impedit voluptatibus eius architecto modi ipsum. Aliquid
-                in eaque voluptate veritatis cupiditate id consequuntur.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae
-                et quam impedit voluptatibus eius architecto modi ipsum. Aliquid
-                in eaque voluptate veritatis cupiditate id consequuntur.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae
-                et quam impedit voluptatibus eius architecto modi ipsum. Aliquid
-                in eaque voluptate veritatis cupiditate id consequuntur.
-              </p>
-              <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Dignissimos adipisci aperiam harum excepturi facere
-                necessitatibus quidem porro dolorum molestiae corrupti, ab
-                tempora quis deserunt tenetur placeat deleniti? Veritatis eos
-                repudiandae illo fugit enim facere omnis quas totam nobis ipsa
-                non, quisquam aut? Laudantium consectetur itaque ducimus eveniet
-                quidem autem voluptatibus.
+                We offer a variety of fashionable & <br /> branded
+                sportswear,polo shirt,t-shirt at a very reasonable price.
               </p>
             </div>
           </div>

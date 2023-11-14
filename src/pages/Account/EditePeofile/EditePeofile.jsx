@@ -32,7 +32,7 @@ export default function EditePeofile() {
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+        authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
       },
       body: JSON.stringify(userInfo),
     })

@@ -7,7 +7,7 @@ export default async function useAuthCheck() {
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    const localAuth = localStorage?.getItem("eshop_jwt");
+    const localAuth = localStorage?.getItem("aesthetic_jwt");
 
     if (localAuth) {
       fetch(`${import.meta.env.VITE_BACKEND_URL}/user/me`, {

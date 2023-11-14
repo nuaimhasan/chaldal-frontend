@@ -5,12 +5,7 @@ import ProductCard from "../../ProductCard/ProductCard";
 import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
 const PopularProducts = () => {
-  let limit = 20;
-  let page = 1;
-  const { data, isLoading, isError, error } = useGetProductsQuery({
-    limit,
-    page,
-  });
+  const { data, isLoading, isError, error } = useGetProductsQuery({});
 
   let content = null;
   if (isLoading) {

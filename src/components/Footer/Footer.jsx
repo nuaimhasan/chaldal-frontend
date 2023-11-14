@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { AiFillInstagram } from "react-icons/ai";
+import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
 
 export default function Footer() {
+  const { data } = useGetCategoriesQuery();
+
   return (
     <footer className="border-t pt-8 pb-4">
       <div className="container">
@@ -11,21 +14,19 @@ export default function Footer() {
           <div className="md:col-span-2">
             <Link to="/">
               <img
-                src="/images/logo/logo.png"
-                className="w-20"
-                alt="eshop Logo"
+                src="/images/logo/logo_withoutbg.png"
+                className="w-36"
+                alt="Logo"
               />
             </Link>
-            <p className="text-[15px] text-neutral-content">
+            <p className="text-neutral-content mt-1 font-medium">
               Your trusted online shop
             </p>
 
             <div className="mt-2 text-sm text-neutral-content">
               <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque,
-                eum molestias sed iusto sit cum cupiditate laborum accusantium
-                ratione, excepturi sint voluptatibus, praesentium possimus
-                asperiores.
+                We offer a variety of fashionable & branded sportswear,polo
+                shirt,t-shirt at a very reasonable price.
               </p>
             </div>
           </div>
@@ -35,31 +36,16 @@ export default function Footer() {
               Categories
             </h2>
             <ul className="text-neutral-content text-[15px]">
-              <li className="mb-2">
-                <Link to="/" className="hover:underline">
-                  Shop
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/" className="hover:underline">
-                  About Us
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/" className="hover:underline">
-                  FAQ
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/" className="hover:underline">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/" className="hover:underline">
-                  Terms & Conditions
-                </Link>
-              </li>
+              {data?.data?.map((category, i) => (
+                <li key={i} className="mb-2">
+                  <Link
+                    to={`/shops/${category?.slug}`}
+                    className="hover:underline"
+                  >
+                    {category?.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -69,20 +55,16 @@ export default function Footer() {
             </h2>
             <ul className="text-neutral-content text-[15px]">
               <li className="mb-2">
-                <Link to="/" className="hover:underline">
+                <Link to="/shops" className="hover:underline">
                   Shop
                 </Link>
               </li>
               <li className="mb-2">
-                <Link to="/" className="hover:underline">
+                <Link to="/about-us" className="hover:underline">
                   About Us
                 </Link>
               </li>
-              <li className="mb-2">
-                <Link to="/" className="hover:underline">
-                  FAQ
-                </Link>
-              </li>
+
               <li className="mb-2">
                 <Link to="/" className="hover:underline">
                   Privacy Policy
@@ -102,17 +84,15 @@ export default function Footer() {
             </h2>
             <ul className="text-neutral-content text-[15px]">
               <li className="mb-1">
-                <p className="italic">1072, Malibagh Bazar Road, Dhaka</p>
+                <p className="italic">
+                  House No# 40, Road No# 7, Block# C, Banasree, Dhaka 1219
+                </p>
               </li>
               <li className="mb-1">
-                <Link to="/" className="italic">
-                  +8801647-534496
-                </Link>
+                <p>+8801647-534496</p>
               </li>
               <li>
-                <Link to="/" className="italic">
-                  aestheticfashion@gmail.com
-                </Link>
+                <p>aestheticfashion@gmail.com</p>
               </li>
             </ul>
           </div>
@@ -122,15 +102,18 @@ export default function Footer() {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-[15px] text-neutral-content">
             © 2023{" "}
-            <a to="https://flowbite.com/" className="hover:underline">
-              eshop
+            <a
+              to="https://www.facebook.com/aestheticcloth247"
+              className="hover:underline"
+            >
+              aestheticcloth
             </a>
             . All Rights Reserved.
           </span>
           <ul className="flex items-center gap-2 text-neutral-content mt-3 sm:mt-0">
             <li>
               <Link
-                to="https://www.facebook.com/beautyqueen5962"
+                to="https://www.facebook.com/aestheticcloth247"
                 target="_blank"
               >
                 <BsFacebook className="text-lg hover:-mt-2 duration-300" />
@@ -138,7 +121,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="https://api.whatsapp.com/send?phone=8801768765962"
+                to="https://api.whatsapp.com/send?phone=8801647534496"
                 target="_blank"
               >
                 <IoLogoWhatsapp className="text-xl hover:-mt-2 duration-300" />

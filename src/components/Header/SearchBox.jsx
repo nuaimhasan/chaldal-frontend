@@ -25,6 +25,7 @@ export default function SearchBox() {
         !e.target.closest(".searchIcon")
       ) {
         setSearchDropdown(false);
+        setSearchText("");
       }
     });
   }, []);
@@ -47,7 +48,10 @@ export default function SearchBox() {
           <ul>
             {products?.map((product) => (
               <li
-                onClick={() => setSearchDropdown(false)}
+                onClick={() => {
+                  setSearchDropdown(false);
+                  setSearchText("");
+                }}
                 className="hover:bg-gray-100 p-1"
               >
                 <Link

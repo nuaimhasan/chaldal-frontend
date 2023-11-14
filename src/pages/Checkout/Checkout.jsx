@@ -7,6 +7,7 @@ import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
 import { useSelector } from "react-redux";
 
 export default function Checkout() {
+  window.scroll(0, 0);
   const { carts, setCarts } = UseContext();
   const { loggedUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);

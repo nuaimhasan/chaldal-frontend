@@ -46,14 +46,11 @@ const MainHeader = () => {
         <div className="flex items-center justify-between gap-2">
           <div>
             <Link to="/">
-              {/* <img
-                src="/images/logo/logo.png"
+              <img
+                src="/images/logo/logo_withoutbg.png"
                 alt=""
-                className="w-20 sm:w-28"
-              /> */}
-              <h3 className="text-xl sm:text-3xl font-medium text-primary">
-                AESTHETIC
-              </h3>
+                className="w-20 sm:w-32"
+              />
             </Link>
           </div>
 

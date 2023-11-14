@@ -13,7 +13,7 @@ const TopHeader = () => {
             <ul className="flex items-center gap-2">
               <li>
                 <Link
-                  to="https://www.facebook.com/beautyqueen5962"
+                  to="https://www.facebook.com/aestheticcloth247"
                   target="_blank"
                   className="hover:text-base-100 duration-200"
                 >
@@ -22,7 +22,7 @@ const TopHeader = () => {
               </li>
               <li>
                 <Link
-                  to="https://api.whatsapp.com/send?phone=8801768765962"
+                  to="https://api.whatsapp.com/send?phone=8801647534496"
                   target="_blank"
                 >
                   <IoLogoWhatsapp className="text-[15px]" />
@@ -43,17 +43,17 @@ const TopHeader = () => {
           <div className="flex items-center gap-6 ">
             <ul className="flex gap-4 items-center font-medium">
               <li className="border-r pr-3">
-                <Link to="tel: 01706260994" className="flex items-center gap-2">
+                <p className="flex items-center gap-1.5">
                   <BsTelephoneInbound />
                   +8801647-534496
-                </Link>
+                </p>
               </li>
 
               <li>
-                <Link to="" className="flex items-center gap-1.5">
+                <p className="flex items-center gap-1.5">
                   <MdOutlineEmail className="text-base" />
                   aestheticfashion@gmail.com
-                </Link>
+                </p>
               </li>
             </ul>
           </div>

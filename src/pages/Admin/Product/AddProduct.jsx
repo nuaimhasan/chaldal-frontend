@@ -47,7 +47,7 @@ export default function AddProduct() {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/product/add-product`, {
       method: "POST",
       headers: {
-        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+        authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
       },
       body: formData,
     })

@@ -31,6 +31,7 @@ import AllOrders from "../pages/Admin/Order/AllOrders";
 import OrderDetails from "../pages/Admin/Order/OrderDetails";
 import Categories from "../pages/Admin/Categories/Categories";
 import Editcategory from "../pages/Admin/Categories/Editcategory/Editcategory";
+import AdminRoute from "../PrivateRoute/AdminRoute";
 
 export const routes = createBrowserRouter([
   {
@@ -84,7 +85,7 @@ export const routes = createBrowserRouter([
     ],
   },
   {
-    path: "/",
+    path: "/account",
     element: (
       <PrivateRoute>
         <AccountLayout />
@@ -114,9 +115,17 @@ export const routes = createBrowserRouter([
     ],
   },
   {
-    path: "/",
-    element: <AdminLayout />,
+    path: "/admin",
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
     children: [
+      {
+        path: "/admin",
+        element: <Dashboard />,
+      },
       {
         path: "/admin/dashboard",
         element: <Dashboard />,

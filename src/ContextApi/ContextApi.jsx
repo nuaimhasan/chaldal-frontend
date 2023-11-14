@@ -1,17 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 export const Context = createContext();
 
 const ContextProvider = ({ children }) => {
   //----------------------- Handel wishtlist-----------------
-  const localWishlist = JSON.parse(localStorage.getItem("eshop_wishlist"));
+  const localWishlist = JSON.parse(localStorage.getItem("aesthetic_wishlist"));
   const [wishlists, setWishlists] = useState(localWishlist || []);
 
   // Set Local Wishlist
   useEffect(() => {
-    localStorage.setItem("eshop_wishlist", JSON.stringify(wishlists));
+    localStorage.setItem("aesthetic_wishlist", JSON.stringify(wishlists));
   }, [wishlists]);
 
   //------ Add Wishlist
@@ -42,12 +41,12 @@ const ContextProvider = ({ children }) => {
   };
 
   //------------------------Handel cart----------------------
-  const localStorageCart = JSON.parse(localStorage.getItem("eshop_cart"));
+  const localStorageCart = JSON.parse(localStorage.getItem("aesthetic_cart"));
   const [carts, setCarts] = useState(localStorageCart || []);
 
   // Set Local Cart
   useEffect(() => {
-    localStorage.setItem("eshop_cart", JSON.stringify(carts));
+    localStorage.setItem("aesthetic_cart", JSON.stringify(carts));
   }, [carts]);
 
   // // Add Cart

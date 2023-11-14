@@ -6,7 +6,7 @@ const PrivateRoute = ({ children }) => {
   const { loggedUser } = useSelector((state) => state.user);
   const location = useLocation();
 
-  const token = localStorage.getItem("eshop_jwt");
+  const token = localStorage.getItem("aesthetic_jwt");
 
   if (!loggedUser?.success && !token) {
     return <Navigate to="/login" state={{ from: location }} replace />;

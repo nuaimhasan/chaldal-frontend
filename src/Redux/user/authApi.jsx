@@ -14,7 +14,7 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
 
-          localStorage.setItem("eshop_jwt", result?.data?.token);
+          localStorage.setItem("aesthetic_jwt", result?.data?.token);
 
           dispatch(
             userLoggedIn({

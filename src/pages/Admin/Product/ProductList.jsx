@@ -14,7 +14,7 @@ export default function ProductList() {
       fetch(`${import.meta.env.VITE_BACKEND_URL}/product/delete/${uuid}`, {
         method: "DELETE",
         headers: {
-          authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+          authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
         },
       })
         .then((res) => res.json())

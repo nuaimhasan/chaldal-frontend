@@ -18,9 +18,7 @@ export default function Editcategory() {
     let icon = icons[0]?.file;
 
     const formData = new FormData();
-
     formData.append("name", name);
-
     if (icons?.length > 0) {
       formData.append("icon", icon);
     }
@@ -34,7 +32,7 @@ export default function Editcategory() {
       {
         method: "PUT",
         headers: {
-          authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
+          authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
         },
         body: formData,
       }

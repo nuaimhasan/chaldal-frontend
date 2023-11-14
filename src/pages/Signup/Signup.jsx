@@ -7,6 +7,7 @@ import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
 import Swal from "sweetalert2";
 
 export default function Signup() {
+  window.scroll(0, 0);
   const [errorMesssage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -52,8 +53,8 @@ export default function Signup() {
         if (data?.success) {
           form.reset();
           Swal.fire(
-            "Thank you for register eshop",
-            `Please go to ${email}, and verify eshop account`,
+            "Thank you for register Aestheticcloth",
+            `Please go to ${email}, and verify Aestheticcloth account`,
             "success"
           );
         }
@@ -69,10 +70,14 @@ export default function Signup() {
   return (
     <div className="py-6 bg-gray-50">
       <div className="container">
-        <div className="w-[420px] mx-auto bg-base-100 shadow-lg rounded-lg p-6">
-          <img src="/images/logo/logo.png" alt="" className="w-28 mx-auto" />
+        <div className="sm:w-[420px] mx-auto bg-base-100 shadow-lg rounded-lg p-6">
+          <img
+            src="/images/logo/logo_withoutbg.png"
+            alt=""
+            className="w-32 mx-auto"
+          />
           <h6 className="text-xl font-medium mt-2 text-center text-neutral/80">
-            Welcome to eshop
+            Welcome to Aestheticcloth
           </h6>
 
           <form onSubmit={handleRegister} className="mt-10 text-neutral">

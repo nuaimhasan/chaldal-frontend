@@ -16,6 +16,7 @@ export default function Hero() {
             <Swiper
               navigation={true}
               modules={[Navigation, Autoplay]}
+              loop={true}
               autoplay={{
                 delay: 5000,
                 disableOnInteraction: false,
@@ -31,7 +32,7 @@ export default function Hero() {
               </SwiperSlide>
               <SwiperSlide>
                 <img
-                  src="/images/hero/hero2.png"
+                  src="/images/hero/hero2.jpg"
                   alt=""
                   className="w-full h-full rounded"
                 />
