@@ -6,7 +6,7 @@ import ContextProvider from "./ContextApi/ContextApi.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
-import { store } from "./Redux/store/store.js";
+import { store } from "./Redux/store/store.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

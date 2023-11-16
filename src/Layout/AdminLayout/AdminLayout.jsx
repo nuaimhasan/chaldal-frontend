@@ -1,6 +1,7 @@
+import "./Admin.css";
 import { Outlet } from "react-router-dom";
-import AdminHeader from "../components/AdminHeader/AdminHeader";
-import AdminSidebar from "../components/AdminSidebar/AdminSidebar";
+import AdminHeader from "../../components/AdminComponents/AdminHeader/AdminHeader";
+import AdminSidebar from "../../components/AdminComponents/AdminSidebar/AdminSidebar";
 import { useEffect, useState } from "react";
 
 export default function AdminLayout() {
@@ -17,13 +18,13 @@ export default function AdminLayout() {
     });
   }, []);
   return (
-    <section className="flex gap-5">
+    <section className="flex">
       <aside className={`admin_sidebar ${sidebar && "admin_sidebar_show"}`}>
         <AdminSidebar />
       </aside>
       <div className="admin_content">
         <AdminHeader setSidebar={setSidebar} />
-        <main className="py-5">
+        <main className="sm:p-5 py-5">
           <Outlet />
         </main>
       </div>

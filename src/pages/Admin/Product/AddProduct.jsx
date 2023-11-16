@@ -3,6 +3,7 @@ import { BsUpload } from "react-icons/bs";
 import JoditEditor from "jodit-react";
 import Swal from "sweetalert2";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
+import { MdOutlineClose } from "react-icons/md";
 
 export default function AddProduct() {
   const { data: categories } = useGetCategoriesQuery();
@@ -10,11 +11,27 @@ export default function AddProduct() {
   const [image, setImage] = useState("");
   const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sizes, setSizes] = useState([]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImage(file);
   };
+
+  const handleAddSizes = (e) => {
+    if (e.key === "Enter") {
+      setSizes([...sizes, e.target.value]);
+      e.target.value = "";
+    }
+  };
+
+  console.log(sizes);
+
+  const handleDeleteSize = (size) => {
+    setSizes(sizes?.length > 0 && sizes?.filter((s) => s !== size));
+  };
+
+  console.log(sizes);
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
@@ -27,7 +44,7 @@ export default function AddProduct() {
     const stock = form.stock.value;
     const brand = form.brand.value;
     const description = details;
-    const size = form.size.value;
+    // const size = form.size.value;
     const color = form.color.value;
 
     const formData = new FormData();
@@ -39,7 +56,7 @@ export default function AddProduct() {
     formData.append("stock", stock);
     formData.append("brand", brand);
     formData.append("description", description);
-    formData.append("size", size);
+    // formData.append("size", size);
     formData.append("color", color);
 
     setLoading(true);
@@ -70,12 +87,9 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="add_product text-neutral-content">
-      <h3 className="text-lg">Add Product</h3>
-      <form
-        onSubmit={handleAddProduct}
-        className="mt-2 grid sm:grid-cols-2 md:grid-cols-3 gap-4 items-start"
-      >
+    <div className="add_product  bg-base-100 rounded shadow p-4">
+      <h3 className="text-lg text-neutral font-medium mb-4">Add Product</h3>
+      <div className="text-neutral-content grid sm:grid-cols-2 md:grid-cols-3 gap-4 items-start">
         <div>
           <div className="border rounded p-4">
             <div>
@@ -113,80 +127,102 @@ export default function AddProduct() {
 
           <div className="mt-4 border rounded p-4 flex flex-col gap-3 form_group">
             <div>
-              <p className="text-sm">Size</p>
-              <input type="text" name="size" />
-            </div>
-
-            <div>
-              <p className="text-sm">Color Name</p>
-              <input type="text" name="color" />
-            </div>
-          </div>
-        </div>
-
-        <div className="md:col-span-2 border rounded p-4 form_group flex flex-col gap-3">
-          <div>
-            <p className="text-sm">Product Title</p>
-            <input type="text" name="title" required />
-          </div>
-
-          <div>
-            <p className="text-sm">Category</p>
-            <select name="category">
-              {categories?.data?.map((category) => (
-                <option key={category?.uuid} value={category?.slug}>
-                  {category?.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm">Price</p>
-              <input type="number" name="price" required />
-            </div>
-
-            <div>
-              <p className="text-sm">Discount(%)</p>
-              <input type="number" name="discount" />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm">Stock</p>
-              <input type="number" name="stock" required />
-            </div>
-
-            <div>
-              <p className="text-sm">Brand</p>
-              <input type="text" name="brand" />
-            </div>
-          </div>
-
-          <div>
-            <p className="text-sm">Description</p>
-
-            <div className="mt-2">
-              <JoditEditor
-                ref={editor}
-                value={details}
-                onBlur={(text) => setDetails(text)}
+              <p className="text-sm">Sizes</p>
+              <input
+                type="text"
+                onKeyDown={(e) => handleAddSizes(e)}
+                className="placeholder:font-light"
+                placeholder="Enter choice size"
               />
+
+              <div>
+                {sizes?.length > 0 &&
+                  sizes?.map((size) => (
+                    <span className="whitespace-nowrap mr-1 w-max bg-gray-700 px-1 py-[2px] rounded text-sm text-base-100">
+                      {size}
+                      <button
+                        onClick={() => handleDeleteSize(size)}
+                        className="hover:text-red-500 ml-1"
+                      >
+                        <MdOutlineClose className="mt-2 pt-1" />
+                      </button>
+                    </span>
+                  ))}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm">Colors</p>
+              <input type="text" />
             </div>
           </div>
         </div>
 
-        <div className="mt-6">
-          <button
-            disabled={loading && "disabled"}
-            className="bg-primary text-base-100 px-10 py-2 rounded"
-          >
-            {loading ? "loading..." : "Add Product"}
-          </button>
-        </div>
-      </form>
+        <form onSubmit={handleAddProduct} className="md:col-span-2">
+          <div className="border rounded p-4 form_group flex flex-col gap-3">
+            <div>
+              <p className="text-sm">Product Title</p>
+              <input type="text" name="title" required />
+            </div>
+
+            <div>
+              <p className="text-sm">Category</p>
+              <select name="category">
+                {categories?.data?.map((category) => (
+                  <option key={category?.uuid} value={category?.slug}>
+                    {category?.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm">Price</p>
+                <input type="number" name="price" required />
+              </div>
+
+              <div>
+                <p className="text-sm">Discount(%)</p>
+                <input type="number" name="discount" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm">Stock</p>
+                <input type="number" name="stock" required />
+              </div>
+
+              <div>
+                <p className="text-sm">Brand</p>
+                <input type="text" name="brand" />
+              </div>
+            </div>
+
+            <div>
+              <p className="text-sm">Description</p>
+
+              <div className="mt-2">
+                <JoditEditor
+                  ref={editor}
+                  value={details}
+                  onBlur={(text) => setDetails(text)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 flex justify-end">
+            <button
+              disabled={loading && "disabled"}
+              className="bg-primary text-base-100 px-10 py-2 rounded"
+            >
+              {loading ? "loading..." : "Add Product"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

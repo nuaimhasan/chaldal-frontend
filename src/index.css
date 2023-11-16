@@ -169,46 +169,6 @@ h2 {
   border-radius: 5px;
 }
 
-/* ----------------Admin------------------- */
-.admin_sidebar {
-  height: 100vh;
-  overflow-y: auto;
-  position: fixed;
-  width: 300px;
-  left: 0;
-  top: 0;
-  box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
-}
-
-.admin_content {
-  width: calc(100% - 310px);
-  background: #fff;
-  min-height: 100vh;
-  position: relative;
-  left: 310px;
-  padding: 0px 20px;
-}
-
-.admin_siderbar ul li a {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px;
-  font-size: 15px;
-  transition: all 0.3s ease;
-}
-
-.admin_siderbar ul li a:hover {
-  color: #f47c20;
-}
-
-.admin_siderbar .active {
-  box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
 @media only screen and (max-width: 1024px) {
   .account_sidebar {
     height: 100vh;
@@ -227,23 +187,6 @@ h2 {
 
   .account_content {
     width: 100%;
-  }
-
-  .admin_sidebar {
-    transform: translateX(-100%);
-    z-index: 9999;
-    background: #fff;
-    transition: all 0.3s ease;
-  }
-
-  .admin_sidebar_show {
-    transform: translateX(0%);
-  }
-
-  .admin_content {
-    width: 100%;
-    left: 0;
-    padding: 10px;
   }
 }
 

@@ -20,7 +20,7 @@ import Wishlist from "../pages/Account/Wishlist/Wishlist";
 import Orders from "../pages/Account/Orders/Orders";
 import Setting from "../pages/Account/Setting/Setting";
 
-import AdminLayout from "../Layout/AdminLayout";
+import AdminLayout from "../Layout/AdminLayout/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import ProductList from "../pages/Admin/Product/ProductList";
 import AddProduct from "../pages/Admin/Product/AddProduct";
@@ -131,7 +131,7 @@ export const routes = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: "/admin/category/category-list",
+        path: "/admin/category/categories",
         element: <Categories />,
       },
       {
@@ -139,7 +139,7 @@ export const routes = createBrowserRouter([
         element: <Editcategory />,
       },
       {
-        path: "/admin/product/product-list",
+        path: "/admin/product/all-products",
         element: <ProductList />,
       },
       {
@@ -151,16 +151,16 @@ export const routes = createBrowserRouter([
         element: <EditProduct />,
       },
       {
-        path: "/admin/user/all-users",
-        element: <AllUsers />,
-      },
-      {
-        path: "/admin/order/all-order",
+        path: "/admin/order/all-orders",
         element: <AllOrders />,
       },
       {
         path: "/admin/order/:id",
         element: <OrderDetails />,
+      },
+      {
+        path: "/admin/customer/all-customers",
+        element: <AllUsers />,
       },
     ],
   },

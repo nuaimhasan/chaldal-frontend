@@ -14,14 +14,15 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           const result = await queryFulfilled;
 
-          localStorage.setItem("aesthetic_jwt", result?.data?.token);
-
-          dispatch(
-            userLoggedIn({
-              token: result?.data?.token,
-              data: result?.data,
-            })
-          );
+          if (result?.data?.success) {
+            localStorage.setItem("aesthetic_jwt", result?.data?.token);
+            dispatch(
+              userLoggedIn({
+                token: result?.data?.token,
+                data: result?.data,
+              })
+            );
+          }
         } catch (error) {
           // Do not any thing , handel error from ui
         }

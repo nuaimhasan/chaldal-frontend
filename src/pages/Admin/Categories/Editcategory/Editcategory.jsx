@@ -55,7 +55,7 @@ export default function Editcategory() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-base-100 shadhow rounded sm:w-1/2">
       <div>
         <p>Icon</p>
         <ImageUploading
