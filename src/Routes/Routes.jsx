@@ -32,6 +32,12 @@ import OrderDetails from "../pages/Admin/Order/OrderDetails";
 import Categories from "../pages/Admin/Categories/Categories";
 import Editcategory from "../pages/Admin/Categories/Editcategory/Editcategory";
 import AdminRoute from "../PrivateRoute/AdminRoute";
+import Logo from "../pages/Admin/Logo/Logo";
+import About from "../pages/Admin/About/About";
+import Contact from "../pages/Admin/Contact/Contact";
+import Banner from "../pages/Admin/Home/Banner/Banner";
+import AddBanner from "../pages/Admin/Home/Banner/AddBanner";
+import Administrator from "../pages/Admin/Administrator/Administrator";
 
 export const routes = createBrowserRouter([
   {
@@ -161,6 +167,30 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/customer/all-customers",
         element: <AllUsers />,
+      },
+      {
+        path: "/admin/front-end/logo",
+        element: <Logo />,
+      },
+      {
+        path: "/admin/front-end/about-us",
+        element: <About />,
+      },
+      {
+        path: "/admin/front-end/contact-us",
+        element: <Contact />,
+      },
+      {
+        path: "/admin/front-end/home-page/banner",
+        element: <Banner />,
+      },
+      {
+        path: "/admin/front-end/home-page/add-banner",
+        element: <AddBanner />,
+      },
+      {
+        path: "/admin/administrator/all-administrator",
+        element: <Administrator />,
       },
     ],
   },

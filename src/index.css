@@ -34,6 +34,20 @@ h2 {
   box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c !important;
 }
 
+.primary_btn {
+  background: #f47c20;
+  color: #fff;
+  padding: 7px 20px;
+  border-radius: 4px;
+  border: 1px solid #f47c20;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+.primary_btn:hover {
+  color: #f47c20;
+  background: transparent;
+}
+
 .form_group input,
 .form_group textarea,
 .form_group select {

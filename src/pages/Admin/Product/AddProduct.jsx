@@ -25,13 +25,9 @@ export default function AddProduct() {
     }
   };
 
-  console.log(sizes);
-
   const handleDeleteSize = (size) => {
     setSizes(sizes?.length > 0 && sizes?.filter((s) => s !== size));
   };
-
-  console.log(sizes);
 
   const handleAddProduct = async (e) => {
     e.preventDefault();

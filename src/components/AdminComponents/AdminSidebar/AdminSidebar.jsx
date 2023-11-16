@@ -66,7 +66,7 @@ const adminSidebarItems = [
     subMenu: [
       {
         title: "Logo",
-        path: "/admin/front-end/home-page/logo",
+        path: "/admin/front-end/logo",
       },
       {
         title: "Home Page",
@@ -79,11 +79,11 @@ const adminSidebarItems = [
       },
       {
         title: "About Us",
-        path: "/admin/front-end/about-us/about",
+        path: "/admin/front-end/about-us",
       },
       {
         title: "Contact Us",
-        path: "/admin/front-end/contact-us/contact",
+        path: "/admin/front-end/contact-us",
       },
     ],
   },
@@ -102,7 +102,7 @@ const adminSidebarItems = [
 export default function AdminSidebar() {
   return (
     <div className="py-6">
-      <Link to="/" className="block border-b pb-4">
+      <Link to="/admin/dashboard" className="block border-b pb-4">
         <img
           src="/images/logo/logo_withoutbg.png"
           alt=""
