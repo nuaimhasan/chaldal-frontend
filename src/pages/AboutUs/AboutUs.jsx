@@ -1,5 +1,16 @@
+import { useGetAboutQuery } from "../../Redux/about/aboutApi";
+import Spinner from "../../components/Spinner/Spinner";
+import parcer from "html-react-parser";
+
 export default function AboutUs() {
   window.scroll(0, 0);
+  const { data, isLoading } = useGetAboutQuery();
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  const parcerDescription = parcer(data?.data?.description);
   return (
     <section className="py-5">
       <div className="container">
@@ -11,14 +22,17 @@ export default function AboutUs() {
             <p className="text-neutral-content mt-2 text-lg">Aesthetic cloth</p>
 
             <div className="mt-4 text-neutral-content text-[15px]">
-              <p>
-                We offer a variety of fashionable & <br /> branded
-                sportswear,polo shirt,t-shirt at a very reasonable price.
-              </p>
+              <p>{parcerDescription}</p>
             </div>
           </div>
           <div className="hidden md:block">
-            <img src="/images/about/about.avif" alt="" className="w-full" />
+            <img
+              src={`${import.meta.env.VITE_BACKEND_URL}/images/about/${
+                data?.data?.image
+              }`}
+              alt=""
+              className="w-[90%] mx-auto"
+            />
           </div>
         </div>
       </div>

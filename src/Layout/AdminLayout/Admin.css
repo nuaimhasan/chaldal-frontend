@@ -8,6 +8,9 @@
   left: -0%;
   top: 0;
 }
+.admin_sidebar::-webkit-scrollbar {
+  display: none;
+}
 
 .admin_content {
   width: calc(100% - 300px);

@@ -17,7 +17,7 @@ const ChooseByCategory = () => {
       <Link
         key={category?.uuid}
         to={`shops/${category.slug}`}
-        className="shadow border rounded p-4 flex justify-center items-center text-center hover:bg-accent/20 duration-200"
+        className="shadow border rounded p-4 flex justify-center items-center text-center hover:bg-primary/10 duration-200"
       >
         <div>
           <img

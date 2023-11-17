@@ -1,8 +1,8 @@
 import Spinner from "../../../components/Spinner/Spinner";
-import { useAllUsersQuery } from "../../../Redux/user/userApi";
+import { useAllCustomersQuery } from "../../../Redux/user/userApi";
 
 export default function AllUsers() {
-  const { data, isLoading, isError, error } = useAllUsersQuery();
+  const { data, isLoading, isError, error } = useAllCustomersQuery();
 
   let content = null;
   if (isLoading) {
@@ -27,6 +27,7 @@ export default function AllUsers() {
           </div>
         </td>
         <td>{user?.email}</td>
+        <td>{user?.phone}</td>
         <td>{user?.role}</td>
       </tr>
     ));
@@ -37,8 +38,9 @@ export default function AllUsers() {
       <table className="dashboard_table">
         <thead>
           <tr>
-            <th>User name</th>
+            <th>Customer name</th>
             <th>Email</th>
+            <th>Phone</th>
             <th>Role</th>
           </tr>
         </thead>

@@ -41,11 +41,7 @@ export default function Login() {
     <div className="py-6 bg-gray-50">
       <div className="container">
         <div className="sm:w-[420px] mx-auto bg-base-100 shadow-lg rounded-lg p-6">
-          <img
-            src="/images/logo/logo_withoutbg.png"
-            alt=""
-            className="w-32 mx-auto"
-          />
+          <img src="/images/logo/logo.png" alt="" className="w-32 mx-auto" />
           <h6 className="text-xl font-medium mt-2 text-center text-neutral/80">
             Log In
           </h6>

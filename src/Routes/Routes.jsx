@@ -38,6 +38,7 @@ import Contact from "../pages/Admin/Contact/Contact";
 import Banner from "../pages/Admin/Home/Banner/Banner";
 import AddBanner from "../pages/Admin/Home/Banner/AddBanner";
 import Administrator from "../pages/Admin/Administrator/Administrator";
+import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
 
 export const routes = createBrowserRouter([
   {
@@ -191,6 +192,10 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/administrator/all-administrator",
         element: <Administrator />,
+      },
+      {
+        path: "/admin/administrator/add-administrator",
+        element: <AddAdministrator />,
       },
     ],
   },

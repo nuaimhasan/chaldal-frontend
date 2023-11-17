@@ -24,7 +24,7 @@ export default function CategoryLists() {
               category?.icon
             }`}
             alt=""
-            className="w-6"
+            className="w-6 h-6"
           />
           {category?.name}
         </Link>

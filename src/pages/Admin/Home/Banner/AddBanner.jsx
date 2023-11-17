@@ -1,9 +1,38 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
+import { useAddBannerMutation } from "../../../../Redux/banner/bannerApi";
+import Swal from "sweetalert2";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function AddBanner() {
   const [banners, setbanners] = useState([]);
+  const [addBanner, { isLoading, isSuccess, isError }] = useAddBannerMutation();
+  const navigate = useNavigate();
+
+  const handleAddBanner = (e) => {
+    e.preventDefault();
+    const image = banners[0]?.file;
+    if (!image) {
+      return Swal.fire("", "Image is required", "error");
+    }
+
+    const formData = new FormData();
+    formData.append("image", image);
+    addBanner(formData);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire("", "banner add success", "success");
+      setbanners([]);
+      navigate("/admin/front-end/home-page/banner");
+    }
+    if (isError) {
+      Swal.fire("", "something went wrong, please try again", "success");
+    }
+  }, [isSuccess, isError]);
   return (
     <section className="md:w-[600px] bg-base-100 shadow rounded">
       <div className="p-4 border-b text-neutral font-medium">
@@ -11,6 +40,9 @@ export default function AddBanner() {
       </div>
       <div className="p-4">
         <div className="p-4">
+          <p className="text-neutral-content text-sm pb-1">
+            Max Size (1000px / 400px)
+          </p>
           <ImageUploading
             value={banners}
             onChange={(icn) => setbanners(icn)}
@@ -51,7 +83,13 @@ export default function AddBanner() {
         </div>
 
         <div className="flex justify-end mt-6 border-t p-4">
-          <button className="primary_btn">Add Banner</button>
+          <button
+            disabled={isLoading && "disabled"}
+            onClick={handleAddBanner}
+            className="primary_btn"
+          >
+            {isLoading ? "Loading..." : "Add Banner"}
+          </button>
         </div>
       </div>
     </section>

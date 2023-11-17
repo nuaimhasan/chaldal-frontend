@@ -2,11 +2,67 @@ import { useRef, useState } from "react";
 import JoditEditor from "jodit-react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
+import {
+  useGetAboutQuery,
+  useUpdateAboutMutation,
+} from "../../../Redux/about/aboutApi";
+import Spinner from "../../../components/Spinner/Spinner";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 export default function About() {
   const editor = useRef(null);
+  const { data, isLoading, isError, error } = useGetAboutQuery();
   const [images, setImages] = useState([]);
   const [details, setDetails] = useState("");
+  const [
+    updateAbout,
+    {
+      isLoading: updateLoading,
+      isSuccess: updateSuccess,
+      isError: updateError,
+    },
+  ] = useUpdateAboutMutation();
+
+  const handleUpdateAbout = (e) => {
+    e.preventDefault();
+    let id = data?.data?.id;
+    const image = images[0]?.file;
+    const description = details?.length > 0 ? details : data?.data?.description;
+
+    if (details === "" && !image) {
+      return alert("You haven't changed anything");
+    }
+
+    const formData = new FormData();
+    formData.append("description", description);
+    if (image) {
+      formData.append("image", image);
+    }
+
+    updateAbout({ id, formData });
+  };
+
+  useEffect(() => {
+    if (updateSuccess) {
+      Swal.fire("", "Update Success", "success");
+      setImages([]);
+    }
+    if (updateError) {
+      Swal.fire("", "Somethin Wrong, please try again", "error");
+    }
+  }, [updateSuccess, updateError]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+  if (isError) {
+    return (
+      <p>
+        {error?.data?.message ? error?.data?.message : "something went wrong"}
+      </p>
+    );
+  }
 
   return (
     <section className="bg-base-100 rounded shadow">
@@ -14,7 +70,7 @@ export default function About() {
         <h3 className="font-medium text-neutral">About</h3>
       </div>
 
-      <form className="p-4">
+      <form onSubmit={handleUpdateAbout} className="p-4">
         <div className="text-neutral-content grid sm:grid-cols-2 md:grid-cols-3 gap-4 items-start">
           <div className="rounded border">
             <div>
@@ -61,6 +117,16 @@ export default function About() {
                     </div>
                   )}
                 </ImageUploading>
+
+                {data?.data?.image && (
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL}/images/about/${
+                      data?.data?.image
+                    }`}
+                    alt=""
+                    className="w-32 mt-4"
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -71,11 +137,24 @@ export default function About() {
             <div className="p-4">
               <JoditEditor
                 ref={editor}
-                value={details}
+                value={
+                  data?.data?.description?.length > 0
+                    ? data?.data?.description
+                    : details
+                }
                 onBlur={(text) => setDetails(text)}
               />
             </div>
           </div>
+        </div>
+
+        <div className="mt-6 flex justify-end">
+          <button
+            disabled={updateLoading && "disabled"}
+            className="primary_btn"
+          >
+            {updateLoading ? "Loading" : "Save"}
+          </button>
         </div>
       </form>
     </section>

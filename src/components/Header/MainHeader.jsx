@@ -10,15 +10,16 @@ import { UseContext } from "../../ContextApi/ContextApi";
 import { AiOutlineHeart } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
-import { FaUserCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogout } from "../../Redux/user/userSlice";
+import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
 
 const MainHeader = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const { carts } = UseContext();
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((state) => state.user);
+  const { data: logo } = useGetMainLogoQuery();
 
   const [profileDropdown, setProfileDropdown] = useState(false);
   useEffect(() => {
@@ -47,9 +48,15 @@ const MainHeader = () => {
           <div>
             <Link to="/">
               <img
-                src="/images/logo/logo_withoutbg.png"
+                src={
+                  logo?.data?.logo === ""
+                    ? "/images/logo/logo.png"
+                    : `${import.meta.env.VITE_BACKEND_URL}/images/logos/${
+                        logo?.data?.logo
+                      }`
+                }
                 alt=""
-                className="w-20 sm:w-32"
+                className="w-20 sm:w-32 h-14"
               />
             </Link>
           </div>
@@ -97,7 +104,8 @@ const MainHeader = () => {
                 >
                   <img
                     src={
-                      loggedUser?.data?.image === ""
+                      loggedUser?.data?.image === "" ||
+                      loggedUser?.data?.image === null
                         ? "/images/demo_user.jpg"
                         : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
                             loggedUser?.data?.image
@@ -109,12 +117,13 @@ const MainHeader = () => {
                 </button>
 
                 {profileDropdown && (
-                  <ul className="absolute w-max min-w-[190px] text-[15px] bg-base-100 right-0 top-[130%] shadow-lg rounded z-50 overflow-hidden text-neutral">
+                  <ul className="absolute w-max min-w-[220px] text-[15px] bg-base-100 right-0 top-[130%] shadow-lg rounded z-50 overflow-hidden text-neutral">
                     <li className="user_info px-2 py-1 border-b">
                       <div className="flex items-center gap-2">
                         <img
                           src={
-                            loggedUser?.data?.image === ""
+                            loggedUser?.data?.image === "" ||
+                            loggedUser?.data?.image === null
                               ? "/images/demo_user.jpg"
                               : `${
                                   import.meta.env.VITE_BACKEND_URL

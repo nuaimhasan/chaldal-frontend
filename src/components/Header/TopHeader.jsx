@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { BsFacebook, BsTelephoneInbound, BsYoutube } from "react-icons/bs";
-import { IoLogoWhatsapp } from "react-icons/io";
+import { FaLinkedin } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { MdOutlineEmail } from "react-icons/md";
+import { useGetContactQuery } from "../../Redux/contact/contactApi";
 
 const TopHeader = () => {
+  const { data, isLoading } = useGetContactQuery();
+  const contact = data?.data;
   return (
     <div className="hidden sm:block bg-primary py-1.5 border-b text-base-100">
       <div className="container mx-auto font-medium">
@@ -13,7 +16,7 @@ const TopHeader = () => {
             <ul className="flex items-center gap-2">
               <li>
                 <Link
-                  to="https://www.facebook.com/aestheticcloth247"
+                  to={contact?.facebookLink}
                   target="_blank"
                   className="hover:text-base-100 duration-200"
                 >
@@ -21,20 +24,17 @@ const TopHeader = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  to="https://api.whatsapp.com/send?phone=8801647534496"
-                  target="_blank"
-                >
-                  <IoLogoWhatsapp className="text-[15px]" />
+                <Link to={contact?.linkedinLink} target="_blank">
+                  <FaLinkedin className="text-[15px]" />
                 </Link>
               </li>
               <li>
-                <Link to="">
+                <Link to={contact?.instagramLink} target="_blank">
                   <AiFillInstagram className="text-base mr-1" />
                 </Link>
               </li>
               <li>
-                <Link to="">
+                <Link to={contact?.youtubeLink} target="_blank">
                   <BsYoutube className="text-[15px] mt-px" />
                 </Link>
               </li>
@@ -45,14 +45,14 @@ const TopHeader = () => {
               <li className="border-r pr-3">
                 <p className="flex items-center gap-1.5">
                   <BsTelephoneInbound />
-                  +8801647-534496
+                  {contact?.phone}
                 </p>
               </li>
 
               <li>
                 <p className="flex items-center gap-1.5">
                   <MdOutlineEmail className="text-base" />
-                  aestheticfashion@gmail.com
+                  {contact?.email}
                 </p>
               </li>
             </ul>

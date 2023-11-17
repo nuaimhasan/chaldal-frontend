@@ -3,22 +3,34 @@ import { BsFacebook, BsYoutube } from "react-icons/bs";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { AiFillInstagram } from "react-icons/ai";
 import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
+import { useGetContactQuery } from "../../Redux/contact/contactApi";
+import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
 
 export default function Footer() {
   const { data } = useGetCategoriesQuery();
+  const { data: contact } = useGetContactQuery();
+  const { data: logo } = useGetMainLogoQuery();
 
   return (
     <footer className="border-t pt-8 pb-4">
       <div className="container">
         <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           <div className="md:col-span-2">
-            <Link to="/">
-              <img
-                src="/images/logo/logo_withoutbg.png"
-                className="w-36"
-                alt="Logo"
-              />
-            </Link>
+            <div className="w-max">
+              <Link to="/">
+                <img
+                  src={
+                    logo?.data?.logo === ""
+                      ? "/images/logo/logo.png"
+                      : `${import.meta.env.VITE_BACKEND_URL}/images/logos/${
+                          logo?.data?.logo
+                        }`
+                  }
+                  className="w-36"
+                  alt="Logo"
+                />
+              </Link>
+            </div>
             <p className="text-neutral-content mt-1 font-medium">
               Your trusted online shop
             </p>
@@ -84,15 +96,13 @@ export default function Footer() {
             </h2>
             <ul className="text-neutral-content text-[15px]">
               <li className="mb-1">
-                <p className="italic">
-                  House No# 40, Road No# 7, Block# C, Banasree, Dhaka 1219
-                </p>
+                <p className="italic">{contact?.data?.address}</p>
               </li>
               <li className="mb-1">
-                <p>+8801647-534496</p>
+                <p>{contact?.data?.phone}</p>
               </li>
               <li>
-                <p>aestheticfashion@gmail.com</p>
+                <p>{contact?.data?.email}</p>
               </li>
             </ul>
           </div>

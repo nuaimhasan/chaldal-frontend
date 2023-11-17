@@ -2,19 +2,27 @@ import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 import Swal from "sweetalert2";
-import { useGetCategoryQuery } from "../../../../Redux/category/categoryApi";
-import { useParams } from "react-router-dom";
+import {
+  useGetCategoryQuery,
+  useUpdateCategoryMutation,
+} from "../../../../Redux/category/categoryApi";
+import { useNavigate, useParams } from "react-router-dom";
+import Spinner from "../../../../components/Spinner/Spinner";
+import { useEffect } from "react";
 
 export default function Editcategory() {
   const { id } = useParams();
-  const { data } = useGetCategoryQuery(id);
+  const { data, isLoading } = useGetCategoryQuery(id);
   const category = data?.data;
+  const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
+  const [updateCategory, { isLoading: updateLoading, isSuccess, isError }] =
+    useUpdateCategoryMutation();
+
   const [icons, seticons] = useState([]);
   const [name, setName] = useState(category?.name);
 
-  const handleEdit = () => {
+  const handleUpdateCategory = () => {
     let icon = icons[0]?.file;
 
     const formData = new FormData();
@@ -23,36 +31,23 @@ export default function Editcategory() {
       formData.append("icon", icon);
     }
 
-    setLoading(true);
-
-    fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/category/updateCategory/${
-        category?.uuid
-      }`,
-      {
-        method: "PUT",
-        headers: {
-          authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
-        },
-        body: formData,
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.success) {
-          Swal.fire("", "update success", "success");
-          setInterval(() => {
-            location.reload();
-          }, 1000);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-
-    setLoading(false);
+    updateCategory({ id, formData });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire("", "update success", "success");
+      seticons([]);
+      navigate("/admin/category/categories");
+    }
+    if (isError) {
+      Swal.fire("", "update fail, please try again", "error");
+    }
+  }, [isSuccess, isError]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="p-4 bg-base-100 shadhow rounded sm:w-1/2">
@@ -118,11 +113,11 @@ export default function Editcategory() {
 
       <div className="mt-4">
         <button
-          onClick={handleEdit}
+          onClick={handleUpdateCategory}
           className="bg-primary text-base-100 px-6 py-1.5 rounded"
-          disabled={loading && "disabled"}
+          disabled={updateLoading && "disabled"}
         >
-          {loading ? "Loading.." : "Update"}
+          {updateLoading ? "Loading.." : "Update"}
         </button>
       </div>
     </div>

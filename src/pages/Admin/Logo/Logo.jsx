@@ -1,10 +1,91 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
+import Spinner from "../../../components/Spinner/Spinner";
+import Swal from "sweetalert2";
+
+import {
+  useGetDashboardLogoQuery,
+  useGetMainLogoQuery,
+  useUpdateDashboardLogoMutation,
+  useUpdateMainLogoMutation,
+} from "../../../Redux/logo/logoApi";
 
 export default function Logo() {
   const [mainLogos, setMainLogos] = useState([]);
   const [dashboardLogos, setDashboardLogos] = useState([]);
+  const { data: mainLogo, isLoading } = useGetMainLogoQuery();
+  const { data: dashboardLogo, isLoading: dashboardLoading } =
+    useGetDashboardLogoQuery();
+
+  const [
+    updateMainLogo,
+    {
+      isLoading: mainLogoLoading,
+      isSuccess: mainLogoSuccess,
+      isError: mainLogoError,
+    },
+  ] = useUpdateMainLogoMutation();
+  const [
+    updateDashboardLogo,
+    {
+      isLoading: dashboardUpdateLoading,
+      isSuccess: dashboardSuccess,
+      isError: dashboardError,
+    },
+  ] = useUpdateDashboardLogoMutation();
+
+  const handleUpdateMainLogo = () => {
+    let logo = mainLogos[0]?.file;
+    const id = mainLogo?.data?.uuid;
+
+    if (!logo) {
+      return Swal.fire("", "Logo is Recuired", "error");
+    }
+
+    const formData = new FormData();
+    formData.append("logo", logo);
+
+    updateMainLogo({ id, formData });
+  };
+
+  const handleUpdateDashboardLogo = () => {
+    let logo = dashboardLogos[0]?.file;
+    const id = dashboardLogo?.data?.uuid;
+
+    if (!logo) {
+      return Swal.fire("", "Logo is Recuired", "error");
+    }
+
+    const formData = new FormData();
+    formData.append("logo", logo);
+
+    updateDashboardLogo({ id, formData });
+  };
+
+  useEffect(() => {
+    if (mainLogoSuccess) {
+      Swal.fire("", "Logo Update success", "success");
+      setMainLogos([]);
+    }
+
+    if (mainLogoError) {
+      Swal.fire("", "somethin wrong, please try again", "error");
+    }
+
+    if (dashboardSuccess) {
+      Swal.fire("", "Logo Update success", "success");
+      setDashboardLogos([]);
+    }
+
+    if (dashboardError) {
+      Swal.fire("", "somethin wrong, please try again", "error");
+    }
+  }, [mainLogoSuccess, mainLogoError, dashboardSuccess, dashboardError]);
+
+  if (isLoading || dashboardLoading) {
+    return <Spinner />;
+  }
 
   return (
     <section>
@@ -16,9 +97,9 @@ export default function Logo() {
         <div className="bg-base-100 rounded shadow">
           <div>
             <p className="text-neutral-content border-b p-3">
-              Main Logo <small>(max 150px/50px)</small>
+              Main Logo <small>(max 120px/56px)</small>
             </p>
-            <div className="p-4">
+            <div className="p-4 sm:flex items-center gap-4">
               <ImageUploading
                 value={mainLogos}
                 onChange={(icn) => setMainLogos(icn)}
@@ -56,20 +137,36 @@ export default function Logo() {
                   </div>
                 )}
               </ImageUploading>
+
+              {mainLogo?.data?.logo && mainLogos?.length >= 0 && (
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_URL}/images/logos/${
+                    mainLogo?.data?.logo
+                  }`}
+                  alt=""
+                  className="w-32 mt-4"
+                />
+              )}
             </div>
           </div>
 
           <div className="flex justify-end mt-6 border-t p-4">
-            <button className="primary_btn">Update Logo</button>
+            <button
+              disabled={mainLogoLoading && "disabled"}
+              onClick={handleUpdateMainLogo}
+              className="primary_btn"
+            >
+              {mainLogoLoading ? "Loading" : "Update Logo"}
+            </button>
           </div>
         </div>
 
         <div className="bg-base-100 rounded shadow">
           <div>
             <p className="text-neutral-content border-b p-3">
-              Dashboard Logo <small>(max 150px/50px)</small>
+              Dashboard Logo <small>(max 150px/80px)</small>
             </p>
-            <div className="p-4">
+            <div className="p-4 sm:flex items-center gap-4">
               <ImageUploading
                 value={dashboardLogos}
                 onChange={(icn) => setDashboardLogos(icn)}
@@ -107,11 +204,29 @@ export default function Logo() {
                   </div>
                 )}
               </ImageUploading>
+
+              {dashboardLogo?.data?.logo && dashboardLogos?.length >= 0 && (
+                <img
+                  src={`${import.meta.env.VITE_BACKEND_URL}/images/logos/${
+                    dashboardLogo?.data?.logo
+                  }`}
+                  alt=""
+                  className="w-32 mt-4"
+                />
+              )}
             </div>
           </div>
 
           <div className="flex justify-end mt-6 border-t p-4">
-            <button className="primary_btn">Update Logo</button>
+            <div className="flex justify-end mt-6 border-t p-4">
+              <button
+                disabled={dashboardUpdateLoading && "disabled"}
+                onClick={handleUpdateDashboardLogo}
+                className="primary_btn"
+              >
+                {dashboardUpdateLoading ? "Loading" : "Update Logo"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
