@@ -5,12 +5,14 @@ import { UseContext } from "../../ContextApi/ContextApi";
 import { cities, districts } from "../../Data/location";
 import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
   window.scroll(0, 0);
   const { carts, setCarts } = UseContext();
   const { loggedUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [cityDropdown, setCityDropdown] = useState(false);
   const [city, setCity] = useState("");
@@ -114,11 +116,12 @@ export default function Checkout() {
       .then((res) => res.json())
       .then((data) => {
         if (data?.status) {
+          Swal.fire("", "order success", "success");
           setCarts([]);
           form.reset();
           setCity("");
           setDistrict("");
-          Swal.fire("success", data?.message, "success");
+          navigate("/shops");
         } else {
           toast.error("Something Wrong");
         }

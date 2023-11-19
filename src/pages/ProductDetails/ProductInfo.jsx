@@ -17,6 +17,11 @@ const ProductInfo = ({ product }) => {
   const { title, image, discount, brand, category, price, stock, variants } =
     product;
 
+  const totalQuantity = variants?.reduce(
+    (total, item) => total + parseInt(item.quantity),
+    0
+  );
+
   const colors = [...new Set(variants?.map((color) => color.colorName))];
   const sizes = [...new Set(variants?.map((size) => size.size))];
 
@@ -104,7 +109,7 @@ const ProductInfo = ({ product }) => {
             </p>
             <p>
               <span className="text-neutral/80">Available Stock:</span>{" "}
-              <span>{stock}</span>
+              <span>{totalQuantity}</span>
             </p>
           </div>
         </div>

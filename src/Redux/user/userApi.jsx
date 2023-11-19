@@ -34,6 +34,14 @@ export const userApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+    editUserInfo: builder.mutation({
+      query: ({ id, userInfo }) => ({
+        url: `/user/update/info/${id}`,
+        method: "PUT",
+        body: userInfo,
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
 
@@ -43,4 +51,5 @@ export const {
   useAllAdministratorQuery,
   useDeleteAdministratorMutation,
   useAddAdministratorMutation,
+  useEditUserInfoMutation,
 } = userApi;

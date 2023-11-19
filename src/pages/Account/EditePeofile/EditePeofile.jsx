@@ -1,55 +1,51 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { useEditUserInfoMutation } from "../../../Redux/user/userApi";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function EditePeofile() {
   window.scroll(0, 0);
   const { loggedUser } = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(false);
+
   const { id, name, phone, email, city, district, street } = loggedUser?.data;
+  const [editUserInfo, { isLoading, isSuccess, isError }] =
+    useEditUserInfoMutation();
+  const navigate = useNavigate();
 
   const handleEditProfile = async (e) => {
     e.preventDefault();
 
     const form = e.target;
     const name = form.name.value;
-    const phone = form.phone.value;
+    const email = form.email.value;
     const city = form.city.value;
     const district = form.district.value;
     const street = form.street.value;
 
     const userInfo = {
       name,
-      phone,
+      email,
       city,
       district,
       street,
     };
 
-    setLoading(true);
-
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/user/update/info/${id}`, {
-      method: "PUT",
-      headers: {
-        "content-type": "application/json",
-        authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
-      },
-      body: JSON.stringify(userInfo),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.success) {
-          Swal.fire("Update success", "", "success");
-          location.reload();
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
-    setLoading(false);
+    editUserInfo({ id, userInfo });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire("", "update success", "success");
+      navigate("/account/profile");
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }
+    if (isError) {
+      Swal.fire("", "update fail", "error");
+    }
+  }, [isSuccess, isError]);
 
   return (
     <div>
@@ -74,8 +70,8 @@ export default function EditePeofile() {
             type="text"
             className="w-full border outline-none rounded px-3 py-1.5 mb-4"
             defaultValue={phone}
-            name="phone"
             required
+            disabled
           />
         </div>
 
@@ -83,10 +79,9 @@ export default function EditePeofile() {
           <p>Email</p>
           <input
             type="pail"
+            name="email"
             className="w-full border outline-none rounded px-3 py-1.5 mb-4"
             defaultValue={email}
-            required
-            disabled
           />
         </div>
 
@@ -123,9 +118,9 @@ export default function EditePeofile() {
           <button
             type="submite"
             className="w-full text-center bg-primary text-base-100 py-2 rounded scale-[1] hover:scale-[.99] duration-300"
-            disabled={loading && "disabled"}
+            disabled={isLoading && "disabled"}
           >
-            {loading ? "Loading..." : "Update Profile"}
+            {isLoading ? "Loading..." : "Update Profile"}
           </button>
         </div>
       </form>

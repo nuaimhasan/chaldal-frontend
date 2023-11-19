@@ -46,9 +46,11 @@ export default function Profile() {
       }
       const result = await response.json();
       if (result?.success) {
-        Swal.fire("Image update success", "", "success");
+        Swal.fire("", "Image update success", "success");
         setModal(false);
-        location.reload();
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
       } else {
         Swal.fire("Something went worng", "", "error");
       }

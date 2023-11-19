@@ -45,17 +45,30 @@ export default function Categories() {
   }
 
   return (
-    <div className="relative overflow-x-auto shadow-lg">
-      <table className="dashboard_table">
-        <thead>
-          <tr>
-            <th>SL</th>
-            <th>Product name</th>
-            <th>Category</th>
-          </tr>
-        </thead>
-        <tbody>{content}</tbody>
-      </table>
+    <div>
+      {data?.data?.length < 10 && (
+        <div className="flex justify-end mb-2">
+          <Link
+            to="/admin/category/add-category"
+            className="primary_btn text-sm"
+          >
+            Add New Category
+          </Link>
+        </div>
+      )}
+
+      <div className="relative overflow-x-auto shadow-lg">
+        <table className="dashboard_table">
+          <thead>
+            <tr>
+              <th>SL</th>
+              <th>Product name</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>{content}</tbody>
+        </table>
+      </div>
     </div>
   );
 }

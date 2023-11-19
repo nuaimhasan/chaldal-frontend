@@ -11,6 +11,7 @@ import { useEffect } from "react";
 
 export default function ProductList() {
   const { data, isLoading, isError, error } = useGetProductsQuery({});
+
   const [
     deleteProduct,
     { isSuccess, isError: deleteIsError, error: deleteError },
@@ -64,7 +65,6 @@ export default function ProductList() {
         </td>
         <td>{product?.category}</td>
         <td>${product?.price}</td>
-        <td></td>
         <td>
           <div className="flex items-center gap-4">
             <Link
@@ -95,7 +95,6 @@ export default function ProductList() {
             <th>Product name</th>
             <th>Category</th>
             <th>Price</th>
-            <th>Stock</th>
             <th>Action</th>
           </tr>
         </thead>

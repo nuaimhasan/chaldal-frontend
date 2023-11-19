@@ -25,7 +25,7 @@ const ChooseByCategory = () => {
               category?.icon
             }`}
             alt=""
-            className="w-20 h-20 mx-auto"
+            className="w-16 h-16 mx-auto"
           />
           <h6 className="mt-2 font-medium">{category?.name}</h6>
         </div>

@@ -1,25 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiUser } from "react-icons/hi";
 import { MdEmail } from "react-icons/md";
 import { AiFillLock, AiTwotonePhone } from "react-icons/ai";
 import { useState } from "react";
 import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
 import Swal from "sweetalert2";
+import { useRegisterMutation } from "../../Redux/user/authApi";
+import { useEffect } from "react";
 
 export default function Signup() {
   window.scroll(0, 0);
   const [errorMesssage, setErrorMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [register, { data, isSuccess, isLoading, isError, error }] =
+    useRegisterMutation();
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
     const form = e.target;
     const name = form.name.value;
+    const phone = form.phone.value;
     const email = form.email.value;
-    const phone = form.number.value;
     const password = form.password.value;
     const re_password = form.re_password.value;
+
+    const phoneRegex = /^\d{11}$/;
+    const isValidPhoneNumber = phoneRegex.test(phone);
+    if (!isValidPhoneNumber) {
+      return Swal.fire("", "Please give valid phone number!", "error");
+    }
 
     if (password.length < 8) {
       return setErrorMessage("Password must be 8 character");
@@ -31,41 +41,29 @@ export default function Signup() {
 
     const userInfo = {
       name,
+      phone,
       email,
       password,
-      phone,
+      role: "user",
     };
 
-    setLoading(true);
-
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/user/process-register`, {
-      method: "POST",
-      headers: {
-        "content-Type": "application/json",
-      },
-      body: JSON.stringify(userInfo),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data?.success) {
-          setErrorMessage(data?.message);
-        }
-        if (data?.success) {
-          form.reset();
-          Swal.fire(
-            "Thank you for register Aestheticcloth",
-            `Please go to ${email}, and verify Aestheticcloth account`,
-            "success"
-          );
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    register(userInfo);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire("", "Register success, Please Login now", "success");
+      navigate("/login");
+    }
+
+    if (isError) {
+      Swal.fire(
+        "",
+        error?.data?.message ? error?.data?.message : "register fail",
+        "error"
+      );
+    }
+  }, [isError, isSuccess]);
 
   return (
     <div className="py-6 bg-gray-50">
@@ -85,7 +83,21 @@ export default function Signup() {
                 <input
                   name="name"
                   type="text"
-                  placeholder="Full Name"
+                  placeholder="Full Name *"
+                  className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
+                  required
+                />
+              </div>
+
+              {/* Phone */}
+              <div className="mb-6 relative">
+                <span className="absolute bottom-2 text-neutral/80">
+                  <AiTwotonePhone className="text-lg" />
+                </span>
+                <input
+                  name="phone"
+                  type="text"
+                  placeholder="Number *"
                   className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
                   required
                 />
@@ -101,21 +113,6 @@ export default function Signup() {
                   type="email"
                   placeholder="Email"
                   className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
-                  required
-                />
-              </div>
-
-              {/* Phone */}
-              <div className="mb-6 relative">
-                <span className="absolute bottom-2 text-neutral/80">
-                  <AiTwotonePhone className="text-lg" />
-                </span>
-                <input
-                  name="number"
-                  type="text"
-                  placeholder="Number"
-                  className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
-                  required
                 />
               </div>
 
@@ -127,7 +124,7 @@ export default function Signup() {
                 <input
                   name="password"
                   type="password"
-                  placeholder="Password"
+                  placeholder="Password *"
                   className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
                   required
                 />
@@ -141,7 +138,7 @@ export default function Signup() {
                 <input
                   name="re_password"
                   type="password"
-                  placeholder="Re-Password"
+                  placeholder="Re-Password *"
                   className="w-full border-b focus:border-b-primary outline-none pl-6 pb-1 placeholder:font-light"
                   required
                 />
@@ -154,9 +151,9 @@ export default function Signup() {
               <button
                 type="submit"
                 className="w-full py-2 font-semibold text-base-100 bg-primary rounded hover:bg-opacity-90 duration-300 flex justify-center"
-                disabled={loading && "disabled"}
+                disabled={isLoading && "disabled"}
               >
-                {loading ? <ButtonSpinner /> : "Create my account"}
+                {isLoading ? <ButtonSpinner /> : "Create my account"}
               </button>
             </div>
           </form>

@@ -39,6 +39,7 @@ import Banner from "../pages/Admin/Home/Banner/Banner";
 import AddBanner from "../pages/Admin/Home/Banner/AddBanner";
 import Administrator from "../pages/Admin/Administrator/Administrator";
 import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
+import Addcategory from "../pages/Admin/Categories/AddCategory/AddCategory";
 
 export const routes = createBrowserRouter([
   {
@@ -140,6 +141,10 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/category/categories",
         element: <Categories />,
+      },
+      {
+        path: "/admin/category/add-category",
+        element: <Addcategory />,
       },
       {
         path: "/admin/category/edit/:id",

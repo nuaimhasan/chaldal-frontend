@@ -3,6 +3,14 @@ import { userLoggedIn } from "./userSlice";
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    register: builder.mutation({
+      query: (userInfo) => ({
+        url: "/user/register",
+        method: "POST",
+        body: userInfo,
+      }),
+    }),
+
     login: builder.mutation({
       query: (loginInfo) => ({
         url: "/user/login",
@@ -31,4 +39,4 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation } = authApi;
