@@ -16,7 +16,7 @@ const PopularProducts = () => {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <ProductCard key={product?.uuid} product={product} />
+      <ProductCard key={product?.id} product={product} />
     ));
   }
 

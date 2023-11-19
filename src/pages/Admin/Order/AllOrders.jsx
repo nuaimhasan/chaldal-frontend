@@ -15,13 +15,13 @@ export default function AllOrders() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((order) => (
-      <tr key={order?.uuid}>
-        <td>{order?.uuid}</td>
+      <tr key={order?.id}>
+        <td>{order?.id}</td>
         <td>{order?.products?.length}</td>
         <td>{order?.status}</td>
         <td>
           <Link
-            to={`/admin/order/${order?.uuid}`}
+            to={`/admin/order/${order?.id}`}
             className="flex gap-1 items-center hover:text-green-700 duration-300"
           >
             <GrView />

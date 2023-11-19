@@ -33,7 +33,7 @@ export default function Profile() {
     };
 
     let url = `${import.meta.env.VITE_BACKEND_URL}/user/updateImage/${
-      loggedUser?.data?.uuid
+      loggedUser?.data?.id
     }`;
 
     setLoading(true);

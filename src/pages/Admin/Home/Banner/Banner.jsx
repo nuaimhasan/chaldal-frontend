@@ -58,7 +58,7 @@ export default function Banner() {
             </thead>
             <tbody>
               {data?.data?.map((banner, i) => (
-                <tr key={banner?.uuid}>
+                <tr key={banner?.id}>
                   <td>{i + 1}</td>
                   <td>
                     <div className="flex items-center gap-2">
@@ -73,7 +73,7 @@ export default function Banner() {
                   </td>
                   <td>
                     <button
-                      onClick={() => handleDeleteBanner(banner?.uuid)}
+                      onClick={() => handleDeleteBanner(banner?.id)}
                       className="hover:text-red-500 duration-200"
                     >
                       Delete

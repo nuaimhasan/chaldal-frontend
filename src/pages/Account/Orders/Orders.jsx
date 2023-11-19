@@ -3,7 +3,7 @@ import { useGetMyOrdersQuery } from "../../../Redux/order/orderApi";
 
 export default function Orders() {
   const { loggedUser } = useSelector((state) => state.user);
-  const userId = loggedUser?.data?.uuid;
+  const userId = loggedUser?.data?.id;
   console.log(userId);
   const { data, isLoading, isError, error } = useGetMyOrdersQuery(userId);
   console.log(data);
@@ -17,11 +17,11 @@ export default function Orders() {
   }
   if (!isLoading && !isError) {
     content = data?.data?.orders?.map((order) => (
-      <tr key={order?.uuid}>
+      <tr key={order?.id}>
         <td className="py-2 px-4">
           <div className="w-max">
             <p>
-              <span className="text-primary">#{order?.uuid}</span>
+              <span className="text-primary">#{order?.id}</span>
             </p>
             <p className="text-xs text-neutral/70">
               Placed on {order?.createdAt}

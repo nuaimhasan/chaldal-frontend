@@ -4,6 +4,7 @@ import JoditEditor from "jodit-react";
 import Swal from "sweetalert2";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
 import { MdOutlineClose } from "react-icons/md";
+import { useAddProductMutation } from "../../../Redux/product/productApi";
 
 const options = [
   {
@@ -28,16 +29,29 @@ export default function AddProduct() {
   const editor = useRef(null);
   const [image, setImage] = useState("");
   const [details, setDetails] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const [colorDropdown, setColorDropdown] = useState(false);
   const [searchColor, setSearchColor] = useState("");
+  // Remove Color Dropdown click other side
+  useEffect(() => {
+    window.addEventListener("click", (e) => {
+      if (!e.target.closest(".color") && !e.target.closest(".color_search")) {
+        setColorDropdown(false);
+        setSearchColor("");
+      }
+    });
+  }, [setColorDropdown, setSearchColor]);
 
   const [color, setColor] = useState("");
   const [colorCode, setColorCode] = useState("");
-  // const [size, setSize] = useState("");
-  // const [quantity, setQuantity] = useState("");
   const [variants, setVariants] = useState([]);
+  const totalQuantity = variants?.reduce(
+    (total, item) => total + parseInt(item.quantity),
+    0
+  );
+
+  const [addProduct, { isSuccess, isLoading, isError, error }] =
+    useAddProductMutation();
 
   const handleAddVariant = (e) => {
     e.preventDefault();
@@ -69,16 +83,6 @@ export default function AddProduct() {
     setVariants(newVariants);
   };
 
-  // Remove Color Dropdown click other side
-  useEffect(() => {
-    window.addEventListener("click", (e) => {
-      if (!e.target.closest(".color") && !e.target.closest(".color_search")) {
-        setColorDropdown(false);
-        setSearchColor("");
-      }
-    });
-  }, [setColorDropdown, setSearchColor]);
-
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImage(file);
@@ -87,9 +91,13 @@ export default function AddProduct() {
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
+    if (variants?.length <= 0) {
+      return alert("product variant is required");
+    }
+
     const form = e.target;
-    const title = form.title.value;
     const category = form.category.value;
+    const title = form.title.value;
     const price = form.price.value;
     const discount = form.discount.value;
     const brand = form.brand.value;
@@ -103,33 +111,28 @@ export default function AddProduct() {
     formData.append("discount", discount);
     formData.append("brand", brand);
     formData.append("description", description);
+    formData.append("variants", JSON.stringify(variants));
 
-    setLoading(true);
+    addProduct(formData);
 
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/product/add-product`, {
-      method: "POST",
-      headers: {
-        authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
-      },
-      body: formData,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.success) {
-          form.reset();
-          setImage("");
-          Swal.fire("", "Product add sccess", "success");
-          setLoading(false);
-          setInterval(() => {
-            location.reload();
-          }, 1000);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
+    form.reset();
+    setVariants([]);
+    setImage("");
+    setDetails("");
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire("", "Product add success", "success");
+    }
+    if (isError) {
+      Swal.fire(
+        "",
+        error?.message ? error?.message : "Product add Fail, please try again",
+        "error"
+      );
+    }
+  }, [isSuccess, isError, error]);
 
   return (
     <div className="add_product  bg-base-100 rounded shadow p-4">
@@ -171,7 +174,7 @@ export default function AddProduct() {
           </div>
 
           <div className="mt-4 border rounded p-4 form_group">
-            <p className="text-sm">Variations</p>
+            <p className="text-sm">Variations & Stock</p>
             <form
               onSubmit={handleAddVariant}
               className="mt-1 grid grid-cols-4 gap-1 items-center"
@@ -277,7 +280,7 @@ export default function AddProduct() {
               <p className="text-sm">Category</p>
               <select name="category">
                 {categories?.data?.map((category) => (
-                  <option key={category?.uuid} value={category?.slug}>
+                  <option key={category?.id} value={category?.slug}>
                     {category?.name}
                   </option>
                 ))}
@@ -299,7 +302,11 @@ export default function AddProduct() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm">Total Stock</p>
-                <input type="number" name="stock" required />
+                <input
+                  type="number"
+                  // name="stock"
+                  value={totalQuantity}
+                />
               </div>
 
               <div>
@@ -323,10 +330,10 @@ export default function AddProduct() {
 
           <div className="mt-6 flex justify-end">
             <button
-              disabled={loading && "disabled"}
+              disabled={isLoading && "disabled"}
               className="bg-primary text-base-100 px-10 py-2 rounded"
             >
-              {loading ? "loading..." : "Add Product"}
+              {isLoading ? "loading..." : "Add Product"}
             </button>
           </div>
         </form>

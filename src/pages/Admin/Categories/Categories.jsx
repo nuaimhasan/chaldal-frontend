@@ -15,7 +15,7 @@ export default function Categories() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((category, i) => (
-      <tr key={category?.uuid}>
+      <tr key={category?.id}>
         <td>{i + 1}</td>
         <td>
           <div className="flex items-center gap-2">
@@ -32,7 +32,7 @@ export default function Categories() {
         <td>
           <div className="flex items-center gap-4">
             <Link
-              to={`/admin/category/edit/${category?.uuid}`}
+              to={`/admin/category/edit/${category?.id}`}
               className="flex gap-1 items-center hover:text-green-700 duration-300"
             >
               <BiSolidPencil />

@@ -5,7 +5,7 @@ import { UseContext } from "../../../ContextApi/ContextApi";
 export default function CartItem({ product }) {
   const { handelIncreaseCart, handelDecreaseCart, handelDeleteCart } =
     UseContext();
-  const { uuid, image, title, slug, discount, price, quantity, size } = product;
+  const { id, image, title, slug, discount, price, quantity, size } = product;
 
   const discountPrice = parseInt(price - (price * discount) / 100);
   const total =
@@ -20,7 +20,7 @@ export default function CartItem({ product }) {
             alt={title}
             className="w-10 h-10 rounded-lg"
           />
-          <Link to={`/product/${uuid}`} className="leading-3">
+          <Link to={`/product/${id}`} className="leading-3">
             <h3 className="text-[17px] text-neutral">
               {title.length > 30 ? `${title.slice(0, 30)}...` : title}{" "}
             </h3>

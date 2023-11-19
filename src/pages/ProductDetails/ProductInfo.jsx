@@ -8,7 +8,7 @@ const ProductInfo = ({ product }) => {
   const navigate = useNavigate();
   const { wishlists, setCarts, handelAddToCart, handelAddToWishlist } =
     UseContext();
-  const isWishlist = wishlists?.find((item) => item.uuid === product.uuid);
+  const isWishlist = wishlists?.find((item) => item.id === product.id);
   const [quantity, setQuantity] = useState(1);
 
   const { title, image, discount, brand, category, price, size, color, stock } =
@@ -26,7 +26,7 @@ const ProductInfo = ({ product }) => {
 
   const handleBuyNow = () => {
     const cartProduct = {
-      uuid: product.uuid,
+      id: product.id,
       title: product.title,
       image: product.image,
       discount: product.discount,

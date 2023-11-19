@@ -55,7 +55,7 @@ export default function SearchBox() {
                 className="hover:bg-gray-100 p-1"
               >
                 <Link
-                  to={`/product/${product?.uuid}`}
+                  to={`/product/${product?.id}`}
                   className="flex gap-2 items-center"
                 >
                   <img

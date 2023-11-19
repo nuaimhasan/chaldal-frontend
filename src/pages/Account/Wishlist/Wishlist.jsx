@@ -16,11 +16,11 @@ export default function Wishlist() {
         </thead>
         <tbody>
           {wishlists?.map((product) => (
-            <tr key={product?.uuid} className="border-b text-neutral/80">
+            <tr key={product?.id} className="border-b text-neutral/80">
               <td className="p-2">
                 <div className="w-max flex gap-2 items-center">
                   <img src="" alt="" className="w-10 h-10 rounded-full" />
-                  <Link to={`/product/${product.uuid}`}>
+                  <Link to={`/product/${product.id}`}>
                     <h3 className="text-neutral">
                       {product?.title?.length > 40
                         ? product?.title.slice(0, 40) + "..."

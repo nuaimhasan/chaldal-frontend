@@ -40,7 +40,7 @@ export default function Administrator() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((user) => (
-      <tr key={user?.uuid}>
+      <tr key={user?.id}>
         <td>
           <div className="flex items-center gap-2">
             <img
@@ -57,7 +57,7 @@ export default function Administrator() {
         <td>{user?.phone}</td>
         <td>{user?.role}</td>
         <td>
-          <button onClick={() => handleDlete(user?.uuid)}>
+          <button onClick={() => handleDlete(user?.id)}>
             <AiOutlineDelete className="text-lg hover:text-red-500" />
           </button>
         </td>

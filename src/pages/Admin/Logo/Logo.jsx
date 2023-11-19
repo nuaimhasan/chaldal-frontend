@@ -37,7 +37,7 @@ export default function Logo() {
 
   const handleUpdateMainLogo = () => {
     let logo = mainLogos[0]?.file;
-    const id = mainLogo?.data?.uuid;
+    const id = mainLogo?.data?.id;
 
     if (!logo) {
       return Swal.fire("", "Logo is Recuired", "error");
@@ -51,7 +51,7 @@ export default function Logo() {
 
   const handleUpdateDashboardLogo = () => {
     let logo = dashboardLogos[0]?.file;
-    const id = dashboardLogo?.data?.uuid;
+    const id = dashboardLogo?.data?.id;
 
     if (!logo) {
       return Swal.fire("", "Logo is Recuired", "error");

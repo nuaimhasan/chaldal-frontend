@@ -1,34 +1,42 @@
 import { Link } from "react-router-dom";
 import { BiSolidPencil } from "react-icons/bi";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useGetProductsQuery } from "../../../Redux/product/productApi";
+import {
+  useDeleteProductMutation,
+  useGetProductsQuery,
+} from "../../../Redux/product/productApi";
 import Spinner from "../../../components/Spinner/Spinner";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 export default function ProductList() {
   const { data, isLoading, isError, error } = useGetProductsQuery({});
+  const [
+    deleteProduct,
+    { isSuccess, isError: deleteIsError, error: deleteError },
+  ] = useDeleteProductMutation();
 
-  const handleDeleteProduct = async (uuid) => {
+  const handleDeleteProduct = async (id) => {
     const isConfirm = window.confirm("Are you sure delete this product?");
     if (isConfirm) {
-      fetch(`${import.meta.env.VITE_BACKEND_URL}/product/delete/${uuid}`, {
-        method: "DELETE",
-        headers: {
-          authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          if (data?.success) {
-            Swal.fire("", "Product Delete Success", "success");
-            location.reload();
-          } else {
-            Swal.fire("", "something went worng, please try again", "error");
-          }
-        });
+      deleteProduct(id);
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      Swal.fire("", "Product Delete Success", "success");
+    }
+    if (deleteIsError) {
+      Swal.fire(
+        "",
+        deleteError?.message
+          ? deleteError?.message
+          : "something went worng, please try again",
+        "error"
+      );
+    }
+  }, [isSuccess, deleteIsError, deleteError]);
 
   let content = null;
   if (isLoading) {
@@ -39,7 +47,7 @@ export default function ProductList() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <tr key={product?.uuid}>
+      <tr key={product?.id}>
         <td>
           <div className="flex items-center gap-2">
             <img
@@ -59,14 +67,14 @@ export default function ProductList() {
         <td>
           <div className="flex items-center gap-4">
             <Link
-              to={`/admin/product/edit-product/${product?.uuid}`}
+              to={`/admin/product/edit-product/${product?.id}`}
               className="flex gap-1 items-center hover:text-green-700 duration-300"
             >
               <BiSolidPencil />
               Edit
             </Link>
             <button
-              onClick={() => handleDeleteProduct(product?.uuid)}
+              onClick={() => handleDeleteProduct(product?.id)}
               className="flex gap-1 items-center text-red-500"
             >
               <AiOutlineDelete />

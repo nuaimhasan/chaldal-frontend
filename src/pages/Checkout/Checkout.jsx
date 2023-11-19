@@ -90,11 +90,11 @@ export default function Checkout() {
 
     const products = [];
     carts.map((product) =>
-      products.push({ productId: product.uuid, quantity: product.quantity })
+      products.push({ productId: product.id, quantity: product.quantity })
     );
 
     const order = {
-      userId: loggedUser?.data?.uuid,
+      userId: loggedUser?.data?.id,
       city,
       district,
       street,

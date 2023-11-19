@@ -177,7 +177,7 @@ export default function EditProduct() {
               <p className="text-sm">Category</p>
               <select name="category" defaultValue={data?.data?.category}>
                 {categories?.data?.map((category) => (
-                  <option key={category?.uuid} value={category?.slug}>
+                  <option key={category?.id} value={category?.slug}>
                     {category?.name}
                   </option>
                 ))}

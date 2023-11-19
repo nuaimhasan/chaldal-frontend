@@ -6,7 +6,7 @@ export default function EditePeofile() {
   window.scroll(0, 0);
   const { loggedUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  const { uuid, name, phone, email, city, district, street } = loggedUser?.data;
+  const { id, name, phone, email, city, district, street } = loggedUser?.data;
 
   const handleEditProfile = async (e) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ export default function EditePeofile() {
 
     setLoading(true);
 
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/user/update/info/${uuid}`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/user/update/info/${id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
