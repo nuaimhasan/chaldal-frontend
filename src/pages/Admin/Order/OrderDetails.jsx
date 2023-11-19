@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useGetOrderQuery } from "../../../Redux/order/orderApi";
 import Swal from "sweetalert2";
-import { useState } from "react";
 
 export default function OrderDetails() {
   const params = useParams();
@@ -132,7 +131,8 @@ export default function OrderDetails() {
                         {product?.title} * {product?.order_items?.quantity}
                       </p>
                       <p className="text-sm">
-                        {product?.size} - {product?.color}
+                        {product?.order_items?.size} -{" "}
+                        {product?.order_items?.color}
                       </p>
                     </div>
                   </div>

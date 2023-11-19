@@ -1,12 +1,13 @@
 import { useSelector } from "react-redux";
 import { useGetMyOrdersQuery } from "../../../Redux/order/orderApi";
+import { Link } from "react-router-dom";
 
 export default function Orders() {
   const { loggedUser } = useSelector((state) => state.user);
   const userId = loggedUser?.data?.id;
   console.log(userId);
   const { data, isLoading, isError, error } = useGetMyOrdersQuery(userId);
-  console.log(data);
+  console.log(data?.data?.orders);
 
   let content = null;
   if (isLoading) {
@@ -20,9 +21,9 @@ export default function Orders() {
       <tr key={order?.id}>
         <td className="py-2 px-4">
           <div className="w-max">
-            <p>
+            <Link to={`/account/orders/${order?.id}`}>
               <span className="text-primary">#{order?.id}</span>
-            </p>
+            </Link>
             <p className="text-xs text-neutral/70">
               Placed on {order?.createdAt}
             </p>
@@ -33,7 +34,7 @@ export default function Orders() {
           <div className="flex flex-col gap-1">{order?.products?.length}</div>
         </td>
 
-        <td className="py-2 px-4 text-sm">Proccesing</td>
+        <td className="py-2 px-4 text-sm">{order?.status}</td>
       </tr>
     ));
   }

@@ -38,7 +38,9 @@ export default function ProductDetails() {
         <div className="bg-base-100 shadow-lg p-4 rounded mt-6">
           <h1 className="font-semibold text-lg">Product Description of</h1>
 
-          <div className="mt-3 pl-2 text-xl">{parcerDescription}</div>
+          <div className="mt-3 pl-2 text-sm text-neutral-content">
+            {parcerDescription}
+          </div>
         </div>
       </div>
     );

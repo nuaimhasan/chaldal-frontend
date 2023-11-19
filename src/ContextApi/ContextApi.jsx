@@ -48,8 +48,27 @@ const ContextProvider = ({ children }) => {
   }, [carts]);
 
   // // Add Cart
-  const handelAddToCart = ({ product, quantity }) => {
-    const existed = carts?.find((item) => item.id === product.id);
+  const handelAddToCart = ({
+    product,
+    quantity,
+    selectedSize,
+    selectedColor,
+  }) => {
+    if (product?.variants?.length > 0 && !selectedSize) {
+      return Swal.fire("Please Select Size", "", "warning");
+    }
+
+    if (product?.variants?.length > 0 && !selectedColor) {
+      return Swal.fire("Please Select Color", "", "warning");
+    }
+
+    const existed = carts?.find(
+      (item) =>
+        item.id === product.id &&
+        item.size === selectedSize &&
+        item.color === selectedColor
+    );
+
     if (existed) {
       return Swal.fire(
         "Already Added This Product",
@@ -57,6 +76,7 @@ const ContextProvider = ({ children }) => {
         "warning"
       );
     }
+
     const cartProduct = {
       id: product.id,
       title: product.title,
@@ -64,6 +84,8 @@ const ContextProvider = ({ children }) => {
       discount: product.discount,
       price: product.price,
       quantity: quantity || 1,
+      size: selectedSize,
+      color: selectedColor,
     };
     if (!existed) {
       setCarts([...carts, { ...cartProduct }]);
@@ -76,12 +98,19 @@ const ContextProvider = ({ children }) => {
 
   // Handel Increase Cart Quantity
   const handelIncreaseCart = (product) => {
-    const existed = carts?.find((item) => item.id === product.id);
+    const existed = carts?.find(
+      (item) =>
+        item._id === product._id &&
+        item.size === product.size &&
+        item.color === product.color
+    );
 
     if (existed) {
       setCarts(
         carts.map((item) =>
-          item.id === product.id
+          item._id === product._id &&
+          item.size === product.size &&
+          item.color === product.color
             ? { ...existed, quantity: existed.quantity + 1 }
             : item
         )
@@ -91,12 +120,19 @@ const ContextProvider = ({ children }) => {
 
   // Handel Decrease Cart Quantity
   const handelDecreaseCart = (product) => {
-    const existed = carts?.find((item) => item.id === product.id);
+    const existed = carts?.find(
+      (item) =>
+        item._id === product._id &&
+        item.size === product.size &&
+        item.color === product.color
+    );
 
     if (existed && existed?.quantity > 1) {
       setCarts(
         carts.map((item) =>
-          item.id === product.id
+          item._id === product._id &&
+          item.size === product.size &&
+          item.color === product.color
             ? { ...existed, quantity: existed.quantity - 1 }
             : item
         )
@@ -108,7 +144,13 @@ const ContextProvider = ({ children }) => {
   const handelDeleteCart = (product) => {
     const confirm = window.confirm("Are you sure delete this item");
     if (confirm) {
-      const newCart = carts?.filter((item) => item.id !== product.id);
+      const newCart = carts?.filter(
+        (item) =>
+          item.id !== product.id ||
+          item.color !== product.color ||
+          item.size !== product.size
+      );
+
       setCarts(newCart);
     }
   };

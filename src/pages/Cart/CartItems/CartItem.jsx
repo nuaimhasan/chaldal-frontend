@@ -5,7 +5,8 @@ import { UseContext } from "../../../ContextApi/ContextApi";
 export default function CartItem({ product }) {
   const { handelIncreaseCart, handelDecreaseCart, handelDeleteCart } =
     UseContext();
-  const { id, image, title, slug, discount, price, quantity, size } = product;
+  const { id, image, title, slug, discount, price, quantity, size, color } =
+    product;
 
   const discountPrice = parseInt(price - (price * discount) / 100);
   const total =
@@ -16,15 +17,18 @@ export default function CartItem({ product }) {
       <td className="p-3">
         <div className="w-max flex gap-2 items-center">
           <img
-            src={`http://localhost:5000/images/products/${image}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/images/products/${image}`}
             alt={title}
             className="w-10 h-10 rounded-lg"
           />
-          <Link to={`/product/${id}`} className="leading-3">
+          <Link to={`/product/${id}`} className="leading-4">
             <h3 className="text-[17px] text-neutral">
-              {title.length > 30 ? `${title.slice(0, 30)}...` : title}{" "}
+              {title.length > 30 ? `${title.slice(0, 30)}...` : title}
             </h3>
-            {size && <small>size:{size}</small>}
+            <p className="text-neutral-content">
+              {size && <small>size:{size}</small>}{" "}
+              {color && <small>color:{color}</small>}
+            </p>
           </Link>
         </div>
       </td>

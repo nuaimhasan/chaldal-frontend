@@ -74,23 +74,24 @@ export default function Checkout() {
   const handelPlaceOrder = (e) => {
     e.preventDefault();
 
-    setLoading(true);
-
     const form = e.target;
 
     const street = form.street.value;
-
     if (!city) {
       return alert("Please Provide Your City name");
     }
-
     if (!district) {
       return alert("Please Provide Your district name");
     }
 
     const products = [];
     carts.map((product) =>
-      products.push({ productId: product.id, quantity: product.quantity })
+      products.push({
+        productId: product.id,
+        quantity: product.quantity,
+        size: product.size,
+        color: product.color,
+      })
     );
 
     const order = {
@@ -100,6 +101,8 @@ export default function Checkout() {
       street,
       products,
     };
+
+    setLoading(true);
 
     fetch(`${import.meta.env.VITE_BACKEND_URL}/order/post-order`, {
       method: "POST",
@@ -299,10 +302,14 @@ export default function Checkout() {
                       key={i}
                       className="flex justify-between border-b py-1.5 text-sm text-paragraph"
                     >
-                      <h3>
-                        {product?.title} -{product?.size && product?.size}{" "}
-                        {product?.color && product?.color} × {product?.quantity}
-                      </h3>
+                      <div>
+                        <h3>{product?.title}</h3>
+                        <small className="text-neutral-content">
+                          {product?.size && product?.size}{" "}
+                          {product?.color && product?.color} ×{" "}
+                          {product?.quantity}
+                        </small>
+                      </div>
                       <p>
                         {parseInt(
                           product?.discount >= 1

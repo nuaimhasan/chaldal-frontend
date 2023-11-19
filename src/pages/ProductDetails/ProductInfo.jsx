@@ -3,6 +3,7 @@ import { FaOpencart } from "react-icons/fa";
 import { useState } from "react";
 import { UseContext } from "../../ContextApi/ContextApi";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ProductInfo = ({ product }) => {
   const navigate = useNavigate();
@@ -10,9 +11,30 @@ const ProductInfo = ({ product }) => {
     UseContext();
   const isWishlist = wishlists?.find((item) => item.id === product.id);
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
 
-  const { title, image, discount, brand, category, price, size, color, stock } =
+  const { title, image, discount, brand, category, price, stock, variants } =
     product;
+
+  const colors = [...new Set(variants?.map((color) => color.colorName))];
+  const sizes = [...new Set(variants?.map((size) => size.size))];
+
+  const handelSelectSize = (size) => {
+    if (selectedSize === size) {
+      setSelectedSize("");
+    } else {
+      setSelectedSize(size);
+    }
+  };
+
+  const handelColorSelect = (clr) => {
+    if (selectedColor === clr) {
+      setSelectedColor("");
+    } else {
+      setSelectedColor(clr);
+    }
+  };
 
   const handelIncrease = () => {
     setQuantity(quantity + 1);
@@ -25,6 +47,14 @@ const ProductInfo = ({ product }) => {
   };
 
   const handleBuyNow = () => {
+    if (variants?.length > 0 && !selectedSize) {
+      return Swal.fire("Please Select Size", "", "warning");
+    }
+
+    if (variants?.length > 0 && !selectedColor) {
+      return Swal.fire("Please Select Color", "", "warning");
+    }
+
     const cartProduct = {
       id: product.id,
       title: product.title,
@@ -32,6 +62,8 @@ const ProductInfo = ({ product }) => {
       discount: product.discount,
       price: product.price,
       quantity: quantity || 1,
+      size: selectedSize,
+      color: selectedColor,
     };
 
     setCarts([cartProduct]);
@@ -64,7 +96,7 @@ const ProductInfo = ({ product }) => {
           <div className="text-sm">
             <p>
               <span className="text-neutral/80">Brand:</span>{" "}
-              <span>{brand}</span>
+              <span>{brand ? brand : "No Brand"}</span>
             </p>
             <p>
               <span className="text-neutral/80">Category:</span>{" "}
@@ -74,22 +106,6 @@ const ProductInfo = ({ product }) => {
               <span className="text-neutral/80">Available Stock:</span>{" "}
               <span>{stock}</span>
             </p>
-            {size && size !== "" && (
-              <>
-                <p>
-                  <span className="text-neutral/80">Size:</span>{" "}
-                  <span>{size}</span>
-                </p>
-              </>
-            )}
-            {color && color !== "" && (
-              <>
-                <p>
-                  <span className="text-neutral/80">Color:</span>{" "}
-                  <span>{color}</span>
-                </p>
-              </>
-            )}
           </div>
         </div>
 
@@ -120,6 +136,47 @@ const ProductInfo = ({ product }) => {
             </div>
           </div>
         </div>
+
+        {/* Variants */}
+        {sizes?.length > 0 && (
+          <div className="flex gap-4 items-center my-4">
+            <p>Size :</p>
+
+            <div className="flex gap-2 items-center">
+              {sizes?.map((size) => (
+                <button
+                  key={size}
+                  onClick={() => handelSelectSize(size)}
+                  className={`${
+                    size === selectedSize && "bg-primary text-base-100"
+                  } text-[15px] py-1.5 px-2.5 rounded border scale-[.96] hover:scale-[1] hover:border-primary duration-300`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {colors?.length > 0 && (
+          <div className="flex gap-4 items-center my-4">
+            <p>Color :</p>
+
+            <div className="flex gap-2 items-center">
+              {colors?.map((clr) => (
+                <button
+                  key={clr}
+                  onClick={() => handelColorSelect(clr)}
+                  className={`${
+                    clr === selectedColor && "bg-primary text-base-100"
+                  } text-sm py-1.5 px-2.5 rounded border scale-[.96] hover:scale-[1] border-${clr}-500 duration-300`}
+                >
+                  {clr}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Quantity */}
         <div className="py-3 flex gap-4 items-center border-y">
@@ -158,6 +215,8 @@ const ProductInfo = ({ product }) => {
               handelAddToCart({
                 product,
                 quantity,
+                selectedSize: selectedSize,
+                selectedColor: selectedColor,
               })
             }
             className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
