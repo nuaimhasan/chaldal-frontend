@@ -1,9 +1,27 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsUpload } from "react-icons/bs";
 import JoditEditor from "jodit-react";
 import Swal from "sweetalert2";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
 import { MdOutlineClose } from "react-icons/md";
+
+const options = [
+  {
+    id: 1,
+    name: "white",
+    code: "#fff",
+  },
+  {
+    id: 1,
+    name: "black",
+    code: "#000",
+  },
+  {
+    id: 1,
+    name: "orange",
+    code: "#ffa500",
+  },
+];
 
 export default function AddProduct() {
   const { data: categories } = useGetCategoriesQuery();
@@ -11,22 +29,59 @@ export default function AddProduct() {
   const [image, setImage] = useState("");
   const [details, setDetails] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sizes, setSizes] = useState([]);
+
+  const [colorDropdown, setColorDropdown] = useState(false);
+  const [searchColor, setSearchColor] = useState("");
+
+  const [color, setColor] = useState("");
+  const [colorCode, setColorCode] = useState("");
+  // const [size, setSize] = useState("");
+  // const [quantity, setQuantity] = useState("");
+  const [variants, setVariants] = useState([]);
+
+  const handleAddVariant = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const size = form.size.value;
+    const quantity = form.quantity.value;
+
+    const variant = {
+      size,
+      colorName: color,
+      colorCode,
+      quantity,
+    };
+
+    if (!size || !color || !colorCode || !quantity) {
+      return alert("please fill up the field");
+    }
+
+    setVariants([...variants, variant]);
+    setColor("");
+    form.reset();
+  };
+
+  const handleRemoveVariant = (variant) => {
+    const newVariants = variants?.filter(
+      (v) => v.colorName !== variant.colorName || v.size !== variant.size
+    );
+
+    setVariants(newVariants);
+  };
+
+  // Remove Color Dropdown click other side
+  useEffect(() => {
+    window.addEventListener("click", (e) => {
+      if (!e.target.closest(".color") && !e.target.closest(".color_search")) {
+        setColorDropdown(false);
+        setSearchColor("");
+      }
+    });
+  }, [setColorDropdown, setSearchColor]);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setImage(file);
-  };
-
-  const handleAddSizes = (e) => {
-    if (e.key === "Enter") {
-      setSizes([...sizes, e.target.value]);
-      e.target.value = "";
-    }
-  };
-
-  const handleDeleteSize = (size) => {
-    setSizes(sizes?.length > 0 && sizes?.filter((s) => s !== size));
   };
 
   const handleAddProduct = async (e) => {
@@ -37,11 +92,8 @@ export default function AddProduct() {
     const category = form.category.value;
     const price = form.price.value;
     const discount = form.discount.value;
-    const stock = form.stock.value;
     const brand = form.brand.value;
     const description = details;
-    // const size = form.size.value;
-    const color = form.color.value;
 
     const formData = new FormData();
     formData.append("image", image);
@@ -49,11 +101,8 @@ export default function AddProduct() {
     formData.append("price", price);
     formData.append("category", category);
     formData.append("discount", discount);
-    formData.append("stock", stock);
     formData.append("brand", brand);
     formData.append("description", description);
-    // formData.append("size", size);
-    formData.append("color", color);
 
     setLoading(true);
 
@@ -85,8 +134,8 @@ export default function AddProduct() {
   return (
     <div className="add_product  bg-base-100 rounded shadow p-4">
       <h3 className="text-lg text-neutral font-medium mb-4">Add Product</h3>
-      <div className="text-neutral-content grid sm:grid-cols-2 md:grid-cols-3 gap-4 items-start">
-        <div>
+      <div className="text-neutral-content grid md:grid-cols-2 lg:grid-cols-5 gap-4 items-start">
+        <div className="lg:col-span-2">
           <div className="border rounded p-4">
             <div>
               <p className="text-sm">Add Image</p>
@@ -121,40 +170,103 @@ export default function AddProduct() {
             </div>
           </div>
 
-          <div className="mt-4 border rounded p-4 flex flex-col gap-3 form_group">
-            <div>
-              <p className="text-sm">Sizes</p>
-              <input
-                type="text"
-                onKeyDown={(e) => handleAddSizes(e)}
-                className="placeholder:font-light"
-                placeholder="Enter choice size"
-              />
+          <div className="mt-4 border rounded p-4 form_group">
+            <p className="text-sm">Variations</p>
+            <form
+              onSubmit={handleAddVariant}
+              className="mt-1 grid grid-cols-4 gap-1 items-center"
+            >
+              <div className="relative">
+                <div className="text-sm mt-px">
+                  <div
+                    onClick={() => setColorDropdown(!colorDropdown)}
+                    className="color p-2 h-[37px] border rounded cursor-pointer"
+                  >
+                    {color ? color : "Color"}
+                  </div>
+                </div>
 
-              <div>
-                {sizes?.length > 0 &&
-                  sizes?.map((size) => (
-                    <span className="whitespace-nowrap mr-1 w-max bg-gray-700 px-1 py-[2px] rounded text-sm text-base-100">
-                      {size}
-                      <button
-                        onClick={() => handleDeleteSize(size)}
-                        className="hover:text-red-500 ml-1"
-                      >
-                        <MdOutlineClose className="mt-2 pt-1" />
-                      </button>
-                    </span>
-                  ))}
+                {colorDropdown && (
+                  <div className="pb-1 px-1 z-10 absolute bg-base-100 border rounded top-full left-0 w-full max-h-60 overflow-y-auto">
+                    <div>
+                      <input
+                        onChange={(e) => setSearchColor(e.target.value)}
+                        type="text"
+                        className="color_search px-2 py-1 rounded w-full border outline-none placeholder:font-light"
+                        placeholder="search"
+                      />
+                    </div>
+                    <ul>
+                      {options
+                        ?.filter((color) =>
+                          color.name
+                            .toLowerCase()
+                            .includes(searchColor.toLowerCase())
+                        )
+                        .map((color, i) => (
+                          <li
+                            key={i}
+                            onClick={() => {
+                              setColor(color.name);
+                              setColorCode(color.code);
+                            }}
+                            className="p-1 hover:bg-gray-200 duration-200 cursor-pointer flex gap-1 items-center"
+                          >
+                            <p
+                              className="w-3 h-3 rounded-full"
+                              style={{ background: color.code }}
+                            ></p>
+                            {color.name}
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-            </div>
 
-            <div>
-              <p className="text-sm">Colors</p>
-              <input type="text" />
-            </div>
+              <input type="text" name="size" placeholder="size" />
+
+              <input type="number" name="quantity" placeholder="quantity" />
+
+              <button className="h-9 text-sm bg-neutral text-base-100 flex justify-center items-center rounded">
+                Add
+              </button>
+            </form>
+
+            {variants?.length > 0 && (
+              <div className="mt-4">
+                <div className="relative overflow-x-auto">
+                  <table className="border_table">
+                    <thead>
+                      <tr>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {variants?.map((variant, i) => (
+                        <tr key={i}>
+                          <td>{variant.colorName}</td>
+                          <td>{variant.size}</td>
+                          <td>{variant.quantity}</td>
+                          <td>
+                            <div onClick={() => handleRemoveVariant(variant)}>
+                              <MdOutlineClose />
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        <form onSubmit={handleAddProduct} className="md:col-span-2">
+        <form onSubmit={handleAddProduct} className="lg:col-span-3">
           <div className="border rounded p-4 form_group flex flex-col gap-3">
             <div>
               <p className="text-sm">Product Title</p>
@@ -186,7 +298,7 @@ export default function AddProduct() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm">Stock</p>
+                <p className="text-sm">Total Stock</p>
                 <input type="number" name="stock" required />
               </div>
 

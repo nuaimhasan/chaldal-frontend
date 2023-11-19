@@ -288,3 +288,21 @@ table tbody td {
   opacity: 1;
   visibility: visible;
 }
+
+/* Table */
+.border_table thead {
+  background-color: transparent;
+}
+.border_table thead th {
+  background-color: #dddddd34;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 5px;
+}
+.border_table tbody td {
+  border: 1px solid #ddd;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 5px;
+}
