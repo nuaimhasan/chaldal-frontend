@@ -5,8 +5,9 @@ import { useSelector } from "react-redux";
 const AdminRoute = ({ children }) => {
   const { loggedUser } = useSelector((state) => state.user);
   const location = useLocation();
+  const token = localStorage.getItem("aesthetic_jwt");
 
-  if (!loggedUser?.success && loggedUser?.data?.role !== "admin") {
+  if (!loggedUser?.success && loggedUser?.data?.role !== "admin" && !token) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

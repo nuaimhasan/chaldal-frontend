@@ -62,6 +62,15 @@ const ContextProvider = ({ children }) => {
       return Swal.fire("Please Select Color", "", "warning");
     }
 
+    const selectedVariant = product?.variants?.find(
+      (variant) =>
+        variant.size == selectedSize && variant.colorName == selectedColor
+    );
+
+    if (!selectedVariant || selectedVariant?.quantity < quantity) {
+      return Swal.fire("", "stock not available", "error");
+    }
+
     const existed = carts?.find(
       (item) =>
         item.id === product.id &&

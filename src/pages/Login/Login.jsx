@@ -121,7 +121,7 @@ export default function Login() {
 
           <div className="border-t border-neutral/20 mt-6 pt-4 text-center">
             <p className="text-sm text-neutral/70">
-              Don't have an account?
+              Don&apos;t have an account?
               <Link
                 to="/signup"
                 className="text-blue-500  pl-2 hover:underline"

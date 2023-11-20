@@ -14,8 +14,7 @@ const ProductInfo = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
 
-  const { title, image, discount, brand, category, price, stock, variants } =
-    product;
+  const { title, image, discount, brand, category, price, variants } = product;
 
   const totalQuantity = variants?.reduce(
     (total, item) => total + parseInt(item.quantity),
@@ -58,6 +57,15 @@ const ProductInfo = ({ product }) => {
 
     if (variants?.length > 0 && !selectedColor) {
       return Swal.fire("Please Select Color", "", "warning");
+    }
+
+    const selectedVariant = variants?.find(
+      (variant) =>
+        variant.size == selectedSize && variant.colorName == selectedColor
+    );
+
+    if (!selectedVariant || selectedVariant.quantity < quantity) {
+      return Swal.fire("", "stock not available", "error");
     }
 
     const cartProduct = {
