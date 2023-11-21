@@ -8,19 +8,300 @@ import { useAddProductMutation } from "../../../Redux/product/productApi";
 
 const options = [
   {
-    id: 1,
-    name: "white",
+    name: "Cornsilk",
+    code: "#FFF8DC",
+  },
+  {
+    name: "BlanchedAlmond",
+    code: "#FFEBCD",
+  },
+  {
+    name: "Bisque",
+    code: "#FFE4C4",
+  },
+  {
+    name: "NavajoWhite",
+    code: "#FFDEAD",
+  },
+  {
+    name: "Wheat",
+    code: "#F5DEB3",
+  },
+  {
+    name: "BurlyWood",
+    code: "#DEB887",
+  },
+  {
+    name: "SandyBrown",
+    code: "#F4A460",
+  },
+  {
+    name: "RosyBrown",
+    code: "#BC8F8F",
+  },
+  {
+    name: "GoldenRod",
+    code: "#DAA520",
+  },
+  {
+    name: "Chocolate",
+    code: "#D2691E",
+  },
+  {
+    name: "Olive",
+    code: "#808000",
+  },
+  {
+    name: "SaddleBrown",
+    code: "#8B4513",
+  },
+  {
+    name: "Brown",
+    code: "#A52A2A",
+  },
+  {
+    name: "Maroon",
+    code: "#800000",
+  },
+  {
+    name: "White",
     code: "#fff",
   },
   {
-    id: 1,
-    name: "black",
-    code: "#000",
+    name: "MistyRose",
+    code: "#FFE4E1",
   },
   {
-    id: 1,
-    name: "orange",
-    code: "#ffa500",
+    name: "AntiqueWhite",
+    code: "#FAEBD7",
+  },
+  {
+    name: "Silver",
+    code: "##C0C0C0",
+  },
+  {
+    name: "LightGray",
+    code: "#D3D3D3",
+  },
+  {
+    name: "DarkGray",
+    code: "#A9A9A9",
+  },
+  {
+    name: "DimGray",
+    code: "#696969",
+  },
+  {
+    name: "Gray",
+    code: "#808080",
+  },
+  {
+    name: "SlateGray",
+    code: "#708090",
+  },
+  {
+    name: "DarkSlateGray",
+    code: "#2F4F4F",
+  },
+  {
+    name: "Black",
+    code: "#000000",
+  },
+  {
+    name: "Pink",
+    code: "#FFC0CB",
+  },
+  {
+    name: "LightPink",
+    code: "#FFB6C1",
+  },
+  {
+    name: "HotPink",
+    code: "#FF69B4",
+  },
+  {
+    name: "DeepPink",
+    code: "#FF1493",
+  },
+  {
+    name: "PaleVioletRed",
+    code: "#DB7093",
+  },
+  {
+    name: "MediumVioletRed",
+    code: "#C71585",
+  },
+  {
+    name: "Lavender",
+    code: "#E6E6FA",
+  },
+  {
+    name: "Plum",
+    code: "#DDA0DD",
+  },
+  {
+    name: "Violet",
+    code: "#EE82EE",
+  },
+  {
+    name: "Magenta",
+    code: "#FF00FF",
+  },
+  {
+    name: "DarkViolet",
+    code: "#9400D3",
+  },
+  {
+    name: "BlueViolet",
+    code: "#8A2BE2",
+  },
+  {
+    name: "DarkMagenta",
+    code: "#8B008B",
+  },
+  {
+    name: "Purple",
+    code: "#800080",
+  },
+  {
+    name: "Indigo",
+    code: "#4B0082",
+  },
+  {
+    name: "LightSalmon",
+    code: "#FFA07A",
+  },
+  {
+    name: "Salmon",
+    code: "#FA8072",
+  },
+  {
+    name: "DarkSalmon",
+    code: "#E9967A",
+  },
+  {
+    name: "Red",
+    code: "#FF0000",
+  },
+  {
+    name: "DarkRed",
+    code: "#8B0000",
+  },
+  {
+    name: "Orange",
+    code: "#FFA500",
+  },
+  {
+    name: "DarkOrange",
+    code: "#FF8C00",
+  },
+  {
+    name: "Coral",
+    code: "#FF7F50",
+  },
+  {
+    name: "Tomato",
+    code: "#FF6347",
+  },
+  {
+    name: "OrangeRed",
+    code: "#FF4500",
+  },
+  {
+    name: "Gold",
+    code: "#FFD700",
+  },
+  {
+    name: "Yellow",
+    code: "#FFFF00",
+  },
+  {
+    name: "LightYellow",
+    code: "#FFFFE0",
+  },
+  {
+    name: "Moccasin",
+    code: "#FFE4B5",
+  },
+  {
+    name: "GreenYellow",
+    code: "#ADFF2F",
+  },
+  {
+    name: "Lime",
+    code: "#00FF00",
+  },
+  {
+    name: "LawnGreen",
+    code: "#7CFC00",
+  },
+  {
+    name: "LightGreen",
+    code: "#90EE90",
+  },
+  {
+    name: "Green",
+    code: "#008000",
+  },
+  {
+    name: "DarkGreen",
+    code: "#006400",
+  },
+  {
+    name: "YellowGreen",
+    code: "#9ACD32",
+  },
+  {
+    name: "Teal",
+    code: "#008080",
+  },
+  {
+    name: "Cyan",
+    code: "#00FFFF",
+  },
+  {
+    name: "DarkCyan",
+    code: "#008B8B",
+  },
+  {
+    name: "LightCyan",
+    code: "#E0FFFF",
+  },
+  {
+    name: "Aqua",
+    code: "#00FFFF",
+  },
+  {
+    name: "CadetBlue",
+    code: "#5F9EA0",
+  },
+  {
+    name: "SteelBlue",
+    code: "#4682B4",
+  },
+  {
+    name: "LightBlue",
+    code: "#ADD8E6",
+  },
+  {
+    name: "SkyBlue",
+    code: "#87CEEB",
+  },
+  {
+    name: "Blue",
+    code: "#0000FF",
+  },
+  {
+    name: "RoyalBlue",
+    code: "#4169E1",
+  },
+  {
+    name: "DarkBlue",
+    code: "#00008B",
+  },
+  {
+    name: "NavyBlue",
+    code: "#000080",
   },
 ];
 
@@ -137,8 +418,8 @@ export default function AddProduct() {
   return (
     <div className="add_product  bg-base-100 rounded shadow p-4">
       <h3 className="text-lg text-neutral font-medium mb-4">Add Product</h3>
-      <div className="text-neutral-content grid md:grid-cols-2 lg:grid-cols-5 gap-4 items-start">
-        <div className="lg:col-span-2">
+      <div className="text-neutral-content grid md:grid-cols-2 gap-4 items-start">
+        <div>
           <div className="border rounded p-4">
             <div>
               <p className="text-sm">Add Image</p>
@@ -216,8 +497,8 @@ export default function AddProduct() {
                             className="p-1 hover:bg-gray-200 duration-200 cursor-pointer flex gap-1 items-center"
                           >
                             <p
-                              className="w-3 h-3 rounded-full"
-                              style={{ background: color.code }}
+                              className={`w-3 h-3 rounded-full`}
+                              style={{ background: color.name }}
                             ></p>
                             {color.name}
                           </li>
@@ -269,7 +550,7 @@ export default function AddProduct() {
           </div>
         </div>
 
-        <form onSubmit={handleAddProduct} className="lg:col-span-3">
+        <form onSubmit={handleAddProduct}>
           <div className="border rounded p-4 form_group flex flex-col gap-3">
             <div>
               <p className="text-sm">Product Title</p>
