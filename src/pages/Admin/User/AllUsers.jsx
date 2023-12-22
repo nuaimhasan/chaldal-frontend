@@ -17,9 +17,7 @@ export default function AllUsers() {
         <td>
           <div className="flex items-center gap-2">
             <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/images/users/${
-                user?.image
-              }`}
+              src={`${import.meta.env.VITE_BACKEND_URL}/users/${user?.image}`}
               alt=""
               className="w-10 h-10 rounded-full"
             />
@@ -29,6 +27,13 @@ export default function AllUsers() {
         <td>{user?.email}</td>
         <td>{user?.phone}</td>
         <td>{user?.role}</td>
+        <td
+          className={`${
+            user?.status === "active" ? "text-green-500" : "text-red-500"
+          }`}
+        >
+          {user?.status}
+        </td>
       </tr>
     ));
   }
@@ -42,6 +47,7 @@ export default function AllUsers() {
             <th>Email</th>
             <th>Phone</th>
             <th>Role</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>{content}</tbody>

@@ -9,7 +9,7 @@ import { BsCart4 } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 import { BiSolidShoppingBags } from "react-icons/bi";
 import SidebarItems from "./SidebarItems";
-import { useGetDashboardLogoQuery } from "../../../Redux/logo/logoApi";
+import { useGetMainLogoQuery } from "../../../Redux/logo/logoApi";
 
 const adminSidebarItems = [
   {
@@ -101,17 +101,17 @@ const adminSidebarItems = [
 ];
 
 export default function AdminSidebar() {
-  const { data } = useGetDashboardLogoQuery();
+  const { data } = useGetMainLogoQuery();
   return (
     <div className="h-full flex flex-col justify-between">
       <div>
         <Link to="/admin/dashboard" className="block border-b py-4">
           <img
             src={
-              data?.data?.logo === null
+              data?.data[0]?.logo === null
                 ? "/images/logo/logo.png"
-                : `${import.meta.env.VITE_BACKEND_URL}/images/logos/${
-                    data?.data?.logo
+                : `${import.meta.env.VITE_BACKEND_URL}/logo/${
+                    data?.data[0]?.logo
                   }`
             }
             alt=""

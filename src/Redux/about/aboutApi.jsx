@@ -12,7 +12,15 @@ export const aboutApi = apiSlice.injectEndpoints({
     updateAbout: builder.mutation({
       query: ({ id, formData }) => ({
         url: `/about/update-about/${id}`,
-        method: "PUT",
+        method: "PATCH",
+        body: formData,
+      }),
+      invalidatesTags: ["about"],
+    }),
+    createAbout: builder.mutation({
+      query: (formData) => ({
+        url: `/about/add-about`,
+        method: "POST",
         body: formData,
       }),
       invalidatesTags: ["about"],
@@ -20,4 +28,8 @@ export const aboutApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAboutQuery, useUpdateAboutMutation } = aboutApi;
+export const {
+  useGetAboutQuery,
+  useUpdateAboutMutation,
+  useCreateAboutMutation,
+} = aboutApi;

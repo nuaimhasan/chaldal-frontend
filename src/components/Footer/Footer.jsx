@@ -1,15 +1,19 @@
-import { Link } from "react-router-dom";
+import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
 import { IoLogoWhatsapp } from "react-icons/io";
-import { AiFillInstagram } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
 import { useGetContactQuery } from "../../Redux/contact/contactApi";
 import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
 
 export default function Footer() {
-  const { data } = useGetCategoriesQuery();
-  const { data: contact } = useGetContactQuery();
-  const { data: logo } = useGetMainLogoQuery();
+  const { data, isLoading } = useGetCategoriesQuery();
+  const { data: contact, isLoading: contactLoading } = useGetContactQuery();
+  const { data: logo, isLoading: logoLoading } = useGetMainLogoQuery();
+
+  if (isLoading || contactLoading || logoLoading) {
+    return null;
+  }
 
   return (
     <footer className="border-t pt-8 pb-4">
@@ -20,10 +24,10 @@ export default function Footer() {
               <Link to="/">
                 <img
                   src={
-                    logo?.data?.logo === ""
+                    logo?.data[0]?.logo === ""
                       ? "/images/logo/logo.png"
-                      : `${import.meta.env.VITE_BACKEND_URL}/images/logos/${
-                          logo?.data?.logo
+                      : `${import.meta.env.VITE_BACKEND_URL}/logo/${
+                          logo?.data[0]?.logo
                         }`
                   }
                   className="w-36"
@@ -96,13 +100,13 @@ export default function Footer() {
             </h2>
             <ul className="text-neutral-content text-[15px]">
               <li className="mb-1">
-                <p className="italic">{contact?.data?.address}</p>
+                <p className="italic">{contact.data[0]?.address}</p>
               </li>
               <li className="mb-1">
-                <p>{contact?.data?.phone}</p>
+                <p>{contact.data[0]?.phone}</p>
               </li>
               <li>
-                <p>{contact?.data?.email}</p>
+                <p>{contact.data[0]?.email}</p>
               </li>
             </ul>
           </div>
@@ -122,23 +126,20 @@ export default function Footer() {
           </span>
           <ul className="flex items-center gap-2 text-neutral-content mt-3 sm:mt-0">
             <li>
-              <Link
-                to="https://www.facebook.com/aestheticcloth247"
-                target="_blank"
-              >
+              <Link to={contact.data[0]?.facebookLink} target="_blank">
                 <BsFacebook className="text-lg hover:-mt-2 duration-300" />
               </Link>
             </li>
             <li>
               <Link
-                to="https://api.whatsapp.com/send?phone=8801647534496"
+                to={`https://wa.me/${contact.data[0]?.whatsapp}`}
                 target="_blank"
               >
                 <IoLogoWhatsapp className="text-xl hover:-mt-2 duration-300" />
               </Link>
             </li>
             <li>
-              <Link to="">
+              <Link to={contact.data[0]?.instagramLink} target="_blank">
                 <AiFillInstagram className="text-xl hover:-mt-2 duration-300" />
               </Link>
             </li>

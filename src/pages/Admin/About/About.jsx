@@ -1,14 +1,14 @@
-import { useRef, useState } from "react";
 import JoditEditor from "jodit-react";
+import { useEffect, useRef, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
+import Swal from "sweetalert2";
 import {
+  useCreateAboutMutation,
   useGetAboutQuery,
   useUpdateAboutMutation,
 } from "../../../Redux/about/aboutApi";
 import Spinner from "../../../components/Spinner/Spinner";
-import { useEffect } from "react";
-import Swal from "sweetalert2";
 
 export default function About() {
   const editor = useRef(null);
@@ -23,24 +23,36 @@ export default function About() {
       isError: updateError,
     },
   ] = useUpdateAboutMutation();
+  const [
+    createAbout,
+    { isLoading: addLoading, isSuccess: addSuccess, isError: addError },
+  ] = useCreateAboutMutation();
 
-  const handleUpdateAbout = (e) => {
+  let id = data?.data[0]?._id;
+
+  const handleUpdateAbout = async (e) => {
     e.preventDefault();
-    let id = data?.data?.id;
-    const image = images[0]?.file;
-    const description = details?.length > 0 ? details : data?.data?.description;
 
-    if (details === "" && !image) {
-      return alert("You haven't changed anything");
-    }
+    const image = images[0]?.file;
+    const description = details?.length > 0 ? details : data?.data[0]?.description;
+    const title = e.target.title.value;
+    const subtitle = e.target.subtitle.value;
 
     const formData = new FormData();
     formData.append("description", description);
+    formData.append("title", title);
+    formData.append("subTitle", subtitle);
     if (image) {
       formData.append("image", image);
     }
 
-    updateAbout({ id, formData });
+    if (data?.data[0] && id) {
+      await updateAbout({ id, formData });
+      // console.log(res);
+    } else {
+      await createAbout(formData);
+      // console.log(res);
+    }
   };
 
   useEffect(() => {
@@ -48,19 +60,24 @@ export default function About() {
       Swal.fire("", "Update Success", "success");
       setImages([]);
     }
-    if (updateError) {
-      Swal.fire("", "Somethin Wrong, please try again", "error");
+    if (addSuccess) {
+      Swal.fire("", "Successfully Added", "success");
+      setImages([]);
     }
-  }, [updateSuccess, updateError]);
+    if (updateError) {
+      Swal.fire("", "Somethin went wrong when updating", "error");
+    }
+    if (addError) {
+      Swal.fire("", "Somethin Wrong when uploading", "error");
+    }
+  }, [updateSuccess, updateError, addError, addSuccess]);
 
   if (isLoading) {
     return <Spinner />;
   }
   if (isError) {
     return (
-      <p>
-        {error?.data?.message ? error?.data?.message : "something went wrong"}
-      </p>
+      <p>{error?.data?.error ? error?.data?.error : "something went wrong"}</p>
     );
   }
 
@@ -71,6 +88,27 @@ export default function About() {
       </div>
 
       <form onSubmit={handleUpdateAbout} className="p-4">
+        <div className=" bg-base-100 shadhow rounded mb-4 grid sm:grid-cols-2 gap-4 items-start">
+          <div className="form_group mt-2">
+            <p className="text-neutral-content">Title</p>
+            <input
+              type="text"
+              name="title"
+              required
+              defaultValue={data?.data[0]?.title}
+            />
+          </div>
+          <div className="form_group mt-2">
+            <p className="text-neutral-content">Subtitle</p>
+            <input
+              type="text"
+              name="subtitle"
+              required
+              defaultValue={data?.data[0]?.subTitle}
+            />
+          </div>
+        </div>
+
         <div className="text-neutral-content grid sm:grid-cols-2 md:grid-cols-3 gap-4 items-start">
           <div className="rounded border">
             <div>
@@ -118,10 +156,10 @@ export default function About() {
                   )}
                 </ImageUploading>
 
-                {data?.data?.image && (
+                {data?.data[0]?.image && (
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL}/images/about/${
-                      data?.data?.image
+                    src={`${import.meta.env.VITE_BACKEND_URL}/aboutus/${
+                      data?.data[0]?.image
                     }`}
                     alt=""
                     className="w-32 mt-4"
@@ -138,8 +176,8 @@ export default function About() {
               <JoditEditor
                 ref={editor}
                 value={
-                  data?.data?.description?.length > 0
-                    ? data?.data?.description
+                  data?.data[0]?.description?.length > 0
+                    ? data?.data[0]?.description
                     : details
                 }
                 onBlur={(text) => setDetails(text)}
@@ -153,7 +191,7 @@ export default function About() {
             disabled={updateLoading && "disabled"}
             className="primary_btn"
           >
-            {updateLoading ? "Loading" : "Save"}
+            {updateLoading || addLoading ? "Loading" : id ? "Update" : "Add"}
           </button>
         </div>
       </form>

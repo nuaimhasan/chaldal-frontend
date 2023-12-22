@@ -49,10 +49,10 @@ const MainHeader = () => {
             <Link to="/">
               <img
                 src={
-                  logo?.data?.logo === ""
+                  logo?.data[0]?.logo === ""
                     ? "/images/logo/logo.png"
-                    : `${import.meta.env.VITE_BACKEND_URL}/images/logos/${
-                        logo?.data?.logo
+                    : `${import.meta.env.VITE_BACKEND_URL}/logo/${
+                        logo?.data[0]?.logo
                       }`
                 }
                 alt=""
@@ -107,7 +107,7 @@ const MainHeader = () => {
                       loggedUser?.data?.image === "" ||
                       loggedUser?.data?.image === null
                         ? "/images/demo_user.jpg"
-                        : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
+                        : `${import.meta.env.VITE_BACKEND_URL}/user/${
                             loggedUser?.data?.image
                           }`
                     }
@@ -127,7 +127,7 @@ const MainHeader = () => {
                               ? "/images/demo_user.jpg"
                               : `${
                                   import.meta.env.VITE_BACKEND_URL
-                                }/images/users/${loggedUser?.data?.image}`
+                                }/user/${loggedUser?.data?.image}`
                           }
                           alt=""
                           className="w-9 h-9 rounded-full border border-base-100"
