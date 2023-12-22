@@ -15,9 +15,9 @@ export default function Hero() {
   }
   if (!isLoading && !isError) {
     content = data?.data?.map((banner) => (
-      <SwiperSlide>
+      <SwiperSlide key={banner._id}>
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}/images/banners/${
+          src={`${import.meta.env.VITE_BACKEND_URL}/banner/${
             banner?.image
           }`}
           alt=""

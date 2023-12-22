@@ -1,10 +1,11 @@
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 import {
+  useAddContactMutation,
   useGetContactQuery,
   useUpdateContactMutation,
 } from "../../../Redux/contact/contactApi";
 import Spinner from "../../../components/Spinner/Spinner";
-import Swal from "sweetalert2";
 
 export default function Contact() {
   const { data, isLoading, isError, error } = useGetContactQuery();
@@ -17,10 +18,21 @@ export default function Contact() {
     },
   ] = useUpdateContactMutation();
 
-  const handleUpdateContact = (e) => {
+  const [
+    addContact,
+    { isLoading: addLoading, isSuccess: addSuccess, isError: addError },
+  ] = useAddContactMutation();
+
+  const id = data?.data[0]?._id;
+  console.log(id);
+
+  const handleUpdateContact = async (e) => {
     e.preventDefault();
     const form = e.target;
+    const title = form.title.value;
+    const description = form.description.value;
     const phone = form.phone.value;
+    const whatsapp = form.whatsapp.value;
     const email = form.email.value;
     const address = form.address.value;
     const facebookLink = form.facebook.value;
@@ -29,7 +41,10 @@ export default function Contact() {
     const linkedinLink = form.linkedin.value;
 
     const contactInfo = {
+      title,
+      description,
       phone,
+      whatsapp,
       email,
       address,
       facebookLink,
@@ -37,18 +52,29 @@ export default function Contact() {
       youtubeLink,
       linkedinLink,
     };
-    let id = data?.data?.id;
-    updateContact({ id, contactInfo });
+
+    if (id) {
+       await updateContact({ id, contactInfo });
+     
+    } else {
+      await addContact(contactInfo);
+    }
   };
 
   useEffect(() => {
     if (updateSuccess) {
       Swal.fire("", "Update Success", "success");
     }
+    if (addSuccess) {
+      Swal.fire("", "Add Success", "success");
+    }
+    if (addError) {
+      Swal.fire("", "Somethin Wrong, please try again", "error");
+    }
     if (updateError) {
       Swal.fire("", "Somethin Wrong, please try again", "error");
     }
-  }, [updateSuccess, updateError]);
+  }, [updateSuccess, updateError, addSuccess, addError]);
 
   if (isLoading) {
     return <Spinner />;
@@ -72,22 +98,58 @@ export default function Contact() {
       >
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
-            <p className="text-neutral-content">Phone</p>
-            <input type="text" name="phone" defaultValue={data?.data?.phone} />
+            <p className="text-neutral-content">Title</p>
+            <input
+              type="text"
+              name="title"
+              defaultValue={data?.data[0]?.title}
+            />
           </div>
 
           <div>
             <p className="text-neutral-content">Email</p>
-            <input type="email" name="email" defaultValue={data?.data?.email} />
+            <input
+              type="email"
+              name="email"
+              defaultValue={data?.data[0]?.email}
+            />
           </div>
+        </div>
+
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <p className="text-neutral-content">Phone</p>
+            <input
+              type="text"
+              name="phone"
+              defaultValue={data?.data[0]?.phone}
+            />
+          </div>
+
+          <div>
+            <p className="text-neutral-content">Whatsapp</p>
+            <input
+              type="text"
+              name="whatsapp"
+              defaultValue={data?.data[0]?.whatsapp}
+            />
+          </div>
+        </div>
+        <div>
+          <p className="text-neutral-content">Description</p>
+          <textarea
+            name="description"
+            rows="5"
+            defaultValue={data?.data[0]?.description}
+          ></textarea>
         </div>
 
         <div>
           <p className="text-neutral-content">Address</p>
           <textarea
             name="address"
-            rows="5"
-            defaultValue={data?.data?.address}
+            rows="3"
+            defaultValue={data?.data[0]?.address}
           ></textarea>
         </div>
 
@@ -97,7 +159,7 @@ export default function Contact() {
             <input
               type="text"
               name="facebook"
-              defaultValue={data?.data?.facebookLink}
+              defaultValue={data?.data[0]?.facebookLink}
             />
           </div>
 
@@ -106,7 +168,7 @@ export default function Contact() {
             <input
               type="text"
               name="instagram"
-              defaultValue={data?.data?.instagramLink}
+              defaultValue={data?.data[0]?.instagramLink}
             />
           </div>
         </div>
@@ -117,7 +179,7 @@ export default function Contact() {
             <input
               type="text"
               name="youtube"
-              defaultValue={data?.data?.youtubeLink}
+              defaultValue={data?.data[0]?.youtubeLink}
             />
           </div>
 
@@ -126,7 +188,7 @@ export default function Contact() {
             <input
               type="text"
               name="linkedin"
-              defaultValue={data?.data?.linkedinLink}
+              defaultValue={data?.data[0]?.linkedinLink}
             />
           </div>
         </div>
@@ -136,7 +198,7 @@ export default function Contact() {
             disabled={updateLoading && "disabled"}
             className="primary_btn"
           >
-            {updateLoading ? "Loading" : "Save"}
+            {updateLoading || addLoading ? "Loading..." : id ? "Update" : "Add"}
           </button>
         </div>
       </form>

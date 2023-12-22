@@ -22,7 +22,7 @@ export default function Login() {
     navigate(from, { replace: true });
   }
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     const form = e.target;
@@ -33,8 +33,10 @@ export default function Login() {
       phone,
       password,
     };
+    // console.log(loginInfo);
 
-    login(loginInfo);
+    await login(loginInfo);
+    // console.log(res);
   };
 
   useEffect(() => {

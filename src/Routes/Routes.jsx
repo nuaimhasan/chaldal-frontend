@@ -1,45 +1,46 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../Layout/MainLayout";
-import Home from "../pages/Home/Home";
-import Shop from "../pages/Shop/Shop";
-import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import AboutUs from "../pages/AboutUs/AboutUs";
-import FAQ from "../pages/FAQ/FAQ";
-import Login from "../pages/Login/Login";
-import Signup from "../pages/Signup/Signup";
 import Cart from "../pages/Cart/Cart";
+import FAQ from "../pages/FAQ/FAQ";
+import Home from "../pages/Home/Home";
+import Login from "../pages/Login/Login";
+import ProductDetails from "../pages/ProductDetails/ProductDetails";
+import Shop from "../pages/Shop/Shop";
+import Signup from "../pages/Signup/Signup";
 
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 import Checkout from "../pages/Checkout/Checkout";
 
 import AccountLayout from "../Layout/AccountLayout";
-import Profile from "../pages/Account/Profile/Profile";
 import EditePeofile from "../pages/Account/EditePeofile/EditePeofile";
-import Wishlist from "../pages/Account/Wishlist/Wishlist";
 import Orders from "../pages/Account/Orders/Orders";
+import Profile from "../pages/Account/Profile/Profile";
 import Setting from "../pages/Account/Setting/Setting";
+import Wishlist from "../pages/Account/Wishlist/Wishlist";
 
 import AdminLayout from "../Layout/AdminLayout/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
-import ProductList from "../pages/Admin/Product/ProductList";
 import AddProduct from "../pages/Admin/Product/AddProduct";
+import ProductList from "../pages/Admin/Product/ProductList";
 
-import EditProduct from "../pages/Admin/Product/EditProduct";
-import AllUsers from "../pages/Admin/user/AllUsers";
-import AllOrders from "../pages/Admin/Order/AllOrders";
-import OrderDetails from "../pages/Admin/Order/OrderDetails";
+import AdminRoute from "../PrivateRoute/AdminRoute";
+import About from "../pages/Admin/About/About";
+import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
+import Administrator from "../pages/Admin/Administrator/Administrator";
+import Addcategory from "../pages/Admin/Categories/AddCategory/AddCategory";
 import Categories from "../pages/Admin/Categories/Categories";
 import Editcategory from "../pages/Admin/Categories/Editcategory/Editcategory";
-import AdminRoute from "../PrivateRoute/AdminRoute";
-import Logo from "../pages/Admin/Logo/Logo";
-import About from "../pages/Admin/About/About";
 import Contact from "../pages/Admin/Contact/Contact";
-import Banner from "../pages/Admin/Home/Banner/Banner";
 import AddBanner from "../pages/Admin/Home/Banner/AddBanner";
-import Administrator from "../pages/Admin/Administrator/Administrator";
-import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
-import Addcategory from "../pages/Admin/Categories/AddCategory/AddCategory";
+import Banner from "../pages/Admin/Home/Banner/Banner";
+import Logo from "../pages/Admin/Logo/Logo";
+import AllOrders from "../pages/Admin/Order/AllOrders";
+import OrderDetails from "../pages/Admin/Order/OrderDetails";
+import EditProduct from "../pages/Admin/Product/EditProduct";
+import AllUsers from "../pages/Admin/user/AllUsers";
+import OrderDetailsPage from "../pages/Account/OrderDetails/OrderDetails";
 
 export const routes = createBrowserRouter([
   {
@@ -94,11 +95,7 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/account",
-    element: (
-      <PrivateRoute>
-        <AccountLayout />
-      </PrivateRoute>
-    ),
+    element: <AccountLayout />,
     children: [
       {
         path: "/account/profile",
@@ -117,6 +114,10 @@ export const routes = createBrowserRouter([
         element: <Orders />,
       },
       {
+        path: "/account/orders/:id",
+        element: <OrderDetailsPage />,
+      },
+      {
         path: "/account/setting",
         element: <Setting />,
       },
@@ -124,11 +125,7 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: (
-      <AdminRoute>
-        <AdminLayout />
-      </AdminRoute>
-    ),
+    element: <AdminLayout />,
     children: [
       {
         path: "/admin",

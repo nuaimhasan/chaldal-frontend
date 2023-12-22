@@ -12,7 +12,15 @@ export const contactApi = apiSlice.injectEndpoints({
     updateContact: builder.mutation({
       query: ({ id, contactInfo }) => ({
         url: `/contact/update-contact/${id}`,
-        method: "PUT",
+        method: "PATCH",
+        body: contactInfo,
+      }),
+      invalidatesTags: ["contact"],
+    }),
+    addContact: builder.mutation({
+      query: (contactInfo) => ({
+        url: `/contact/add-contact`,
+        method: "POST",
         body: contactInfo,
       }),
       invalidatesTags: ["contact"],
@@ -20,4 +28,8 @@ export const contactApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetContactQuery, useUpdateContactMutation } = contactApi;
+export const {
+  useGetContactQuery,
+  useUpdateContactMutation,
+  useAddContactMutation,
+} = contactApi;

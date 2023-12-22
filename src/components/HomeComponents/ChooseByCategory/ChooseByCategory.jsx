@@ -10,7 +10,7 @@ const ChooseByCategory = () => {
     content = <CategoryCard />;
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError) {
     content = data?.data?.map((category) => (
@@ -21,7 +21,7 @@ const ChooseByCategory = () => {
       >
         <div>
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/images/categories/${
+            src={`${import.meta.env.VITE_BACKEND_URL}/categories/${
               category?.icon
             }`}
             alt=""

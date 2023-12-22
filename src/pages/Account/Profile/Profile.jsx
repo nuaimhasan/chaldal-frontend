@@ -5,6 +5,7 @@ import { AiFillDelete, AiOutlineCloseCircle } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 import Swal from "sweetalert2";
 import { useSelector } from "react-redux";
+import Spinner from "../../../components/Spinner/Spinner";
 
 export default function Profile() {
   window.scroll(0, 0);
@@ -13,7 +14,11 @@ export default function Profile() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const { name, phone, email, city, district, street } = loggedUser?.data;
+  const user = loggedUser?.data;
+  if(!user){
+    return <Spinner />
+  }
+  const { name, phone, email, city, district, street } = user;
 
   const handleUploadImage = async () => {
     if (images?.length <= 0) {
@@ -33,7 +38,7 @@ export default function Profile() {
     };
 
     let url = `${import.meta.env.VITE_BACKEND_URL}/user/updateImage/${
-      loggedUser?.data?.id
+      loggedUser?.data?._id
     }`;
 
     setLoading(true);
@@ -71,7 +76,7 @@ export default function Profile() {
               src={
                 loggedUser?.data?.image === ""
                   ? "/images/demo_user.jpg"
-                  : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
+                  : `${import.meta.env.VITE_BACKEND_URL}/user/${
                       loggedUser?.data?.image
                     }`
               }

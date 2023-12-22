@@ -14,7 +14,7 @@ export default function Orders() {
     content = <p>Loading...</p>;
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError) {
     content = data?.data?.orders?.map((order) => (

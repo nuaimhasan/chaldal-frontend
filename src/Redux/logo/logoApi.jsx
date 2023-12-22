@@ -5,31 +5,25 @@ export const logoApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMainLogo: builder.query({
       query: () => ({
-        url: "/logo/main-logo",
+        url: "/logo",
       }),
       providesTags: ["mainLogo"],
     }),
     updateMainLogo: builder.mutation({
       query: ({ id, formData }) => ({
         url: `/logo/update-logo/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: formData,
       }),
       invalidatesTags: ["mainLogo"],
     }),
-    getDashboardLogo: builder.query({
-      query: () => ({
-        url: "/logo/dashboard-logo",
+    addLogo: builder.mutation({
+      query: (formData) => ({
+        url: "/logo/add-logo",
+        method: "POST",
+        data: formData,
       }),
-      providesTags: ["dashboardLogo"],
-    }),
-    updateDashboardLogo: builder.mutation({
-      query: ({ id, formData }) => ({
-        url: `/logo/update-logo/${id}`,
-        method: "PUT",
-        body: formData,
-      }),
-      invalidatesTags: ["dashboardLogo"],
+      invalidatesTags: ["mainLogo"],
     }),
   }),
 });
@@ -37,6 +31,5 @@ export const logoApi = apiSlice.injectEndpoints({
 export const {
   useGetMainLogoQuery,
   useUpdateMainLogoMutation,
-  useGetDashboardLogoQuery,
-  useUpdateDashboardLogoMutation,
+  useAddLogoMutation,
 } = logoApi;

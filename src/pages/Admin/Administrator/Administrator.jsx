@@ -1,12 +1,12 @@
+import { useEffect } from "react";
+import { AiOutlineDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import Spinner from "../../../components/Spinner/Spinner";
+import Swal from "sweetalert2";
 import {
   useAllAdministratorQuery,
   useDeleteAdministratorMutation,
 } from "../../../Redux/user/userApi";
-import { AiOutlineDelete } from "react-icons/ai";
-import { useEffect } from "react";
-import Swal from "sweetalert2";
+import Spinner from "../../../components/Spinner/Spinner";
 
 export default function Administrator() {
   const { data, isLoading, isError, error } = useAllAdministratorQuery();
@@ -36,7 +36,7 @@ export default function Administrator() {
     return (content = <Spinner />);
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((user) => (

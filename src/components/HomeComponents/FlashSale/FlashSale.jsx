@@ -1,7 +1,7 @@
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
-import ProductCard from "../../ProductCard/ProductCard";
 import { useGetFlashProductsQuery } from "../../../Redux/product/productApi";
+import ProductCard from "../../ProductCard/ProductCard";
 import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
 const FlashSale = () => {
@@ -12,7 +12,7 @@ const FlashSale = () => {
     content = <ProductCards />;
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (

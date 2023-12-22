@@ -1,9 +1,9 @@
+import parcer from "html-react-parser";
 import { useParams } from "react-router-dom";
-import ProductInfo from "./ProductInfo";
-import RightSideInfo from "./RightSideInfo";
 import { useGetProductQuery } from "../../Redux/product/productApi";
 import Spinner from "../../components/Spinner/Spinner";
-import parcer from "html-react-parser";
+import ProductInfo from "./ProductInfo";
+import RightSideInfo from "./RightSideInfo";
 
 export default function ProductDetails() {
   window.scroll(0, 0);
@@ -19,7 +19,7 @@ export default function ProductDetails() {
     return (content = <Spinner />);
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError && isSuccess) {
     content = (

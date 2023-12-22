@@ -65,7 +65,7 @@ export default function Banner() {
                       <img
                         src={`${
                           import.meta.env.VITE_BACKEND_URL
-                        }/images/banners/${banner?.image}`}
+                        }/banner/${banner?.image}`}
                         alt=""
                         className="w-16 h-10"
                       />
@@ -73,7 +73,7 @@ export default function Banner() {
                   </td>
                   <td>
                     <button
-                      onClick={() => handleDeleteBanner(banner?.id)}
+                      onClick={() => handleDeleteBanner(banner?._id)}
                       className="hover:text-red-500 duration-200"
                     >
                       Delete

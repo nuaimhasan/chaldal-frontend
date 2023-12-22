@@ -32,7 +32,7 @@ export default function AddBanner() {
     if (isError) {
       Swal.fire("", "something went wrong, please try again", "success");
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, navigate]);
   return (
     <section className="md:w-[600px] bg-base-100 shadow rounded">
       <div className="p-4 border-b text-neutral font-medium">

@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import Spinner from "../../../components/Spinner/Spinner";
-import { useGetAllOrdersQuery } from "../../../Redux/order/orderApi";
 import { GrView } from "react-icons/gr";
+import { Link } from "react-router-dom";
+import { useGetAllOrdersQuery } from "../../../Redux/order/orderApi";
+import Spinner from "../../../components/Spinner/Spinner";
 
 export default function AllOrders() {
   const { data, isLoading, isError, error } = useGetAllOrdersQuery();
@@ -11,7 +11,7 @@ export default function AllOrders() {
     return (content = <Spinner />);
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((order) => (

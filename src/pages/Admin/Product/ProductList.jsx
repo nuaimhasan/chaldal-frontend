@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
-import { BiSolidPencil } from "react-icons/bi";
+import { useEffect } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
+import { BiSolidPencil } from "react-icons/bi";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import {
   useDeleteProductMutation,
   useGetProductsQuery,
 } from "../../../Redux/product/productApi";
 import Spinner from "../../../components/Spinner/Spinner";
-import Swal from "sweetalert2";
-import { useEffect } from "react";
 
 export default function ProductList() {
   const { data, isLoading, isError, error } = useGetProductsQuery({});
@@ -44,7 +44,7 @@ export default function ProductList() {
     return (content = <Spinner />);
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
