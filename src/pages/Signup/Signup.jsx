@@ -11,7 +11,7 @@ import { useEffect } from "react";
 export default function Signup() {
   window.scroll(0, 0);
   const [errorMesssage, setErrorMessage] = useState("");
-  const [register, { data, isSuccess, isLoading, isError, error }] =
+  const [register, { isSuccess, isLoading, isError, error }] =
     useRegisterMutation();
   const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ export default function Signup() {
       role: "user",
     };
 
-    register(userInfo);
+    await register(userInfo);
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function Signup() {
         "error"
       );
     }
-  }, [isError, isSuccess]);
+  }, [isError, isSuccess, error, navigate]);
 
   return (
     <div className="py-6 bg-gray-50">

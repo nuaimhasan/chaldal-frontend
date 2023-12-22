@@ -10,7 +10,7 @@ export default function CategoryLists() {
     content = <SideCategory />;
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((category) => (
@@ -20,7 +20,7 @@ export default function CategoryLists() {
           className="p-2 flex items-center gap-2 hover:bg-gray-100 duration-300"
         >
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/images/categories/${
+            src={`${import.meta.env.VITE_BACKEND_URL}/categories/${
               category?.icon
             }`}
             alt=""

@@ -9,7 +9,7 @@ export default function AllUsers() {
     return (content = <Spinner />);
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((user) => (

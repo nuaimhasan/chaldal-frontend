@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
+import JoditEditor from "jodit-react";
 import { useRef, useState } from "react";
 import { BsUpload } from "react-icons/bs";
-import JoditEditor from "jodit-react";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import Spinner from "../../../components/Spinner/Spinner";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
 import { useGetProductQuery } from "../../../Redux/product/productApi";
+import Spinner from "../../../components/Spinner/Spinner";
 
 export default function EditProduct() {
   const editor = useRef(null);
@@ -84,7 +84,7 @@ export default function EditProduct() {
     return (content = <Spinner />);
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError) {
     content = (

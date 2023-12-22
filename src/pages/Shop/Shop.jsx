@@ -1,9 +1,9 @@
-import { Link, useParams } from "react-router-dom";
-import ShopCategories from "./ShopCategories/ShopCategories";
 import { MdKeyboardArrowRight } from "react-icons/md";
+import { Link, useParams } from "react-router-dom";
 import { useGetProductsQuery } from "../../Redux/product/productApi";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ProductCards from "../../components/Skeleton/ProductCards/ProductCards";
+import ShopCategories from "./ShopCategories/ShopCategories";
 
 export default function Shop() {
   window.scroll(0, 0);
@@ -19,7 +19,7 @@ export default function Shop() {
     content = <ProductCards />;
   }
   if (!isLoading && isError) {
-    content = <p>{error}</p>;
+    content = <p>{error.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (

@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useAddCategoryMutation } from "../../../../Redux/category/categoryApi";
 
@@ -12,6 +12,7 @@ export default function Addcategory() {
 
   const [icons, seticons] = useState([]);
   const [name, setName] = useState("");
+  const [order, setOrder] = useState(0);
 
   const handleAddCategory = () => {
     let icon = icons[0]?.file;
@@ -25,6 +26,7 @@ export default function Addcategory() {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("icon", icon);
+    formData.append("order", order);
 
     addCategory(formData);
   };
@@ -39,7 +41,7 @@ export default function Addcategory() {
     if (isError) {
       Swal.fire("", "Add category fail, please try again", "error");
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, navigate]);
 
   return (
     <div className="p-4 bg-base-100 shadhow rounded sm:w-1/2">
@@ -87,6 +89,12 @@ export default function Addcategory() {
       <div className="form_group mt-2">
         <p className="text-neutral-content">Category name</p>
         <input type="text" onChange={(e) => setName(e.target.value)} />
+      </div>
+      <div className="form_group mt-2">
+        <p className="text-neutral-content">Category Order</p>
+        <input type="number" 
+        defaultValue={order}
+        onChange={(e) => setOrder(e.target.value)} />
       </div>
 
       <div className="mt-4">

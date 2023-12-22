@@ -21,17 +21,20 @@ export default function Editcategory() {
 
   const [icons, seticons] = useState([]);
   const [name, setName] = useState(category?.name);
+  const [order, setOrder] = useState(category?.order);
 
-  const handleUpdateCategory = () => {
+  const handleUpdateCategory =async () => {
     let icon = icons[0]?.file;
 
     const formData = new FormData();
     formData.append("name", name);
+    formData.append("order", order);
     if (icons?.length > 0) {
       formData.append("icon", icon);
     }
 
-    updateCategory({ id, formData });
+    await updateCategory({ id, formData });
+    // console.log(res);
   };
 
   useEffect(() => {
@@ -43,7 +46,7 @@ export default function Editcategory() {
     if (isError) {
       Swal.fire("", "update fail, please try again", "error");
     }
-  }, [isSuccess, isError]);
+  }, [isSuccess, isError, navigate]);
 
   if (isLoading) {
     return <Spinner />;
@@ -76,7 +79,7 @@ export default function Editcategory() {
 
               {icons?.length <= 0 && category?.icon && (
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL}/images/categories/${
+                  src={`${import.meta.env.VITE_BACKEND_URL}/categories/${
                     category?.icon
                   }`}
                   alt=""
@@ -108,6 +111,14 @@ export default function Editcategory() {
           type="text"
           onChange={(e) => setName(e.target.value)}
           defaultValue={category?.name}
+        />
+      </div>
+      <div className="form_group mt-2">
+        <p>Category Order</p>
+        <input
+          type="number"
+          defaultValue={category?.order}
+          onChange={(e) => setOrder(e.target.value)}
         />
       </div>
 

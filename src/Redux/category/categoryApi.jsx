@@ -25,7 +25,7 @@ export const categoryApi = apiSlice.injectEndpoints({
     updateCategory: builder.mutation({
       query: ({ id, formData }) => ({
         url: `/category/updateCategory/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: formData,
       }),
       invalidatesTags: ["category"],
