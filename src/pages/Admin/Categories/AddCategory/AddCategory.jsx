@@ -3,16 +3,22 @@ import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useAddCategoryMutation } from "../../../../Redux/category/categoryApi";
+import {
+  useAddCategoryMutation,
+  useGetCategoriesQuery,
+} from "../../../../Redux/category/categoryApi";
 
 export default function Addcategory() {
   const navigate = useNavigate();
   const [addCategory, { isLoading, isSuccess, isError }] =
     useAddCategoryMutation();
+  const { data } = useGetCategoriesQuery({});
+
+  const orderNum = data?.data?.length + 1;
 
   const [icons, seticons] = useState([]);
   const [name, setName] = useState("");
-  const [order, setOrder] = useState(0);
+  const [order, setOrder] = useState(orderNum);
 
   const handleAddCategory = () => {
     let icon = icons[0]?.file;
@@ -92,9 +98,11 @@ export default function Addcategory() {
       </div>
       <div className="form_group mt-2">
         <p className="text-neutral-content">Category Order</p>
-        <input type="number" 
-        defaultValue={order}
-        onChange={(e) => setOrder(e.target.value)} />
+        <input
+          type="number"
+          defaultValue={order}
+          onChange={(e) => setOrder(e.target.value)}
+        />
       </div>
 
       <div className="mt-4">

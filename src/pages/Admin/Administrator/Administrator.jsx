@@ -44,7 +44,7 @@ export default function Administrator() {
         <td>
           <div className="flex items-center gap-2">
             <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/images/users/${
+              src={`${import.meta.env.VITE_BACKEND_URL}/user/${
                 user?.image
               }`}
               alt=""

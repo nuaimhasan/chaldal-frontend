@@ -20,11 +20,13 @@ export default function Editcategory() {
     useUpdateCategoryMutation();
 
   const [icons, seticons] = useState([]);
-  const [name, setName] = useState(category?.name);
-  const [order, setOrder] = useState(category?.order);
 
-  const handleUpdateCategory =async () => {
+  const handleUpdateCategory =async (e) => {
+    e.preventDefault();
+
     let icon = icons[0]?.file;
+    const name = e.target.name.value;
+    const order = e.target.order.value;
 
     const formData = new FormData();
     formData.append("name", name);
@@ -34,7 +36,6 @@ export default function Editcategory() {
     }
 
     await updateCategory({ id, formData });
-    // console.log(res);
   };
 
   useEffect(() => {
@@ -53,7 +54,10 @@ export default function Editcategory() {
   }
 
   return (
-    <div className="p-4 bg-base-100 shadhow rounded sm:w-1/2">
+    <form
+      onSubmit={handleUpdateCategory}
+      className="p-4 bg-base-100 shadhow rounded sm:w-1/2"
+    >
       <div>
         <p>Icon</p>
         <ImageUploading
@@ -107,30 +111,21 @@ export default function Editcategory() {
 
       <div className="form_group mt-2">
         <p>Category name</p>
-        <input
-          type="text"
-          onChange={(e) => setName(e.target.value)}
-          defaultValue={category?.name}
-        />
+        <input type="text" name="name" defaultValue={category?.name} />
       </div>
       <div className="form_group mt-2">
         <p>Category Order</p>
-        <input
-          type="number"
-          defaultValue={category?.order}
-          onChange={(e) => setOrder(e.target.value)}
-        />
+        <input type="number" name="order" defaultValue={category?.order} />
       </div>
 
       <div className="mt-4">
         <button
-          onClick={handleUpdateCategory}
           className="bg-primary text-base-100 px-6 py-1.5 rounded"
           disabled={updateLoading && "disabled"}
         >
           {updateLoading ? "Loading.." : "Update"}
         </button>
       </div>
-    </div>
+    </form>
   );
 }

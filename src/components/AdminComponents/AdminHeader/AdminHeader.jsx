@@ -29,7 +29,7 @@ export default function AdminHeader({ setSidebar }) {
             src={
               loggedUser?.data?.image === ""
                 ? "/images/demo_user.jpg"
-                : `${import.meta.env.VITE_BACKEND_URL}/images/users/${
+                : `${import.meta.env.VITE_BACKEND_URL}/user/${
                     loggedUser?.data?.image
                   }`
             }

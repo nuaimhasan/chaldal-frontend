@@ -12,7 +12,7 @@ export default function Categories() {
   }
   // console.log(error.data.error);
   if (!isLoading && isError) {
-    content = <p>{error.data.error}</p>;
+    content = <p>{error?.data?.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((category, i) => (

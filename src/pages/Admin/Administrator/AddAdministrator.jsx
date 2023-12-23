@@ -32,7 +32,7 @@ export default function AddAdministrator() {
       Swal.fire("", "add success", "success");
       navigate("/admin/administrator/all-administrator");
     }
-  }, [isSuccess]);
+  }, [isSuccess, navigate]);
 
   return (
     <section className="bg-base-100 shadow rounded pb-4">
