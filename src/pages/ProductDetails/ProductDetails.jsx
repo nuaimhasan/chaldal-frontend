@@ -12,8 +12,6 @@ export default function ProductDetails() {
   const { data, isLoading, isError, error, isSuccess } =
     useGetProductByIdQuery(id);
 
-    console.log(data?.data?.varients);
-
   const description = isSuccess ? data?.data?.description : "";
   const parcerDescription = parcer(description);
 

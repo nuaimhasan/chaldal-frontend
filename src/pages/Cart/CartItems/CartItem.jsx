@@ -1,23 +1,27 @@
+import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
-import { UseContext } from "../../../ContextApi/ContextApi";
+import { removeFromCart } from "../../../Redux/cart/cartSlice";
 
 export default function CartItem({ product }) {
-  const { handelIncreaseCart, handelDecreaseCart, handelDeleteCart } =
-    UseContext();
-  const { id, image, title, slug, discount, price, quantity, size, color } =
-    product;
+  const dispatch = useDispatch();
+
+  const { id, image, title, discount, price, quantity, size, color } = product;
 
   const discountPrice = parseInt(price - (price * discount) / 100);
   const total =
     parseInt(discount >= 1 ? discountPrice : price) * parseInt(quantity);
+
+  const handelDeleteCartItem = (data) => {
+    dispatch(removeFromCart(data));
+  };
 
   return (
     <tr>
       <td className="p-3">
         <div className="w-max flex gap-2 items-center">
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/images/products/${image}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/products/${image}`}
             alt={title}
             className="w-10 h-10 rounded-lg"
           />
@@ -26,8 +30,8 @@ export default function CartItem({ product }) {
               {title.length > 30 ? `${title.slice(0, 30)}...` : title}
             </h3>
             <p className="text-neutral-content">
-              {size && <small>size:{size}</small>}{" "}
-              {color && <small>color:{color}</small>}
+              {size && <small>size: {size}</small>}{" "}
+              {color && <small>color: {color}</small>}
             </p>
           </Link>
         </div>
@@ -49,7 +53,7 @@ export default function CartItem({ product }) {
       <td className="px-6 py-3">
         <div className="w-max flex items-center gap-3">
           <button
-            onClick={() => handelDecreaseCart(product)}
+            // onClick={() => handelDecreaseCart(product)}
             className="text-2xl hover:text-neutral duration-200"
           >
             <FiMinusCircle />
@@ -60,7 +64,7 @@ export default function CartItem({ product }) {
             </p>
           </div>
           <button
-            onClick={() => handelIncreaseCart(product)}
+            // onClick={() => handelIncreaseCart(product)}
             className="text-2xl hover:text-neutral duration-200"
           >
             <FiPlusCircle />
@@ -76,7 +80,7 @@ export default function CartItem({ product }) {
 
       <td className="px-6 py-3">
         <button
-          onClick={() => handelDeleteCart(product)}
+          onClick={() => handelDeleteCartItem(product)}
           className="font-medium text-sm text-red-600 hover:underline"
         >
           Remove

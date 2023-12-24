@@ -1,23 +1,22 @@
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { RiShoppingCartLine } from "react-icons/ri";
+import { AiOutlineHeart } from "react-icons/ai";
+import { BiLogOutCircle } from "react-icons/bi";
 import { FiHeart, FiLogIn, FiMonitor } from "react-icons/fi";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { BiLogOutCircle } from "react-icons/bi";
-import MobileMenuSidebar from "./MobileMenuSidebar";
-import SearchBox from "./SearchBox";
-import { UseContext } from "../../ContextApi/ContextApi";
-import { AiOutlineHeart } from "react-icons/ai";
 import { IoBagCheckOutline } from "react-icons/io5";
+import { RiShoppingCartLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogout } from "../../Redux/user/userSlice";
+import { Link } from "react-router-dom";
 import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
+import { userLogout } from "../../Redux/user/userSlice";
+import MobileMenuSidebar from "./MobileMenuSidebar";
+import SearchBox from "./SearchBox";
 
 const MainHeader = () => {
   const [mobileMenu, setMobileMenu] = useState(false);
-  const { carts } = UseContext();
   const dispatch = useDispatch();
+  const carts = useSelector((state) => state.cart.carts);
   const { loggedUser } = useSelector((state) => state.user);
   const { data: logo } = useGetMainLogoQuery();
 
@@ -125,9 +124,9 @@ const MainHeader = () => {
                             loggedUser?.data?.image === "" ||
                             loggedUser?.data?.image === null
                               ? "/images/demo_user.jpg"
-                              : `${
-                                  import.meta.env.VITE_BACKEND_URL
-                                }/user/${loggedUser?.data?.image}`
+                              : `${import.meta.env.VITE_BACKEND_URL}/user/${
+                                  loggedUser?.data?.image
+                                }`
                           }
                           alt=""
                           className="w-9 h-9 rounded-full border border-base-100"

@@ -1,12 +1,13 @@
 import CartItems from "./CartItems/CartItems";
 import CartDetails from "./CartDetails/CartDetails";
-import { UseContext } from "../../ContextApi/ContextApi";
 import { MdOutlineRemoveShoppingCart } from "react-icons/md";
 import { Link } from "react-router-dom";
+import {useSelector} from 'react-redux'
 
 export default function Cart() {
   window.scroll(0, 0);
-  const { carts } = UseContext();
+  const carts = useSelector((state) => state.cart.carts);
+  // console.log(carts);
 
   return (
     <div className="py-5 min-h-[60vh]">

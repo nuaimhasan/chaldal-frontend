@@ -6,7 +6,6 @@ import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
 const PopularProducts = () => {
   const { data, isLoading, isError, error } = useGetAllProductsQuery({});
-  console.log(data?.data);
 
   let content = null;
   if (isLoading) {
