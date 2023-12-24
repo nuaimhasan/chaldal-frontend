@@ -308,12 +308,18 @@ const options = [
 export default function AddProduct() {
   const { data: categories } = useGetCategoriesQuery();
   const editor = useRef(null);
+
   const [images, setImages] = useState([]);
   const [colors, setColors] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [formData, setFormData] = useState([]);
-
   const [details, setDetails] = useState("");
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [brand, setBrand] = useState("");
+  const [stock, setStock] = useState(0);
+  const [sellPrice, setSellPrice] = useState(0);
+  const [purchasePrice, setPurchasePrice] = useState(0);
 
   const [addProduct, { isSuccess, isLoading, isError, error }] =
     useAddProductMutation();
@@ -366,30 +372,51 @@ export default function AddProduct() {
       return updatedFormData;
     });
   };
-
   // transform formData
   const transformData = () => {
     const result = [];
 
     formData.forEach((colorData, colorIndex) => {
-      const colorName = colors[colorIndex].name;
+      const color = colors[colorIndex].name;
       const colorCode = colors[colorIndex].code;
-      const sizeInfoArray = [];
+      const info = [];
 
+      // eslint-disable-next-line no-unused-vars
       colorData.forEach((sizeData, sizeIndex) => {
         const { size, quantity, price } = sizeData;
-        sizeInfoArray.push({ size, quantity, price });
+        info.push({ size, quantity, price });
       });
 
-      result.push({ colorName, colorCode, sizeInfoArray });
+      result.push({ color, colorCode, info });
     });
 
     return result;
   };
 
-  const handleGetData = () => {
-    const transformedData = transformData();
-    console.log(transformedData);
+  const handleGetData =async () => {
+
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("category", category);
+    formData.append("brand", brand);
+    formData.append("stock", stock);
+    formData.append("sellPrice", sellPrice);
+    formData.append("purchasePrice", purchasePrice);
+    formData.append("description", details);
+
+    images.forEach((image, index) => {
+      formData.append(`images`, image);
+    });
+
+    formData.append("formData", JSON.stringify(transformData()));
+    formData.append("colors", JSON.stringify(colors));
+    formData.append("sizes", JSON.stringify(sizes));
+
+
+    const res = await addProduct(formData);
+    console.log(res);
+    
   };
 
   // const handleAddProduct = async (e) => {
@@ -484,12 +511,20 @@ export default function AddProduct() {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm">Product Title</p>
-                <input type="text" name="title" required />
+                <input
+                  type="text"
+                  name="title"
+                  required
+                  onChange={(e) => setTitle(e.target.value)}
+                />
               </div>
 
               <div>
                 <p className="text-sm">Category</p>
-                <select name="category">
+                <select
+                  name="category"
+                  onChange={(e) => setCategory(e.target.value)}
+                >
                   {categories?.data?.map((category) => (
                     <option key={category?.id} value={category?.slug}>
                       {category?.name}
@@ -502,14 +537,19 @@ export default function AddProduct() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm">Brand</p>
-                <input type="text" name="brand" />
+                <input
+                  type="text"
+                  name="brand"
+                  onChange={(e) => setBrand(e.target.value)}
+                />
               </div>
 
               <div>
                 <p className="text-sm">Total Stock</p>
                 <input
                   type="number"
-                  // name="stock"
+                  name="stock"
+                  onChange={(e) => setStock(e.target.value)}
                 />
               </div>
             </div>
@@ -517,12 +557,20 @@ export default function AddProduct() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm">Sell Price</p>
-                <input type="number" name="sellPrice" />
+                <input
+                  type="number"
+                  name="sellPrice"
+                  onChange={(e) => setSellPrice(e.target.value)}
+                />
               </div>
 
               <div>
                 <p className="text-sm">Purchase Price</p>
-                <input type="number" name="purchasePrice" />
+                <input
+                  type="number"
+                  name="purchasePrice"
+                  onChange={(e) => setPurchasePrice(e.target.value)}
+                />
               </div>
             </div>
 
@@ -568,12 +616,12 @@ export default function AddProduct() {
                       className="mr-2 relative bg-gray-100 py-1 px-3 rounded whitespace-nowrap mb-2"
                     >
                       {sz}
-                      <button
+                      <span
                         onClick={() => handleRemoveSize(index)}
                         className="absolute -top-1 -right-1 text-red-500 text-lg"
                       >
                         <BsX />
-                      </button>
+                      </span>
                     </button>
                   ))}
                 </div>
