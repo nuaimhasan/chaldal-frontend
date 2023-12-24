@@ -4,14 +4,14 @@ import { BsUpload } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
-import { useGetProductQuery } from "../../../Redux/product/productApi";
+import { useGetProductByIdQuery } from "../../../Redux/product/productApi";
 import Spinner from "../../../components/Spinner/Spinner";
 
 export default function EditProduct() {
   const editor = useRef(null);
   const { id } = useParams();
   const { data: categories } = useGetCategoriesQuery();
-  const { data, isLoading, isError, error } = useGetProductQuery(id);
+  const { data, isLoading, isError, error } = useGetProductByIdQuery(id);
 
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");

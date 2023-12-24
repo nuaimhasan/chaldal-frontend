@@ -1,12 +1,12 @@
 import { useGetAllOrdersQuery } from "../../../Redux/order/orderApi";
-import { useGetProductsQuery } from "../../../Redux/product/productApi";
+import { useGetAllProductsQuery } from "../../../Redux/product/productApi";
 import { useAllUsersQuery } from "../../../Redux/user/userApi";
 import { BsCart4 } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
 import { FaBagShopping } from "react-icons/fa6";
 
 export default function Dashboard() {
-  const { data: products } = useGetProductsQuery({});
+  const { data: products } = useGetAllProductsQuery({});
   const { data: users } = useAllUsersQuery({});
   const { data: orders } = useGetAllOrdersQuery({});
 

@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
-  const { id, image, title, price, discount } = product;
+  const { _id, images, title, sellPrice, discount } = product;
 
   return (
     <div className="mt-4 hover:shadow-lg rounded overflow-hidden product-card duration-300">
-      <Link to={`/product/${id}`}>
+      <Link to={`/product/${_id}`}>
         <div className="overflow-hidden relative">
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/images/products/${image}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/products/${images[0]}`}
             alt=""
             className="w-full h-48 sm:h-56 duration-500"
           />
@@ -25,10 +25,10 @@ const ProductCard = ({ product }) => {
           </h1>
           <div className="flex items-center gap-2">
             <p className="text-primary text-lg">
-              ৳{parseInt(price - (price * discount) / 100)}
+              ৳{parseInt(sellPrice - (sellPrice * discount) / 100)}
             </p>
             {discount > 0 && (
-              <del className="text-neutral/70 text-sm ">৳{price}</del>
+              <del className="text-neutral/70 text-sm ">৳{sellPrice}</del>
             )}
           </div>
         </div>

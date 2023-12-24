@@ -9,13 +9,13 @@ export const productApi = apiSlice.injectEndpoints({
       }),
       providesTags: ["product"],
     }),
-    getProducts: builder.query({
+    getAllProducts: builder.query({
       query: ({ category = "" }) => ({
         url: `/product/all-products?category=${category}`,
       }),
       providesTags: ["product"],
     }),
-    getProduct: builder.query({
+    getProductById: builder.query({
       query: (id) => ({
         url: `/product/${id}`,
       }),
@@ -40,8 +40,8 @@ export const productApi = apiSlice.injectEndpoints({
 
 export const {
   useGetFlashProductsQuery,
-  useGetProductsQuery,
-  useGetProductQuery,
+  useGetAllProductsQuery,
+  useGetProductByIdQuery,
   useAddProductMutation,
   useDeleteProductMutation,
 } = productApi;

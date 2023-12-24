@@ -14,7 +14,7 @@ export default function CategoryLists() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((category) => (
-      <li key={category?.id}>
+      <li key={category?._id}>
         <Link
           to={`/shops/${category?.slug}`}
           className="p-2 flex items-center gap-2 hover:bg-gray-100 duration-300"

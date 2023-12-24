@@ -1,9 +1,9 @@
-import { FiHeart, FiMinusCircle, FiPlusCircle } from "react-icons/fi";
-import { FaOpencart } from "react-icons/fa";
 import { useState } from "react";
-import { UseContext } from "../../ContextApi/ContextApi";
+import { FaOpencart } from "react-icons/fa";
+import { FiHeart, FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { UseContext } from "../../ContextApi/ContextApi";
 
 const ProductInfo = ({ product }) => {
   const navigate = useNavigate();
@@ -13,16 +13,26 @@ const ProductInfo = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const [showColor, setShowColor] = useState(product?.images[0]);
+  console.log(showColor);
 
-  const { title, image, discount, brand, category, price, variants } = product;
+  const {
+    title,
+    images,
+    discount,
+    brand,
+    category,
+    colors,
+    sizes,
+    stock,
+    sellPrice,
+    varients,
+  } = product;
 
-  const totalQuantity = variants?.reduce(
-    (total, item) => total + parseInt(item.quantity),
-    0
-  );
-
-  const colors = [...new Set(variants?.map((color) => color.colorName))];
-  const sizes = [...new Set(variants?.map((size) => size.size))];
+  // const totalQuantity = variants?.reduce(
+  //   (total, item) => total + parseInt(item.quantity),
+  //   0
+  // );
 
   const handelSelectSize = (size) => {
     if (selectedSize === size) {
@@ -33,10 +43,10 @@ const ProductInfo = ({ product }) => {
   };
 
   const handelColorSelect = (clr) => {
-    if (selectedColor === clr) {
+    if (selectedColor === clr.name) {
       setSelectedColor("");
     } else {
-      setSelectedColor(clr);
+      setSelectedColor(clr.name);
     }
   };
 
@@ -50,38 +60,38 @@ const ProductInfo = ({ product }) => {
     }
   };
 
-  const handleBuyNow = () => {
-    if (variants?.length > 0 && !selectedSize) {
-      return Swal.fire("Please Select Size", "", "warning");
-    }
+  // const handleBuyNow = () => {
+  //   if (variants?.length > 0 && !selectedSize) {
+  //     return Swal.fire("Please Select Size", "", "warning");
+  //   }
 
-    if (variants?.length > 0 && !selectedColor) {
-      return Swal.fire("Please Select Color", "", "warning");
-    }
+  //   if (variants?.length > 0 && !selectedColor) {
+  //     return Swal.fire("Please Select Color", "", "warning");
+  //   }
 
-    const selectedVariant = variants?.find(
-      (variant) =>
-        variant.size == selectedSize && variant.colorName == selectedColor
-    );
+  //   const selectedVariant = variants?.find(
+  //     (variant) =>
+  //       variant.size == selectedSize && variant.colorName == selectedColor
+  //   );
 
-    if (!selectedVariant || selectedVariant.quantity < quantity) {
-      return Swal.fire("", "stock not available", "error");
-    }
+  //   if (!selectedVariant || selectedVariant.quantity < quantity) {
+  //     return Swal.fire("", "stock not available", "error");
+  //   }
 
-    const cartProduct = {
-      id: product.id,
-      title: product.title,
-      image: product.image,
-      discount: product.discount,
-      price: product.price,
-      quantity: quantity || 1,
-      size: selectedSize,
-      color: selectedColor,
-    };
+  //   const cartProduct = {
+  //     id: product.id,
+  //     title: product.title,
+  //     image: product.image,
+  //     discount: product.discount,
+  //     price: product.price,
+  //     quantity: quantity || 1,
+  //     size: selectedSize,
+  //     color: selectedColor,
+  //   };
 
-    setCarts([cartProduct]);
-    navigate("/checkout");
-  };
+  //   setCarts([cartProduct]);
+  //   navigate("/checkout");
+  // };
 
   return (
     <div className="lg:flex gap-6">
@@ -89,7 +99,7 @@ const ProductInfo = ({ product }) => {
       <div className="lg:w-[42%]">
         <div className="relative">
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/images/products/${image}`}
+            src={`${import.meta.env.VITE_BACKEND_URL}/products/${showColor}`}
             alt=""
             className="w-full h-[350px] rounded"
           />
@@ -98,6 +108,18 @@ const ProductInfo = ({ product }) => {
           <div className="absolute top-1 text-base-100 right-0 bg-red-600 w-max rounded-l-full px-2 py-px">
             <p>{discount}%</p>
           </div>
+        </div>
+
+        <div className="mt-5 grid grid-cols-3 gap-6">
+          {images.map((img, index) => (
+            <div key={index} onClick={() => setShowColor(img)}>
+              <img
+                src={`${import.meta.env.VITE_BACKEND_URL}/products/${img}`}
+                alt=""
+                className="h-12 rounded"
+              />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -117,7 +139,7 @@ const ProductInfo = ({ product }) => {
             </p>
             <p>
               <span className="text-neutral/80">Available Stock:</span>{" "}
-              <span>{totalQuantity}</span>
+              <span>{stock}</span>
             </p>
           </div>
         </div>
@@ -143,9 +165,11 @@ const ProductInfo = ({ product }) => {
 
             <div className="flex items-end gap-2">
               <p className="text-primary text-2xl font-medium">
-                ৳{parseInt(price - (price * discount) / 100)}
+                ৳{parseInt(sellPrice - (sellPrice * discount) / 100)}
               </p>
-              {discount > 0 && <del className="text-neutral/70">৳{price}</del>}
+              {discount > 0 && (
+                <del className="text-neutral/70">৳{sellPrice}</del>
+              )}
             </div>
           </div>
         </div>
@@ -178,13 +202,17 @@ const ProductInfo = ({ product }) => {
             <div className="flex gap-2 items-center">
               {colors?.map((clr) => (
                 <button
-                  key={clr}
+                  key={clr._id}
                   onClick={() => handelColorSelect(clr)}
-                  className={`${
-                    clr === selectedColor && "bg-primary text-base-100"
-                  } text-sm py-1.5 px-2.5 rounded border scale-[.96] hover:scale-[1] border-${clr}-500 duration-300`}
+                  className={`text-sm py-1.5 px-2.5 rounded border scale-[.96] hover:scale-[1] duration-300`}
+                  style={{
+                    backgroundColor:
+                      clr.name === selectedColor ? "#f47c20" : clr.code,
+                    borderColor: clr.code,
+                    color: clr.name === selectedColor ? "#FFF" : "#020617",
+                  }}
                 >
-                  {clr}
+                  {clr.name}
                 </button>
               ))}
             </div>
@@ -217,7 +245,7 @@ const ProductInfo = ({ product }) => {
         {/* Buttons */}
         <div className="flex gap-3 items-center mt-6">
           <button
-            onClick={handleBuyNow}
+            // onClick={handleBuyNow}
             className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded scale-[.97] hover:scale-[1] duration-300"
           >
             Buy Now

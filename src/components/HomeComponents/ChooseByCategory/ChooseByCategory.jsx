@@ -15,7 +15,7 @@ const ChooseByCategory = () => {
   if (!isLoading && !isError) {
     content = data?.data?.map((category) => (
       <Link
-        key={category?.id}
+        key={category?._id}
         to={`shops/${category.slug}`}
         className="shadow border rounded p-4 flex justify-center items-center text-center hover:bg-primary/10 duration-200"
       >

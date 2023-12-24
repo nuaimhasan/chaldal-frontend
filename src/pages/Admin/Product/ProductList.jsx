@@ -5,12 +5,12 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   useDeleteProductMutation,
-  useGetProductsQuery,
+  useGetAllProductsQuery,
 } from "../../../Redux/product/productApi";
 import Spinner from "../../../components/Spinner/Spinner";
 
 export default function ProductList() {
-  const { data, isLoading, isError, error } = useGetProductsQuery({});
+  const { data, isLoading, isError, error } = useGetAllProductsQuery({});
 
   const [
     deleteProduct,

@@ -1,6 +1,6 @@
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
-import { useGetProductsQuery } from "../../Redux/product/productApi";
+import { useGetAllProductsQuery } from "../../Redux/product/productApi";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ProductCards from "../../components/Skeleton/ProductCards/ProductCards";
 import ShopCategories from "./ShopCategories/ShopCategories";
@@ -10,7 +10,7 @@ export default function Shop() {
   const params = useParams();
   let category = params?.category ? params?.category : "";
 
-  const { data, isLoading, isError, error } = useGetProductsQuery({
+  const { data, isLoading, isError, error } = useGetAllProductsQuery({
     category,
   });
 

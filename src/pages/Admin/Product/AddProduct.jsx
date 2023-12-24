@@ -320,6 +320,7 @@ export default function AddProduct() {
   const [stock, setStock] = useState(0);
   const [sellPrice, setSellPrice] = useState(0);
   const [purchasePrice, setPurchasePrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
 
   const [addProduct, { isSuccess, isLoading, isError, error }] =
     useAddProductMutation();
@@ -393,8 +394,7 @@ export default function AddProduct() {
     return result;
   };
 
-  const handleGetData =async () => {
-
+  const handleGetData = async () => {
     const formData = new FormData();
 
     formData.append("title", title);
@@ -403,20 +403,19 @@ export default function AddProduct() {
     formData.append("stock", stock);
     formData.append("sellPrice", sellPrice);
     formData.append("purchasePrice", purchasePrice);
+    formData.append("discount", discount);
     formData.append("description", details);
 
     images.forEach((image, index) => {
       formData.append(`images`, image);
     });
 
-    formData.append("formData", JSON.stringify(transformData()));
+    formData.append("varients", JSON.stringify(transformData()));
     formData.append("colors", JSON.stringify(colors));
     formData.append("sizes", JSON.stringify(sizes));
 
-
     const res = await addProduct(formData);
     console.log(res);
-    
   };
 
   // const handleAddProduct = async (e) => {
@@ -570,6 +569,14 @@ export default function AddProduct() {
                   type="number"
                   name="purchasePrice"
                   onChange={(e) => setPurchasePrice(e.target.value)}
+                />
+              </div>
+              <div>
+                <p className="text-sm">Discount</p>
+                <input
+                  type="number"
+                  name="discount"
+                  onChange={(e) => setDiscount(e.target.value)}
                 />
               </div>
             </div>

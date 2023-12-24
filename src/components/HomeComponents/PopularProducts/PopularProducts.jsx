@@ -1,11 +1,12 @@
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useGetProductsQuery } from "../../../Redux/product/productApi";
+import { useGetAllProductsQuery } from "../../../Redux/product/productApi";
 import ProductCard from "../../ProductCard/ProductCard";
 import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
 const PopularProducts = () => {
-  const { data, isLoading, isError, error } = useGetProductsQuery({});
+  const { data, isLoading, isError, error } = useGetAllProductsQuery({});
+  console.log(data?.data);
 
   let content = null;
   if (isLoading) {
@@ -16,7 +17,7 @@ const PopularProducts = () => {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <ProductCard key={product?.id} product={product} />
+      <ProductCard key={product?._id} product={product} />
     ));
   }
 
