@@ -111,8 +111,19 @@ const ProductInfo = ({ product }) => {
       color: selectedColor,
     };
 
-    dispatch(addToBuyCart(cartProduct));
-    navigate("/checkout");
+    const findProduct = carts?.find(
+      (product) =>
+        product._id === cartProduct._id &&
+        product.size === cartProduct.size &&
+        product.color === cartProduct.color
+    );
+
+    if (findProduct) {
+      navigate("/cart");
+    } else {
+      dispatch(addToBuyCart(cartProduct));
+      navigate("/checkout");
+    }
   };
 
   const handelAddToCart = () => {
@@ -135,8 +146,19 @@ const ProductInfo = ({ product }) => {
       color: selectedColor,
     };
 
-    dispatch(addToCart([...carts, cartProduct]));
-    Swal.fire("", "Item added to cart successfully", "success");
+    const findProduct = carts?.find(
+      (product) =>
+        product._id === cartProduct._id &&
+        product.size === cartProduct.size &&
+        product.color === cartProduct.color
+    );
+
+    if (findProduct) {
+      return Swal.fire("", "Product already added to cart", "warning");
+    } else {
+      dispatch(addToCart([...carts, cartProduct]));
+      Swal.fire("", "Item added to cart successfully", "success");
+    }
   };
 
   return (

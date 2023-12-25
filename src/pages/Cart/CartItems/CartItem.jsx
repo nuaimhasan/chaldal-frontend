@@ -1,12 +1,31 @@
+import { useEffect, useState } from "react";
 import { FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { removeFromCart } from "../../../Redux/cart/cartSlice";
+import Swal from "sweetalert2";
+import { changeQuantity, removeFromCart } from "../../../Redux/cart/cartSlice";
+import { useGetProductByIdQuery } from "../../../Redux/product/productApi";
 
 export default function CartItem({ product }) {
   const dispatch = useDispatch();
+  const [stock, setStock] = useState(null);
 
-  const { id, image, title, discount, price, quantity, size, color } = product;
+  const { _id, image, title, discount, price, quantity, size, color } = product;
+  const { data } = useGetProductByIdQuery(_id);
+
+  useEffect(() => {
+    const varients = data?.data?.varients;
+
+    const selectedColorVarient = varients?.find(
+      (varient) => varient.color === color
+    );
+
+    const selectedSizeVarient = selectedColorVarient?.info?.find(
+      (varient) => varient.size === size
+    );
+
+    setStock(selectedSizeVarient?.quantity);
+  }, [color, data?.data?.varients, size]);
 
   const discountPrice = parseInt(price - (price * discount) / 100);
   const total =
@@ -14,6 +33,26 @@ export default function CartItem({ product }) {
 
   const handelDeleteCartItem = (data) => {
     dispatch(removeFromCart(data));
+  };
+
+  const handelIncreaseQuantity = () => {
+    if (stock > quantity) {
+      dispatch(changeQuantity({ ...product, quantity: quantity + 1 }));
+    } else {
+      Swal.fire("", "Sorry! We don't have enough stock", "warning");
+    }
+  };
+
+  const handelDecreaseQuantity = () => {
+    if (quantity > 1) {
+      dispatch(changeQuantity({ ...product, quantity: quantity - 1 }));
+    } else {
+      Swal.fire(
+        "",
+        "Sorry! You can't decrease quantity. You can remove it from the remove button",
+        "warning"
+      );
+    }
   };
 
   return (
@@ -25,7 +64,7 @@ export default function CartItem({ product }) {
             alt={title}
             className="w-10 h-10 rounded-lg"
           />
-          <Link to={`/product/${id}`} className="leading-4">
+          <Link to={`/product/${_id}`} className="leading-4">
             <h3 className="text-[17px] text-neutral">
               {title.length > 30 ? `${title.slice(0, 30)}...` : title}
             </h3>
@@ -53,7 +92,7 @@ export default function CartItem({ product }) {
       <td className="px-6 py-3">
         <div className="w-max flex items-center gap-3">
           <button
-            // onClick={() => handelDecreaseCart(product)}
+            onClick={handelDecreaseQuantity}
             className="text-2xl hover:text-neutral duration-200"
           >
             <FiMinusCircle />
@@ -64,7 +103,7 @@ export default function CartItem({ product }) {
             </p>
           </div>
           <button
-            // onClick={() => handelIncreaseCart(product)}
+            onClick={handelIncreaseQuantity}
             className="text-2xl hover:text-neutral duration-200"
           >
             <FiPlusCircle />
