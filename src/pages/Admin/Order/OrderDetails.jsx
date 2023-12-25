@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useGetOrderQuery } from "../../../Redux/order/orderApi";
 import Swal from "sweetalert2";
+import { useGetOrderByIdQuery } from "../../../Redux/order/orderApi";
 
 export default function OrderDetails() {
   const params = useParams();
   const id = params.id;
 
-  const { data, isLoading, isError, error } = useGetOrderQuery(id);
+  const { data, isLoading, isError, error } = useGetOrderByIdQuery(id);
 
   const products = data?.data?.products;
   const subTotal = products?.reduce(

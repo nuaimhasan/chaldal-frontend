@@ -4,7 +4,7 @@ import { FiHeart, FiMinusCircle, FiPlusCircle } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { addToBuyCart, addToCart } from "../../Redux/cart/cartSlice";
+import { addToCart } from "../../Redux/cart/cartSlice";
 
 const ProductInfo = ({ product }) => {
   const {
@@ -112,19 +112,8 @@ const ProductInfo = ({ product }) => {
       color: selectedColor,
     };
 
-    const findProduct = carts?.find(
-      (product) =>
-        product._id === cartProduct._id &&
-        product.size === cartProduct.size &&
-        product.color === cartProduct.color
-    );
-
-    if (findProduct) {
-      navigate("/cart");
-    } else {
-      dispatch(addToBuyCart(cartProduct));
-      navigate("/checkout");
-    }
+    dispatch(addToCart([cartProduct]));
+    navigate("/checkout");
   };
 
   const handelAddToCart = () => {

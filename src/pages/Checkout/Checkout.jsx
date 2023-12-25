@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { UseContext } from "../../ContextApi/ContextApi";
 import { cities, districts } from "../../Data/location";
+import { clearCart } from "../../Redux/cart/cartSlice";
+import { useAddOrderMutation } from "../../Redux/order/orderApi";
 import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
   window.scroll(0, 0);
-  const { carts, setCarts } = UseContext();
+  const carts = useSelector((state) => state.cart.carts);
+  const dispatch = useDispatch();
+
+  const [addOrder, { isLoading }] = useAddOrderMutation();
+
   const { loggedUser } = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const [cityDropdown, setCityDropdown] = useState(false);
@@ -73,7 +77,7 @@ export default function Checkout() {
   const tax = 0;
   const grandTotal = subTotal + tax + parseInt(shipping);
 
-  const handelPlaceOrder = (e) => {
+  const handelPlaceOrder = async (e) => {
     e.preventDefault();
 
     const form = e.target;
@@ -89,7 +93,7 @@ export default function Checkout() {
     const products = [];
     carts.map((product) =>
       products.push({
-        productId: product.id,
+        productId: product._id,
         quantity: product.quantity,
         size: product.size,
         color: product.color,
@@ -97,41 +101,55 @@ export default function Checkout() {
     );
 
     const order = {
-      userId: loggedUser?.data?.id,
-      city,
-      district,
-      street,
+      userId: loggedUser?.data?._id,
+      shippingInfo: {
+        city,
+        district,
+        street,
+      },
       products,
+      totalPrice: grandTotal,
     };
 
-    setLoading(true);
+    const res = await addOrder(order);
 
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/order/post-order`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(order),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.status) {
-          Swal.fire("", "order success", "success");
-          setCarts([]);
-          form.reset();
-          setCity("");
-          setDistrict("");
-          navigate("/shops");
-        } else {
-          toast.error("Something Wrong");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    if (res?.data?.success) {
+      Swal.fire("", "order success", "success");
+      dispatch(clearCart());
+      form.reset();
+      setCity("");
+      setDistrict("");
+      navigate("/shops");
+    } else {
+      toast.error("Something Wrong");
+    }
+
+    // fetch(`${import.meta.env.VITE_BACKEND_URL}/order/post-order`, {
+    //   method: "POST",
+    //   headers: {
+    //     "content-type": "application/json",
+    //   },
+    //   body: JSON.stringify(order),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     if (data?.status) {
+    //       Swal.fire("", "order success", "success");
+    //       dispatch(clearCart());
+    //       form.reset();
+    //       setCity("");
+    //       setDistrict("");
+    //       navigate("/shops");
+    //     } else {
+    //       toast.error("Something Wrong");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   };
 
   return (
@@ -369,7 +387,7 @@ export default function Checkout() {
                 type="submit"
                 className="w-full bg-primary text-base-100 py-2 rounded shadow flex justify-center"
               >
-                {loading ? <ButtonSpinner /> : "PLACE ORDER"}
+                {isLoading ? <ButtonSpinner /> : "PLACE ORDER"}
               </button>
             </div>
           </div>
