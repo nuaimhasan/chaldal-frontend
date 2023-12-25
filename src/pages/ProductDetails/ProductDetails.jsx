@@ -1,6 +1,6 @@
 import parcer from "html-react-parser";
 import { useParams } from "react-router-dom";
-import { useGetProductByIdQuery } from "../../Redux/product/productApi";
+import { useGetProductBySlugQuery } from "../../Redux/product/productApi";
 import Spinner from "../../components/Spinner/Spinner";
 import ProductInfo from "./ProductInfo";
 import RightSideInfo from "./RightSideInfo";
@@ -8,9 +8,9 @@ import RightSideInfo from "./RightSideInfo";
 export default function ProductDetails() {
   window.scroll(0, 0);
   const params = useParams();
-  let id = params?.id;
+  let slug = params?.id;
   const { data, isLoading, isError, error, isSuccess } =
-    useGetProductByIdQuery(id);
+    useGetProductBySlugQuery(slug);
 
   const description = isSuccess ? data?.data?.description : "";
   const parcerDescription = parcer(description);

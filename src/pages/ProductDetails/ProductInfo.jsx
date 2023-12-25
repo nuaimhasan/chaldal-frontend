@@ -15,7 +15,7 @@ const ProductInfo = ({ product }) => {
     category,
     colors,
     sizes,
-    stock,
+    totalStock,
     sellPrice,
     varients,
   } = product;
@@ -47,7 +47,7 @@ const ProductInfo = ({ product }) => {
     if (selectedSizeVarient?.quantity) {
       setSelectedStock(selectedSizeVarient?.quantity);
     } else {
-      setSelectedStock(stock);
+      setSelectedStock(totalStock);
     }
 
     if (selectedSizeVarient?.price) {
@@ -55,7 +55,7 @@ const ProductInfo = ({ product }) => {
     } else {
       setSelectedPrice(sellPrice);
     }
-  }, [selectedSize, selectedColor, varients, stock, sellPrice]);
+  }, [selectedSize, selectedColor, varients, totalStock, sellPrice]);
 
   const handelSelectSize = (size) => {
     if (selectedSize === size) {
@@ -103,6 +103,7 @@ const ProductInfo = ({ product }) => {
     const cartProduct = {
       _id: product._id,
       title: title,
+      slug: product.slug,
       image: images[0],
       discount: discount,
       price: selectedPrice,
@@ -138,6 +139,7 @@ const ProductInfo = ({ product }) => {
     const cartProduct = {
       _id: product._id,
       title: title,
+      slug: product.slug,
       image: images[0],
       discount: discount,
       price: selectedPrice,

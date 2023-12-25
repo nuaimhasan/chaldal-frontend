@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
-  const { _id, images, title, sellPrice, discount } = product;
+  const { slug, images, title, sellPrice, discount } = product;
 
   return (
     <div className="mt-4 hover:shadow-lg rounded overflow-hidden product-card duration-300">
-      <Link to={`/product/${_id}`}>
+      <Link to={`/product/${slug}`}>
         <div className="overflow-hidden relative">
           <img
             src={`${import.meta.env.VITE_BACKEND_URL}/products/${images[0]}`}

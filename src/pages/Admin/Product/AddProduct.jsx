@@ -319,7 +319,6 @@ export default function AddProduct() {
   const [brand, setBrand] = useState("");
   const [stock, setStock] = useState(0);
   const [sellPrice, setSellPrice] = useState(0);
-  const [purchasePrice, setPurchasePrice] = useState(0);
   const [discount, setDiscount] = useState(0);
 
   const [addProduct, { isSuccess, isLoading, isError, error }] =
@@ -400,12 +399,12 @@ export default function AddProduct() {
     formData.append("title", title);
     formData.append("category", category);
     formData.append("brand", brand);
-    formData.append("stock", stock);
+    formData.append("totalStock", stock);
     formData.append("sellPrice", sellPrice);
-    formData.append("purchasePrice", purchasePrice);
     formData.append("discount", discount);
     formData.append("description", details);
 
+    // eslint-disable-next-line no-unused-vars
     images.forEach((image, index) => {
       formData.append(`images`, image);
     });
@@ -562,15 +561,6 @@ export default function AddProduct() {
                   onChange={(e) => setSellPrice(e.target.value)}
                 />
               </div>
-
-              <div>
-                <p className="text-sm">Purchase Price</p>
-                <input
-                  type="number"
-                  name="purchasePrice"
-                  onChange={(e) => setPurchasePrice(e.target.value)}
-                />
-              </div>
               <div>
                 <p className="text-sm">Discount</p>
                 <input
@@ -703,17 +693,12 @@ export default function AddProduct() {
           </div>
 
           <div className="mt-6 flex justify-end">
-            {/* <button
+            <button
+              onClick={handleGetData}
               disabled={isLoading && "disabled"}
               className="bg-primary text-base-100 px-10 py-2 rounded"
             >
-              {isLoading ? "loading..." : "Add Product"}
-            </button> */}
-            <button
-              onClick={handleGetData}
-              className="bg-primary text-base-100 px-10 py-2 rounded"
-            >
-              Add Product
+              {isLoading ? "Loading..." : "Add Product"}
             </button>
           </div>
         </div>

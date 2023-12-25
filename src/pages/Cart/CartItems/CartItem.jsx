@@ -4,14 +4,15 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { changeQuantity, removeFromCart } from "../../../Redux/cart/cartSlice";
-import { useGetProductByIdQuery } from "../../../Redux/product/productApi";
+import { useGetProductBySlugQuery } from "../../../Redux/product/productApi";
 
 export default function CartItem({ product }) {
   const dispatch = useDispatch();
   const [stock, setStock] = useState(null);
 
-  const { _id, image, title, discount, price, quantity, size, color } = product;
-  const { data } = useGetProductByIdQuery(_id);
+  const { slug, image, title, discount, price, quantity, size, color } =
+    product;
+  const { data } = useGetProductBySlugQuery(slug);
 
   useEffect(() => {
     const varients = data?.data?.varients;
@@ -64,7 +65,7 @@ export default function CartItem({ product }) {
             alt={title}
             className="w-10 h-10 rounded-lg"
           />
-          <Link to={`/product/${_id}`} className="leading-4">
+          <Link to={`/product/${slug}`} className="leading-4">
             <h3 className="text-[17px] text-neutral">
               {title.length > 30 ? `${title.slice(0, 30)}...` : title}
             </h3>

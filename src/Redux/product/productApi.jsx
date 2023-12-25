@@ -20,6 +20,11 @@ export const productApi = apiSlice.injectEndpoints({
         url: `/product/${id}`,
       }),
     }),
+    getProductBySlug: builder.query({
+      query: (slug) => ({
+        url: `/product/getbyslug/${slug}`,
+      }),
+    }),
     addProduct: builder.mutation({
       query: (formData) => ({
         url: `/product/add-product`,
@@ -42,6 +47,7 @@ export const {
   useGetFlashProductsQuery,
   useGetAllProductsQuery,
   useGetProductByIdQuery,
+  useGetProductBySlugQuery,
   useAddProductMutation,
   useDeleteProductMutation,
 } = productApi;
