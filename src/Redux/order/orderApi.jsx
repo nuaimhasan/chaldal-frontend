@@ -13,6 +13,7 @@ export const orderApi = apiSlice.injectEndpoints({
       query: () => ({
         url: "/order/all-orders",
       }),
+      providesTags: ["order"],
     }),
     getOrderById: builder.query({
       query: (id) => ({
@@ -28,6 +29,21 @@ export const orderApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["order"],
     }),
+    deleteOrder: builder.mutation({
+      query: (id) => ({
+        url: `/order/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["order"],
+    }),
+    statusUpdate: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/order/update-status/${id}`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: ["order"],
+    }),
   }),
 });
 
@@ -36,4 +52,6 @@ export const {
   useGetAllOrdersQuery,
   useAddOrderMutation,
   useGetOrderByIdQuery,
+  useDeleteOrderMutation,
+  useStatusUpdateMutation,
 } = orderApi;

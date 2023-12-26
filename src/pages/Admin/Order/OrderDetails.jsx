@@ -1,172 +1,153 @@
 import { useParams } from "react-router-dom";
-import Swal from "sweetalert2";
-import { useGetOrderByIdQuery } from "../../../Redux/order/orderApi";
+import { toast } from "react-toastify";
+import {
+  useGetOrderByIdQuery,
+  useStatusUpdateMutation,
+} from "../../../Redux/order/orderApi";
+import Spinner from "../../../components/Spinner/Spinner";
 
 export default function OrderDetails() {
   const params = useParams();
   const id = params.id;
 
   const { data, isLoading, isError, error } = useGetOrderByIdQuery(id);
+  const [statusUpdate, { isLoading: statusLoading }] =
+    useStatusUpdateMutation();
 
+  const order = data?.data;
   const products = data?.data?.products;
-  const subTotal = products?.reduce(
-    (price, item) =>
-      price +
-      item.order_items.quantity *
-        parseInt(item.price - (item.price * item.discount) / 100),
-    0
-  );
 
-  const handleShipped = () => {
-    const isConfirm = window.confirm("are you sure update order status?");
+  const statusHandler = async (id, status) => {
+    const isConfirm = window.confirm("Do you want to update status?");
+
+    if (status === "pending") {
+      status = "shipped";
+    } else if (status === "shipped") {
+      status = "delivered";
+    } else {
+      status = "pending";
+    }
+
     if (isConfirm) {
-      fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/order/pendingToShipped/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
-          },
+      try {
+        const result = await statusUpdate({ id, status });
+        if (result?.data?.success) {
+          toast.success(result?.data?.message);
         }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          if (data?.success) {
-            Swal.fire("", "status update success", "success");
-            setInterval(() => {
-              location.reload();
-            }, 1000);
-          }
-        });
+      } catch (error) {
+        toast.error(error?.data?.error);
+      }
     }
   };
 
-  const handleDelivered = () => {
-    const isConfirm = window.confirm("are you sure update order status?");
-    if (isConfirm) {
-      fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/order/shippedToDelivered/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
-          },
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          if (data?.success) {
-            Swal.fire("", "status update success", "success");
-            setInterval(() => {
-              location.reload();
-            }, 1000);
-          }
-        });
-    }
-  };
+  let content = null;
+  if (isLoading) {
+    return (content = <Spinner />);
+  }
+  if (!isLoading && isError) {
+    content = <p>{error.error}</p>;
+  }
 
-  return (
-    <div>
-      <div className="flex justify-end">
-        {data?.data?.status === "pending" && (
-          <button
-            onClick={handleShipped}
-            className="text-base-100 bg-gray-700 px-6 py-2 rounded mb-4 text-sm hover:bg-primary duration-300"
-          >
-            Process To Shipped
-          </button>
-        )}
-
-        {data?.data?.status === "Shipped" && (
-          <button
-            onClick={handleDelivered}
-            className="text-base-100 bg-gray-700 px-6 py-2 rounded mb-4 text-sm hover:bg-primary duration-300"
-          >
-            Complete Order
-          </button>
-        )}
-
-        {data?.data?.status === "Delivered" && (
-          <div className="text-base-100 px-6 py-2 rounded mb-4 text-sm bg-primary">
-            Order Completed
-          </div>
-        )}
-      </div>
-      <div className="border p-4 rounded-md">
-        <p className="text-lg">Order Details:</p>
-        <p>Order Id: {data?.data?.id}</p>
-      </div>
-
-      <div className="mt-4 border p-4 rounded-md">
-        <p className="text-lg">Shipping Details:</p>
-        <div className="text-[15px] mt-1">
-          <p>Name: {data?.data?.user?.name}</p>
-          <p>Phone: {data?.data?.user?.phone}</p>
-          <p>
-            Address: {products?.length > 0 && products[0].order_items?.street},{" "}
-            {products?.length > 0 && products[0].order_items?.district},{" "}
-            {products?.length > 0 && products[0].order_items?.city}
-          </p>
-          <p></p>
+  if (!isLoading && !isError) {
+    content = (
+      <div>
+        <div className="flex justify-end">
+          {statusLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <button
+              onClick={() => statusHandler(order?._id, order?.status)}
+              disabled={order?.status === "delivered"}
+              className="text-base-100 bg-gray-700 px-6 py-2 rounded mb-4 text-sm hover:bg-primary duration-300"
+            >
+              {order?.status === "pending" ? (
+                <span className="">{order?.status}</span>
+              ) : order?.status === "shipped" ? (
+                <span className="">{order?.status}</span>
+              ) : (
+                <span className="">{order?.status}</span>
+              )}
+            </button>
+          )}
         </div>
-      </div>
+        <div className="border p-4 rounded-md">
+          <p className="text-lg">Order Details:</p>
+          <p>
+            Order Id: <span className="text-primary">#{order?._id}</span>
+          </p>
+        </div>
 
-      <div className="mt-4 border p-4 rounded-md">
-        <p className="text-lg">Product Details:</p>
-        <div>
-          {data?.data?.products?.map((product) => (
-            <div key={product?.id}>
-              <div className="border rounded p-4 mb-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={`${
-                        import.meta.env.VITE_BACKEND_URL
-                      }/images/products/${product?.image}`}
-                      alt=""
-                      className="w-9 h-9 rounded-full"
-                    />
-                    <div>
-                      <p>
-                        {product?.title} * {product?.order_items?.quantity}
+        <div className="mt-4 border p-4 rounded-md">
+          <p className="text-lg">Shipping Details:</p>
+          <div className="text-[15px] mt-1">
+            <p className="text-sm">{order?.userId?.name}</p>
+            <p className="text-sm">{order?.userId?.phone}</p>
+            <p className="text-sm">{order?.userId?.email}</p>
+            <p className="text-sm">{order?.shippingInfo?.street}</p>
+            <p className="text-sm">
+              {order?.shippingInfo?.city}, {order?.shippingInfo?.district}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 border p-4 rounded-md">
+          <p className="text-lg">Product Details:</p>
+          <div>
+            {products?.map((product) => (
+              <div key={product?.id}>
+                <div className="border rounded p-4 mb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={`${import.meta.env.VITE_BACKEND_URL}/products/${
+                          product?.productId?.images[0]
+                        }`}
+                        alt=""
+                        className="w-9 h-9 rounded-full"
+                      />
+                      <div>
+                        <p>
+                          {product?.productId?.title} * {product?.quantity}
+                        </p>
+                        <p className="text-sm">
+                          {product?.size} - {product?.color}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-end gap-2">
+                      <p className="text-primary font-medium">
+                        ৳{order?.totalPrice}
+                        {/* {parseInt(
+                        order?.totalPrice -
+                          (product?.price * product?.discount) / 100
+                      )} */}
                       </p>
-                      <p className="text-sm">
-                        {product?.order_items?.size} -{" "}
-                        {product?.order_items?.color}
-                      </p>
+                      {product?.discount > 0 && (
+                        <del className="text-neutral/70 text-sm">
+                          ৳{order?.totalPrice}
+                        </del>
+                      )}
                     </div>
                   </div>
+                </div>
 
-                  <div className="flex items-end gap-2">
-                    <p className="text-primary font-medium">
-                      ৳
-                      {parseInt(
-                        product?.price -
-                          (product?.price * product?.discount) / 100
-                      )}
-                    </p>
-                    {product?.discount > 0 && (
-                      <del className="text-neutral/70 text-sm">
-                        ৳{product?.price}
-                      </del>
-                    )}
-                  </div>
+                <div className="flex justify-between items-center">
+                  <p>Total:</p>
+                  <p>
+                    {order?.shippingInfo?.city === "Dhaka"
+                      ? order?.totalPrice + 80
+                      : order?.totalPrice + 150}{" "}
+                    tk
+                  </p>
                 </div>
               </div>
-
-              <div className="flex justify-between items-center">
-                <p>Total:</p>
-                <p>
-                  {product?.order_items?.city === "Dhaka"
-                    ? subTotal + 80
-                    : subTotal + 150}{" "}
-                  tk
-                </p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return <>{content}</>;
 }

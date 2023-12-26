@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Redux/product/productApi";
@@ -8,11 +11,33 @@ import ShopCategories from "./ShopCategories/ShopCategories";
 export default function Shop() {
   window.scroll(0, 0);
   const params = useParams();
-  let category = params?.category ? params?.category : "";
+  let categoryParams = params?.category ? params?.category : "";
+
+  const query = {};
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(8);
+  const [category, setCategory] = useState("");
+
+  query["page"] = page;
+  query["limit"] = limit;
+  query["category"] = category;
+
+  useEffect(() => {
+    setCategory(categoryParams);
+  }, [categoryParams]);
 
   const { data, isLoading, isError, error } = useGetAllProductsQuery({
-    category,
+    ...query,
   });
+
+  const meta = data?.meta;
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber < 1) return;
+    if (meta?.total && pageNumber > meta.total / limit) return;
+
+    setPage(pageNumber);
+  };
 
   let content = null;
   if (isLoading) {
@@ -67,6 +92,30 @@ export default function Shop() {
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
               {content}
             </div>
+
+            {data?.data?.length > 0 && (
+              <div className="flex items-center justify-center mt-16">
+                <div className="flex items-center space-x-1 border border-gray-300 rounded overflow-hidden text-sm">
+                  <button
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                    onClick={() => handlePageChange(page - 1)}
+                    disabled={page === 1}
+                  >
+                    <FaArrowLeft />
+                  </button>
+                  <button className="px-4 py-2 bg-gray-700 text-gray-100 font-medium focus:outline-none">
+                    Page {page}
+                  </button>
+                  <button
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                    onClick={() => handlePageChange(page + 1)}
+                    disabled={meta?.total && page === meta.total / limit}
+                  >
+                    <FaArrowRight />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

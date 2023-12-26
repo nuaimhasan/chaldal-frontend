@@ -10,8 +10,10 @@ export const productApi = apiSlice.injectEndpoints({
       providesTags: ["product"],
     }),
     getAllProducts: builder.query({
-      query: ({ category = "" }) => ({
-        url: `/product/all-products?category=${category}`,
+      query: (query) => ({
+        url: `/product/all-products`,
+        method: "GET",
+        params: query,
       }),
       providesTags: ["product"],
     }),
