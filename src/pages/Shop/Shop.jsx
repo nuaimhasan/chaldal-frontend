@@ -30,11 +30,9 @@ export default function Shop() {
     ...query,
   });
 
-  const meta = data?.meta;
-
   const handlePageChange = (pageNumber) => {
     if (pageNumber < 1) return;
-    if (meta?.total && pageNumber > meta.total / limit) return;
+    if (data?.meta?.total && pageNumber > data?.meta.total / limit) return;
 
     setPage(pageNumber);
   };
@@ -109,7 +107,9 @@ export default function Shop() {
                   <button
                     className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
                     onClick={() => handlePageChange(page + 1)}
-                    disabled={meta?.total && page === meta.total / limit}
+                    disabled={
+                      data?.meta?.total && page === data?.meta.total / limit
+                    }
                   >
                     <FaArrowRight />
                   </button>

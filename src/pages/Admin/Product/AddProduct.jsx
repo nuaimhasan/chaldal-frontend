@@ -393,7 +393,7 @@ export default function AddProduct() {
     return result;
   };
 
-  const handleGetData = async () => {
+  const handleAddProduct = async () => {
     const formData = new FormData();
 
     formData.append("title", title);
@@ -416,33 +416,6 @@ export default function AddProduct() {
     const res = await addProduct(formData);
     console.log(res);
   };
-
-  // const handleAddProduct = async (e) => {
-  //   e.preventDefault();
-
-  //   const form = e.target;
-  //   const category = form.category.value;
-  //   const title = form.title.value;
-  //   const price = form.price.value;
-  //   const discount = form.discount.value;
-  //   const brand = form.brand.value;
-  //   const description = details;
-
-  //   const formData = new FormData();
-  //   // formData.append("image", image);
-  //   formData.append("title", title);
-  //   formData.append("price", price);
-  //   formData.append("category", category);
-  //   formData.append("discount", discount);
-  //   formData.append("brand", brand);
-  //   formData.append("description", description);
-
-  //   addProduct(formData);
-
-  //   form.reset();
-  //   // setImage("");
-  //   setDetails("");
-  // };
 
   useEffect(() => {
     if (isSuccess) {
@@ -694,7 +667,7 @@ export default function AddProduct() {
 
           <div className="mt-6 flex justify-end">
             <button
-              onClick={handleGetData}
+              onClick={handleAddProduct}
               disabled={isLoading && "disabled"}
               className="bg-primary text-base-100 px-10 py-2 rounded"
             >

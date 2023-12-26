@@ -1,7 +1,10 @@
-import { useEffect } from "react";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BiSolidPencil } from "react-icons/bi";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import {
   useDeleteProductMutation,
@@ -10,7 +13,16 @@ import {
 import Spinner from "../../../components/Spinner/Spinner";
 
 export default function ProductList() {
-  const { data, isLoading, isError, error } = useGetAllProductsQuery({});
+  const query = {};
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  query["page"] = page;
+  query["limit"] = limit;
+
+  const { data, isLoading, isError, error } = useGetAllProductsQuery({
+    ...query,
+  });
 
   const [
     deleteProduct,
@@ -20,8 +32,15 @@ export default function ProductList() {
   const handleDeleteProduct = async (id) => {
     const isConfirm = window.confirm("Are you sure delete this product?");
     if (isConfirm) {
-      deleteProduct(id);
+      await deleteProduct(id);
     }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber < 1) return;
+    if (data?.meta?.total && pageNumber > data?.meta.total / limit) return;
+
+    setPage(pageNumber);
   };
 
   useEffect(() => {
@@ -52,8 +71,8 @@ export default function ProductList() {
         <td>
           <div className="flex items-center gap-2">
             <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/images/products/${
-                product?.image
+              src={`${import.meta.env.VITE_BACKEND_URL}/products/${
+                product?.images[0]
               }`}
               alt=""
               className="w-10 h-10 rounded-full"
@@ -64,18 +83,18 @@ export default function ProductList() {
           </div>
         </td>
         <td>{product?.category}</td>
-        <td>${product?.price}</td>
+        <td>${product?.sellPrice}</td>
         <td>
           <div className="flex items-center gap-4">
             <Link
-              to={`/admin/product/edit-product/${product?.id}`}
+              to={`/admin/product/edit-product/${product?._id}`}
               className="flex gap-1 items-center hover:text-green-700 duration-300"
             >
               <BiSolidPencil />
               Edit
             </Link>
             <button
-              onClick={() => handleDeleteProduct(product?.id)}
+              onClick={() => handleDeleteProduct(product?._id)}
               className="flex gap-1 items-center text-red-500"
             >
               <AiOutlineDelete />
@@ -100,6 +119,30 @@ export default function ProductList() {
         </thead>
         <tbody>{content}</tbody>
       </table>
+
+      {data?.data?.length > 0 && (
+        <div className="flex items-center justify-center mt-16 mb-5">
+          <div className="flex items-center space-x-1 border border-gray-300 rounded overflow-hidden text-sm">
+            <button
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1}
+            >
+              <FaArrowLeft />
+            </button>
+            <button className="px-4 py-2 bg-gray-700 text-gray-100 font-medium focus:outline-none">
+              Page {page}
+            </button>
+            <button
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+              onClick={() => handlePageChange(page + 1)}
+              disabled={data?.meta?.total && page === data?.meta.total / limit}
+            >
+              <FaArrowRight />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

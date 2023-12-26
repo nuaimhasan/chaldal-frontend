@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
+import { AiFillInstagram } from "react-icons/ai";
 import { BsFacebook, BsTelephoneInbound, BsYoutube } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
-import { AiFillInstagram } from "react-icons/ai";
 import { MdOutlineEmail } from "react-icons/md";
+import { Link } from "react-router-dom";
 import { useGetContactQuery } from "../../Redux/contact/contactApi";
 
 const TopHeader = () => {
-  const { data, isLoading } = useGetContactQuery();
-  const contact = data?.data;
+  const { data } = useGetContactQuery();
+  const contact = data?.data[0];
   return (
     <div className="hidden sm:block bg-primary py-1.5 border-b text-base-100">
       <div className="container mx-auto font-medium">

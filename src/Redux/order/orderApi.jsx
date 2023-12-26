@@ -10,8 +10,10 @@ export const orderApi = apiSlice.injectEndpoints({
       providesTags: ["order"],
     }),
     getAllOrders: builder.query({
-      query: () => ({
+      query: (query) => ({
         url: "/order/all-orders",
+        method: "GET",
+        params: query,
       }),
       providesTags: ["order"],
     }),
