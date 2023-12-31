@@ -1,12 +1,12 @@
 import JoditEditor from "jodit-react";
 import { useEffect, useRef, useState } from "react";
 import Select from "react-dropdown-select";
-import { BsUpload, BsX } from "react-icons/bs";
+import { BsX } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
 import { useAddProductMutation } from "../../../Redux/product/productApi";
 
-import { AiFillDelete, AiOutlineCloseCircle } from "react-icons/ai";
+import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 
 const options = [
@@ -372,15 +372,19 @@ export default function AddProduct() {
     variants.forEach((colorData, colorIndex) => {
       const color = colors[colorIndex].name;
       const colorCode = colors[colorIndex].code;
-      const info = [];
 
       // eslint-disable-next-line no-unused-vars
       colorData.forEach((sizeData, sizeIndex) => {
         const { size, quantity, sellingPrice, purchasePrice } = sizeData;
-        info.push({ size, quantity, sellingPrice, purchasePrice });
+        result.push({
+          color,
+          colorCode,
+          size,
+          quantity,
+          sellingPrice,
+          purchasePrice,
+        });
       });
-
-      result.push({ color, colorCode, info });
     });
 
     return result;
@@ -389,15 +393,15 @@ export default function AddProduct() {
   const handleAddProduct = async (e) => {
     e.preventDefault();
     const form = e.target;
-    const title = form.title.value;
-    const category = form.category.value;
-    const subCategory = form.sub_category.value;
-    const subSubCategory = form.sub_subCategory.value;
-    const brand = form.brand.value;
-    const discount = form.discount.value;
-    const sellingPrice = form.selling_price.value;
-    const purchasePrice = form.purchase_price.value;
-    const quantity = form.quantity.value;
+    // const title = form.title.value;
+    // const category = form.category.value;
+    // const subCategory = form.sub_category.value;
+    // const subSubCategory = form.sub_subCategory.value;
+    // const brand = form.brand.value;
+    // const discount = form.discount.value;
+    // const sellingPrice = form.selling_price.value;
+    // const purchasePrice = form.purchase_price.value;
+    // const quantity = form.quantity.value;
 
     // const product = {
     //   title,
