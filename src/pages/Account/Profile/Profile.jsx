@@ -15,8 +15,8 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
 
   const user = loggedUser?.data;
-  if(!user){
-    return <Spinner />
+  if (!user) {
+    return <Spinner />;
   }
   const { name, phone, email, city, district, street } = user;
 
@@ -32,7 +32,7 @@ export default function Profile() {
     const requestOptions = {
       method: "PUT",
       headers: {
-        authorization: `bearer ${localStorage.getItem("aesthetic_jwt")}`,
+        authorization: `bearer ${localStorage.getItem("eshop_jwt")}`,
       },
       body: formData,
     };

@@ -1,10 +1,11 @@
 import { BiSolidPencil } from "react-icons/bi";
+import { MdOutlineDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
-import Spinner from "../../../components/Spinner/Spinner";
+import { useGetCategoriesQuery } from "../../../../Redux/category/categoryApi";
+import Spinner from "../../../../components/Spinner/Spinner";
 
-export default function Categories() {
-  const { data, isLoading, isError, error } = useGetCategoriesQuery({});
+export default function AllSubCategories() {
+  const { data, isLoading, isError, error } = useGetCategoriesQuery();
 
   let content = null;
   if (isLoading) {
@@ -16,8 +17,10 @@ export default function Categories() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((category, i) => (
-      <tr key={category?.id}>
+      <tr key={category?._id}>
         <td>{i + 1}</td>
+        <td>Sub Category</td>
+        <td>{category?.order}</td>
         <td>
           <div className="flex items-center gap-2">
             <img
@@ -30,16 +33,17 @@ export default function Categories() {
             {category?.name}
           </div>
         </td>
-        <td>{category?.order}</td>
         <td>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Link
-              to={`/admin/category/edit/${category?._id}`}
+              to={`/admin/category/edit-sub-category/${category?._id}`}
               className="flex gap-1 items-center hover:text-green-700 duration-300"
             >
               <BiSolidPencil />
-              Edit
             </Link>
+            <button className="hover:text-red-500">
+              <MdOutlineDelete />
+            </button>
           </div>
         </td>
       </tr>
@@ -51,10 +55,10 @@ export default function Categories() {
       {data?.data?.length < 10 && (
         <div className="flex justify-end mb-2">
           <Link
-            to="/admin/category/add-category"
+            to="/admin/category/add-sub-category"
             className="primary_btn text-sm"
           >
-            Add New Category
+            Add New Sub Category
           </Link>
         </div>
       )}
@@ -64,9 +68,10 @@ export default function Categories() {
           <thead>
             <tr>
               <th>SL</th>
-              <th>Product name</th>
+              <th>Sub Category</th>
               <th>Order</th>
               <th>Category</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>{content}</tbody>

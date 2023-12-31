@@ -71,7 +71,7 @@ export default function Signup() {
         <div className="sm:w-[420px] mx-auto bg-base-100 shadow-lg rounded-lg p-6">
           <img src="/images/logo/logo.png" alt="" className="w-32 mx-auto" />
           <h6 className="text-xl font-medium mt-2 text-center text-neutral/80">
-            Welcome to Aestheticcloth
+            Signup
           </h6>
 
           <form onSubmit={handleRegister} className="mt-10 text-neutral">

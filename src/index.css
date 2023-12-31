@@ -306,3 +306,16 @@ table tbody td {
   font-weight: 400;
   padding: 5px;
 }
+
+/* .react-dropdown-select-input {
+  border: none !important;
+} */
+
+.add_product_details .jodit-wysiwyg {
+  min-height: 350px !important;
+}
+
+.css-wmy1p7-ReactDropdownSelect:hover,
+.css-wmy1p7-ReactDropdownSelect:focus-within {
+  border-color: #ddd !important;
+}

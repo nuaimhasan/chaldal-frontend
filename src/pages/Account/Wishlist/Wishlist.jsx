@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { UseContext } from "../../../ContextApi/ContextApi";
+// import { UseContext } from "../../../ContextApi/ContextApi";
 
 export default function Wishlist() {
-  const { wishlists, handelDeleteWishlist } = UseContext();
+  // const { wishlists, handelDeleteWishlist } = UseContext();
 
   return (
     <div className="overflow-x-auto">
@@ -15,7 +15,7 @@ export default function Wishlist() {
           </tr>
         </thead>
         <tbody>
-          {wishlists?.map((product) => (
+          {/* {wishlists?.map((product) => (
             <tr key={product?.id} className="border-b text-neutral/80">
               <td className="p-2">
                 <div className="w-max flex gap-2 items-center">
@@ -45,7 +45,7 @@ export default function Wishlist() {
                 </button>
               </td>
             </tr>
-          ))}
+          ))} */}
         </tbody>
       </table>
     </div>

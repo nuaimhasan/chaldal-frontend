@@ -25,6 +25,14 @@ const adminSidebarItems = [
         title: "Categories",
         path: "/admin/category/categories",
       },
+      {
+        title: "Sub Categories",
+        path: "/admin/category/sub-categories",
+      },
+      {
+        title: "Sub SubCategories",
+        path: "/admin/category/sub-sub-categories",
+      },
     ],
   },
   {
@@ -70,13 +78,8 @@ const adminSidebarItems = [
         path: "/admin/front-end/logo",
       },
       {
-        title: "Home Page",
-        subSubMenu: [
-          {
-            title: "Banner",
-            path: "/admin/front-end/home-page/banner",
-          },
-        ],
+        title: "Banner",
+        path: "/admin/front-end/banner",
       },
       {
         title: "About Us",
@@ -115,7 +118,7 @@ export default function AdminSidebar() {
                   }`
             }
             alt=""
-            className="w-28 mx-auto h-20"
+            className="w-28 mx-auto h-16"
           />
         </Link>
 

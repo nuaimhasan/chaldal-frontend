@@ -67,7 +67,7 @@ export default function ProductList() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <tr key={product?.id}>
+      <tr key={product?._id}>
         <td>
           <div className="flex items-center gap-2">
             <img

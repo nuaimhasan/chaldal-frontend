@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 import {
   useDeleteBannerMutation,
   useGetBannersQuery,
-} from "../../../../Redux/banner/bannerApi";
-import Spinner from "../../../../components/Spinner/Spinner";
+} from "../../../Redux/banner/bannerApi";
+import Spinner from "../../../components/Spinner/Spinner";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
 
@@ -39,10 +39,7 @@ export default function Banner() {
     <section className="bg-base-100 shadow rounded">
       <div className="p-4 border-b text-neutral font-medium flex justify-between items-center">
         <h3>Banner Lists</h3>
-        <Link
-          to="/admin/front-end/home-page/add-banner"
-          className="primary_btn"
-        >
+        <Link to="/admin/front-end/add-banner" className="primary_btn">
           Add Banner
         </Link>
       </div>
@@ -58,14 +55,14 @@ export default function Banner() {
             </thead>
             <tbody>
               {data?.data?.map((banner, i) => (
-                <tr key={banner?.id}>
+                <tr key={banner?._id}>
                   <td>{i + 1}</td>
                   <td>
                     <div className="flex items-center gap-2">
                       <img
-                        src={`${
-                          import.meta.env.VITE_BACKEND_URL
-                        }/banner/${banner?.image}`}
+                        src={`${import.meta.env.VITE_BACKEND_URL}/banner/${
+                          banner?.image
+                        }`}
                         alt=""
                         className="w-16 h-10"
                       />

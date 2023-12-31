@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
-import { useAddBannerMutation } from "../../../../Redux/banner/bannerApi";
+import { useAddBannerMutation } from "../../../Redux/banner/bannerApi";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";

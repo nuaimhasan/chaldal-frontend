@@ -1,52 +1,69 @@
 import { useGetAllOrdersQuery } from "../../../Redux/order/orderApi";
 import { useGetAllProductsQuery } from "../../../Redux/product/productApi";
-import { useAllUsersQuery } from "../../../Redux/user/userApi";
-import { BsCart4 } from "react-icons/bs";
-import { FaUsers } from "react-icons/fa";
-import { FaBagShopping } from "react-icons/fa6";
+import {
+  useAllAdministratorQuery,
+  useAllUsersQuery,
+} from "../../../Redux/user/userApi";
+
+import { FaBoxOpen, FaUsers, FaUserShield, FaCartPlus } from "react-icons/fa";
 
 export default function Dashboard() {
   const { data: products } = useGetAllProductsQuery({});
-  const { data: users } = useAllUsersQuery({});
   const { data: orders } = useGetAllOrdersQuery({});
+  const { data: users } = useAllUsersQuery({});
+  const { data: admin } = useAllAdministratorQuery({});
 
   return (
-    <div>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <div className="shadow rounded p-4 bg-base-100">
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-lg">Total Products</h3>
-              <p className="text-primary text-lg">{products?.data?.length}</p>
-            </div>
-            <div>
-              <BsCart4 className="text-2xl text-neutral-content" />
-            </div>
+    <section>
+      {/* card */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+        <div className="flex justify-between items-center rounded-lg shadow p-4 bg-base-100">
+          <div>
+            <p className="text-neutral font-dinMedium">Total Products</p>
+            <h3 className="text-primary font-bold">{products?.data?.length}</h3>
+          </div>
+          <div className="bg-primary text-base-100 w-11 h-11 rounded-lg flex justify-center items-center">
+            <FaBoxOpen className="text-xl" />
           </div>
         </div>
-        <div className="shadow rounded p-4 bg-base-100">
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-lg">Total Customers</h3>
-              <p className="text-primary text-lg">{users?.data?.length}</p>
-            </div>
-            <div>
-              <FaUsers className="text-2xl text-neutral-content" />
-            </div>
+
+        <div className="flex justify-between items-center rounded-lg shadow p-4 bg-base-100">
+          <div>
+            <p className="text-neutral font-dinMedium">Total Orders</p>
+            <h3 className="text-red-600 font-bold">{orders?.data?.length}</h3>
+          </div>
+
+          <div className="bg-red-600 text-base-100 w-11 h-11 rounded-lg flex justify-center items-center">
+            <FaCartPlus className="text-xl" />
           </div>
         </div>
-        <div className="shadow rounded p-4 bg-base-100">
-          <div className="flex justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-lg">Total Orders</h3>
-              <p className="text-primary text-lg">{orders?.data?.length}</p>
-            </div>
-            <div>
-              <FaBagShopping className="text-[22px] text-neutral-content" />
-            </div>
+
+        <div className="flex justify-between items-center rounded-lg shadow p-4 bg-base-100">
+          <div>
+            <p className="text-neutral font-dinMedium">Total Users</p>
+            <h3 className="text-green-600 font-bold">{users?.data?.length}</h3>
+          </div>
+
+          <div className="bg-green-600 text-base-100 w-11 h-11 rounded-lg flex justify-center items-center">
+            <FaUsers className="text-xl" />
+          </div>
+        </div>
+
+        <div className="flex justify-between items-center rounded-lg shadow p-4 bg-base-100">
+          <div>
+            <p className="text-neutral font-dinMedium">Total Administrators</p>
+            <h3 className="text-green-600 font-bold">{admin?.data?.length}</h3>
+          </div>
+
+          <div className="bg-primary text-base-100 w-11 h-11 rounded-lg flex justify-center items-center">
+            <FaUserShield className="text-xl" />
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="mt-4 bg-base-100 p-4 rounded shadow">
+        <p>Latest Orders</p>
+      </div>
+    </section>
   );
 }

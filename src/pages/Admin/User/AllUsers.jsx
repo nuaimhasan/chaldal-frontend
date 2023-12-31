@@ -13,7 +13,7 @@ export default function AllUsers() {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((user) => (
-      <tr key={user?.id}>
+      <tr key={user?._id}>
         <td>
           <div className="flex items-center gap-2">
             <img

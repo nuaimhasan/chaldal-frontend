@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 export default function SearchBox() {
   const [searchDropdown, setSearchDropdown] = useState(false);
   const [searchText, setSearchText] = useState("");
-
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/product/all-products`)
       .then((res) => res.json())
@@ -55,12 +55,12 @@ export default function SearchBox() {
                 className="hover:bg-gray-100 p-1"
               >
                 <Link
-                  to={`/product/${product?.id}`}
+                  to={`/product/${product?.slug}`}
                   className="flex gap-2 items-center"
                 >
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL}/images/products/${
-                      product?.image
+                    src={`${import.meta.env.VITE_BACKEND_URL}/products/${
+                      product?.images[0]
                     }`}
                     alt=""
                     className="w-12"

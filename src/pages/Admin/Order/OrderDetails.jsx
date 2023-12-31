@@ -94,7 +94,7 @@ export default function OrderDetails() {
           <p className="text-lg">Product Details:</p>
           <div>
             {products?.map((product) => (
-              <div key={product?.id}>
+              <div key={product?._id}>
                 <div className="border rounded p-4 mb-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">

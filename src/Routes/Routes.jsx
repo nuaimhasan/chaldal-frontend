@@ -10,9 +10,7 @@ import Shop from "../pages/Shop/Shop";
 import Signup from "../pages/Signup/Signup";
 
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
-
 import Checkout from "../pages/Checkout/Checkout";
-
 import AccountLayout from "../Layout/AccountLayout";
 import EditePeofile from "../pages/Account/EditePeofile/EditePeofile";
 import Orders from "../pages/Account/Orders/Orders";
@@ -29,18 +27,22 @@ import AdminRoute from "../PrivateRoute/AdminRoute";
 import About from "../pages/Admin/About/About";
 import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
 import Administrator from "../pages/Admin/Administrator/Administrator";
-import Addcategory from "../pages/Admin/Categories/AddCategory/AddCategory";
-import Categories from "../pages/Admin/Categories/Categories";
-import Editcategory from "../pages/Admin/Categories/Editcategory/Editcategory";
 import Contact from "../pages/Admin/Contact/Contact";
-import AddBanner from "../pages/Admin/Home/Banner/AddBanner";
-import Banner from "../pages/Admin/Home/Banner/Banner";
+import Banner from "../pages/Admin/Banner/Banner";
+import AddBanner from "../pages/Admin/Banner/AddBanner";
 import Logo from "../pages/Admin/Logo/Logo";
 import AllOrders from "../pages/Admin/Order/AllOrders";
 import OrderDetails from "../pages/Admin/Order/OrderDetails";
 import EditProduct from "../pages/Admin/Product/EditProduct";
 import AllUsers from "../pages/Admin/user/AllUsers";
 import OrderDetailsPage from "../pages/Account/OrderDetails/OrderDetails";
+
+import AllCategories from "../pages/Admin/Category/Categories/AllCategories";
+import Addcategory from "../pages/Admin/Category/Categories/AddCategory";
+import Editcategory from "../pages/Admin/Category/Categories/Editcategory";
+import AllSubCategories from "../pages/Admin/Category/SubCategories/AllSubCategories";
+import AddSubCategory from "../pages/Admin/Category/SubCategories/AddSubCategory";
+import EditSubCategory from "../pages/Admin/Category/SubCategories/EditSubCategory";
 
 export const routes = createBrowserRouter([
   {
@@ -95,7 +97,11 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/account",
-    element: <AccountLayout />,
+    element: (
+      <PrivateRoute>
+        <AccountLayout />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/account/profile",
@@ -125,7 +131,11 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
     children: [
       {
         path: "/admin",
@@ -137,7 +147,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/admin/category/categories",
-        element: <Categories />,
+        element: <AllCategories />,
       },
       {
         path: "/admin/category/add-category",
@@ -146,6 +156,18 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/category/edit/:id",
         element: <Editcategory />,
+      },
+      {
+        path: "/admin/category/sub-categories",
+        element: <AllSubCategories />,
+      },
+      {
+        path: "/admin/category/add-sub-category",
+        element: <AddSubCategory />,
+      },
+      {
+        path: "/admin/category/edit-sub-category/:id",
+        element: <EditSubCategory />,
       },
       {
         path: "/admin/product/all-products",
@@ -184,11 +206,11 @@ export const routes = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: "/admin/front-end/home-page/banner",
+        path: "/admin/front-end/banner",
         element: <Banner />,
       },
       {
-        path: "/admin/front-end/home-page/add-banner",
+        path: "/admin/front-end/add-banner",
         element: <AddBanner />,
       },
       {

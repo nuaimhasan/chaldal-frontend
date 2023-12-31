@@ -15,7 +15,7 @@ const authSlice = createSlice({
     },
     userLogout: (state) => {
       state.token = "";
-      localStorage.removeItem("aesthetic_jwt");
+      localStorage.removeItem("eshop_jwt");
       state.loggedUser = undefined;
     },
   },

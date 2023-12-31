@@ -559,7 +559,7 @@ export default function EditProduct() {
                     onChange={(e) => setCategory(e.target.value)}
                   >
                     {categories?.data?.map((category) => (
-                      <option key={category?.id} value={category?.slug}>
+                      <option key={category?._id} value={category?.slug}>
                         {category?.name}
                       </option>
                     ))}

@@ -5,7 +5,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_BACKEND_URL,
     prepareHeaders: async (headers) => {
-      const token = localStorage.getItem("aesthetic_jwt");
+      const token = localStorage.getItem("eshop_jwt");
       if (token) {
         headers.set("Authorization", `bearer ${token}`);
       }
