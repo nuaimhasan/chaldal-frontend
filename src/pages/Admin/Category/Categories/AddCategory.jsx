@@ -8,7 +8,7 @@ import {
   useGetCategoriesQuery,
 } from "../../../../Redux/category/categoryApi";
 
-export default function Addcategory() {
+export default function AddCategory() {
   const navigate = useNavigate();
   const [addCategory, { isLoading, isSuccess, isError }] =
     useAddCategoryMutation();

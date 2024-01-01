@@ -1,5 +1,5 @@
 import JoditEditor from "jodit-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react";
 import Select from "react-dropdown-select";
 import { BsX } from "react-icons/bs";
 import Swal from "sweetalert2";
@@ -321,13 +321,12 @@ export default function AddProduct() {
   const [colors, setColors] = useState([]);
   const [sizes, setSizes] = useState([]);
 
-  const [addProduct, { isSuccess, isLoading, isError, error }] =
-    useAddProductMutation();
+  const [{ isSuccess, isLoading, isError, error }] = useAddProductMutation();
 
   const handleAddSizes = (size) => {
-    if (event.key === "Tab" && size !== "") {
+    if (event.key === " " && size !== "") {
       setSizes([...sizes, size]);
-      size = null;
+      size = "";
     }
   };
 
@@ -353,55 +352,43 @@ export default function AddProduct() {
       // Store all information (color, size, quantity, price) in each entry
       updatedVariants[colorIndex][sizeIndex] = {
         ...updatedVariants[colorIndex][sizeIndex],
-        color: colors[colorIndex].name,
+        colorName: colors[colorIndex].name,
         colorCode: colors[colorIndex].code,
         size: sizes[sizeIndex],
         [field]: value,
       };
 
-      console.log(updatedVariants);
-
       return updatedVariants;
     });
   };
 
-  // transform formData
-  const transformData = () => {
-    const result = [];
-
-    variants.forEach((colorData, colorIndex) => {
-      const color = colors[colorIndex].name;
-      const colorCode = colors[colorIndex].code;
-
-      // eslint-disable-next-line no-unused-vars
-      colorData.forEach((sizeData, sizeIndex) => {
-        const { size, quantity, sellingPrice, purchasePrice } = sizeData;
-        result.push({
-          color,
-          colorCode,
-          size,
-          quantity,
-          sellingPrice,
-          purchasePrice,
-        });
-      });
-    });
-
-    return result;
-  };
-
   const handleAddProduct = async (e) => {
     e.preventDefault();
+
+
+    if(images?.length <= 0){
+     return Swal.fire("","Image is required", "warning")
+    }
+
+    if(details === ""){
+      return Swal.fire("","Details is required", "warning")
+    }
+
     const form = e.target;
-    // const title = form.title.value;
-    // const category = form.category.value;
-    // const subCategory = form.sub_category.value;
-    // const subSubCategory = form.sub_subCategory.value;
-    // const brand = form.brand.value;
-    // const discount = form.discount.value;
-    // const sellingPrice = form.selling_price.value;
-    // const purchasePrice = form.purchase_price.value;
-    // const quantity = form.quantity.value;
+    const title = form.title.value;
+    const category = form.category.value;
+    const subCategory = form.sub_category.value;
+    const subSubCategory = form.sub_subCategory.value;
+    const brand = form.brand.value;
+    const discount = form.discount.value;
+    const sellingPrice = form.selling_price ? form.selling_price.value : "";
+    const purchasePrice = form.purchase_price ? form.purchase_price.value : "";
+    const quantity = form.quantity ? form.quantity.value : "";
+
+    const imagesArray = [];
+    images.map((image) => {
+      imagesArray.push(image?.file)
+    });
 
     // const product = {
     //   title,
@@ -415,27 +402,29 @@ export default function AddProduct() {
     //   quantity,
     //   details,
     //   images,
+    //   variants
     // };
 
-    // const formData = new FormData();
-    // formData.append("title", title);
-    // formData.append("category", category);
-    // formData.append("brand", brand);
-    // formData.append("totalStock", totalStock);
-    // formData.append("discount", discount);
-    // formData.append("description", details);
-
-    // // eslint-disable-next-line no-unused-vars
-    // images.forEach((image, index) => {
-    //   formData.append(`images`, image);
-    // });
-
-    // formData.append("varients", JSON.stringify(transformData()));
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("category", category);
+    formData.append("subCategory", subCategory);
+    formData.append("subSubCategory", subSubCategory);
+    formData.append("brand", brand);
+    formData.append("discount", discount);
+    formData.append("description", details);
+    formData.append("sellingPrice", sellingPrice);
+    formData.append("purchasePrice", purchasePrice);
+    formData.append("quantity", quantity);
+    formData.append("images", imagesArray);
+    formData.append("variants", variants);
     // formData.append("colors", JSON.stringify(colors));
     // formData.append("sizes", JSON.stringify(sizes));
 
     // const res = await addProduct(formData);
     // console.log(res);
+
+    
   };
 
   useEffect(() => {
@@ -507,7 +496,6 @@ export default function AddProduct() {
                 type="text"
                 name="title"
                 required
-                // onChange={(e) => setTitle(e.target.value)}
               />
             </div>
 
@@ -516,7 +504,6 @@ export default function AddProduct() {
                 <p className="text-sm">Category</p>
                 <select
                   name="category"
-                  // onChange={(e) => setCategory(e.target.value)}
                 >
                   {categories?.data?.map((category) => (
                     <option key={category?._id} value={category?.slug}>
@@ -530,7 +517,6 @@ export default function AddProduct() {
                 <p className="text-sm">Sub Category</p>
                 <select
                   name="sub_category"
-                  // onChange={(e) => setCategory(e.target.value)}
                 >
                   {categories?.data?.map((category) => (
                     <option key={category?._id} value={category?.slug}>
@@ -544,7 +530,6 @@ export default function AddProduct() {
                 <p className="text-sm">Sub SubCategory</p>
                 <select
                   name="sub_subCategory"
-                  // onChange={(e) => setCategory(e.target.value)}
                 >
                   {categories?.data?.map((category) => (
                     <option key={category?._id} value={category?.slug}>
@@ -561,7 +546,6 @@ export default function AddProduct() {
                 <input
                   type="text"
                   name="brand"
-                  // onChange={(e) => setBrand(e.target.value)}
                 />
               </div>
 
@@ -570,7 +554,6 @@ export default function AddProduct() {
                 <input
                   type="number"
                   name="discount"
-                  // onChange={(e) => setDiscount(e.target.value)}
                 />
               </div>
             </div>
@@ -623,15 +606,15 @@ export default function AddProduct() {
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <p className="text-sm">Selling Price</p>
-                    <input type="number" name="selling_price" />
+                    <input type="number" name="selling_price" required />
                   </div>
                   <div>
                     <p className="text-sm">Purchase Price</p>
-                    <input type="number" name="purchase_price" />
+                    <input type="number" name="purchase_price" required />
                   </div>
                   <div>
                     <p className="text-sm">Quantity</p>
-                    <input type="number" name="quantity" />
+                    <input type="number" name="quantity" required />
                   </div>
                 </div>
               )}
@@ -786,8 +769,8 @@ export default function AddProduct() {
 
           {/* Buttons */}
           <div className="mt-6 flex justify-end">
-            <button
-              // onClick={handleAddProduct}
+            <button 
+              type="submit"
               disabled={isLoading && "disabled"}
               className="bg-primary text-base-100 px-10 py-2 rounded"
             >

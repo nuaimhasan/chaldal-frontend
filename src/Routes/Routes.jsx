@@ -38,11 +38,14 @@ import AllUsers from "../pages/Admin/user/AllUsers";
 import OrderDetailsPage from "../pages/Account/OrderDetails/OrderDetails";
 
 import AllCategories from "../pages/Admin/Category/Categories/AllCategories";
-import Addcategory from "../pages/Admin/Category/Categories/AddCategory";
-import Editcategory from "../pages/Admin/Category/Categories/Editcategory";
+import AddCategory from "../pages/Admin/Category/Categories/AddCategory";
+import EditCategory from "../pages/Admin/Category/Categories/EditCategory";
 import AllSubCategories from "../pages/Admin/Category/SubCategories/AllSubCategories";
 import AddSubCategory from "../pages/Admin/Category/SubCategories/AddSubCategory";
 import EditSubCategory from "../pages/Admin/Category/SubCategories/EditSubCategory";
+import AllSubSubCategory from "../pages/Admin/Category/SubSubCategory/AllSubSubCategory";
+import AddSubSubCategory from "../pages/Admin/Category/SubSubCategory/AddSubSubCategory";
+import EditSubSubCategory from "../pages/Admin/Category/SubSubCategory/EditSubSubCategory";
 
 export const routes = createBrowserRouter([
   {
@@ -151,11 +154,11 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/admin/category/add-category",
-        element: <Addcategory />,
+        element: <AddCategory />,
       },
       {
         path: "/admin/category/edit/:id",
-        element: <Editcategory />,
+        element: <EditCategory />,
       },
       {
         path: "/admin/category/sub-categories",
@@ -168,6 +171,18 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/category/edit-sub-category/:id",
         element: <EditSubCategory />,
+      },
+      {
+        path: "/admin/category/sub-sub-categories",
+        element: <AllSubSubCategory />,
+      },
+      {
+        path: "/admin/category/add-sub-sub-category",
+        element: <AddSubSubCategory />,
+      },
+      {
+        path: "/admin/category/edit-sub-sub-category/:id",
+        element: <EditSubSubCategory />,
       },
       {
         path: "/admin/product/all-products",
