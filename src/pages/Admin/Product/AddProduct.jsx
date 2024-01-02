@@ -1,13 +1,17 @@
 import JoditEditor from "jodit-react";
-import { useRef, useState,useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import Select from "react-dropdown-select";
 import { BsX } from "react-icons/bs";
 import Swal from "sweetalert2";
-import { useGetCategoriesQuery } from "../../../Redux/category/categoryApi";
+import {
+  useGetCategoriesQuery,
+  useGetCategoryQuery,
+} from "../../../Redux/category/categoryApi";
 import { useAddProductMutation } from "../../../Redux/product/productApi";
 
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
+import { useGetSubCategoryQuery } from "../../../Redux/subCategory/subCategoryApi";
 
 const options = [
   {
@@ -309,8 +313,15 @@ const options = [
 ];
 
 export default function AddProduct() {
-  const { data: categories } = useGetCategoriesQuery();
   const editor = useRef(null);
+  const [categoryId, setCategoryId] = useState("");
+  const [subCategoryId, setSubCategoryId] = useState("");
+  const { data: categories } = useGetCategoriesQuery();
+  const { data: category } = useGetCategoryQuery(categoryId);
+  const { data: subCategory } = useGetSubCategoryQuery(subCategoryId);
+
+  const subCategories = category?.data?.subCategories;
+  const subSubCategories = subCategory?.data?.subSubCategories;
 
   const [images, setImages] = useState([]);
   const [details, setDetails] = useState("");
@@ -365,13 +376,12 @@ export default function AddProduct() {
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
-
-    if(images?.length <= 0){
-     return Swal.fire("","Image is required", "warning")
+    if (images?.length <= 0) {
+      return Swal.fire("", "Image is required", "warning");
     }
 
-    if(details === ""){
-      return Swal.fire("","Details is required", "warning")
+    if (details === "") {
+      return Swal.fire("", "Details is required", "warning");
     }
 
     const form = e.target;
@@ -387,7 +397,7 @@ export default function AddProduct() {
 
     const imagesArray = [];
     images.map((image) => {
-      imagesArray.push(image?.file)
+      imagesArray.push(image?.file);
     });
 
     // const product = {
@@ -423,8 +433,6 @@ export default function AddProduct() {
 
     // const res = await addProduct(formData);
     // console.log(res);
-
-    
   };
 
   useEffect(() => {
@@ -492,21 +500,20 @@ export default function AddProduct() {
           <div className="border rounded p-4  flex flex-col gap-3 mb-5">
             <div>
               <p className="text-sm">Product Title</p>
-              <input
-                type="text"
-                name="title"
-                required
-              />
+              <input type="text" name="title" required />
             </div>
 
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <p className="text-sm">Category</p>
+                <p className="text-sm">Category *</p>
                 <select
                   name="category"
+                  required
+                  onChange={(e) => setCategoryId(e.target.value)}
                 >
+                  <option value="">Select Category</option>
                   {categories?.data?.map((category) => (
-                    <option key={category?._id} value={category?.slug}>
+                    <option key={category?._id} value={category?._id}>
                       {category?.name}
                     </option>
                   ))}
@@ -517,25 +524,31 @@ export default function AddProduct() {
                 <p className="text-sm">Sub Category</p>
                 <select
                   name="sub_category"
+                  onChange={(e) => setSubCategoryId(e.target.value)}
                 >
-                  {categories?.data?.map((category) => (
-                    <option key={category?._id} value={category?.slug}>
-                      {category?.name}
-                    </option>
-                  ))}
+                  <option value="">Select Sub Category</option>
+                  {subCategories?.length > 0 &&
+                    subCategories?.map((subCategory) => (
+                      <option key={subCategory?._id} value={subCategory?._id}>
+                        {subCategory?.name}
+                      </option>
+                    ))}
                 </select>
               </div>
 
               <div>
                 <p className="text-sm">Sub SubCategory</p>
-                <select
-                  name="sub_subCategory"
-                >
-                  {categories?.data?.map((category) => (
-                    <option key={category?._id} value={category?.slug}>
-                      {category?.name}
-                    </option>
-                  ))}
+                <select name="sub_subCategory">
+                  <option value="">Select Sub SubCategory</option>
+                  {subSubCategories?.length > 0 &&
+                    subSubCategories?.map((subSubCategory) => (
+                      <option
+                        key={subSubCategory?._id}
+                        value={subSubCategory?._id}
+                      >
+                        {subSubCategory?.name}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
@@ -543,18 +556,12 @@ export default function AddProduct() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm">Brand</p>
-                <input
-                  type="text"
-                  name="brand"
-                />
+                <input type="text" name="brand" />
               </div>
 
               <div>
                 <p className="text-sm">Discount %</p>
-                <input
-                  type="number"
-                  name="discount"
-                />
+                <input type="number" name="discount" />
               </div>
             </div>
           </div>
@@ -769,7 +776,7 @@ export default function AddProduct() {
 
           {/* Buttons */}
           <div className="mt-6 flex justify-end">
-            <button 
+            <button
               type="submit"
               disabled={isLoading && "disabled"}
               className="bg-primary text-base-100 px-10 py-2 rounded"
