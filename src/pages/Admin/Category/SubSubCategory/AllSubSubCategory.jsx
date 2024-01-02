@@ -1,11 +1,33 @@
 import { BiSolidPencil } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useGetCategoriesQuery } from "../../../../Redux/category/categoryApi";
 import Spinner from "../../../../components/Spinner/Spinner";
+import {
+  useDeleteSubSubCategoryMutation,
+  useGetSubSubCategoriesQuery,
+} from "../../../../Redux/subSubCategory/subSubCategoryApi";
+import Swal from "sweetalert2";
 
 export default function AllSubSubCategory() {
-  const { data, isLoading, isError, error } = useGetCategoriesQuery();
+  const { data, isLoading, isError, error } = useGetSubSubCategoriesQuery();
+  const [deleteSubSubCategory] = useDeleteSubSubCategoryMutation();
+
+  // Delete Sub Sub Category
+  const handleDeleteSubSubCategory = async (subSubCategory) => {
+    const id = subSubCategory?._id;
+    const subCategoryId = subSubCategory?.subCategory?._id;
+
+    const isConfirm = window.confirm("are you sure delete this category");
+
+    if (isConfirm) {
+      const result = await deleteSubSubCategory({ id, subCategoryId });
+      if (result?.data?.success) {
+        Swal.fire("", "Delete Success", "success");
+      } else {
+        Swal.fire("", "Somethin went worng", "error");
+      }
+    }
+  };
 
   let content = null;
   if (isLoading) {
@@ -15,33 +37,35 @@ export default function AllSubSubCategory() {
     content = <p>{error?.data?.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
-    content = data?.data?.map((category, i) => (
-      <tr key={category?._id}>
+    content = data?.data?.map((subSubCategory, i) => (
+      <tr key={subSubCategory?._id}>
         <td>{i + 1}</td>
-        <td>Sub Category</td>
-        <td>{category?.order}</td>
+        <td>{subSubCategory?.name}</td>
         <td>
           <div className="flex items-center gap-2">
             <img
               src={`${import.meta.env.VITE_BACKEND_URL}/categories/${
-                category?.icon
+                subSubCategory?.category?.icon
               }`}
               alt=""
               className="w-10 h-10 rounded-full"
             />
-            {category?.name}
+            {subSubCategory?.category?.name}
           </div>
         </td>
-        <td>Sub Category</td>
+        <td>{subSubCategory?.subCategory?.name}</td>
         <td>
           <div className="flex items-center gap-2">
             <Link
-              to={`/admin/category/edit-sub-category/${category?._id}`}
+              to={`/admin/category/edit-sub-sub-category/${subSubCategory?._id}`}
               className="flex gap-1 items-center hover:text-green-700 duration-300"
             >
               <BiSolidPencil />
             </Link>
-            <button className="hover:text-red-500">
+            <button
+              onClick={() => handleDeleteSubSubCategory(subSubCategory)}
+              className="hover:text-red-500"
+            >
               <MdOutlineDelete />
             </button>
           </div>
@@ -69,7 +93,6 @@ export default function AllSubSubCategory() {
             <tr>
               <th>SL</th>
               <th>Sub SubCategory</th>
-              <th>Order</th>
               <th>Category</th>
               <th>Sub Category</th>
               <th>Action</th>

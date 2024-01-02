@@ -1,10 +1,32 @@
 import { BiSolidPencil } from "react-icons/bi";
+import { MdDeleteOutline } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useGetCategoriesQuery } from "../../../../Redux/category/categoryApi";
+import {
+  useDeleteCategoryMutation,
+  useGetCategoriesQuery,
+} from "../../../../Redux/category/categoryApi";
 import Spinner from "../../../../components/Spinner/Spinner";
+import Swal from "sweetalert2";
 
 export default function AllCategories() {
   const { data, isLoading, isError, error } = useGetCategoriesQuery();
+  const [deleteCategory, { isLoading: deleteLoading }] =
+    useDeleteCategoryMutation();
+
+  // Delete Category
+  const handleDeleteCategory = async (id) => {
+    const isConfirm = window.confirm(
+      "Are you sure delete this Category? If you delete this Category, all the sub-caregory, sub-sub-categories and products are deleted."
+    );
+    if (isConfirm) {
+      const result = await deleteCategory(id);
+      if (result?.data?.success) {
+        Swal.fire("", "Category Delete Success", "success");
+      } else {
+        Swal.fire("", "Somethin went worng", "error");
+      }
+    }
+  };
 
   let content = null;
   if (isLoading) {
@@ -19,27 +41,32 @@ export default function AllCategories() {
       <tr key={category?._id}>
         <td>{i + 1}</td>
         <td>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ">
             <img
               src={`${import.meta.env.VITE_BACKEND_URL}/categories/${
                 category?.icon
               }`}
               alt=""
-              className="w-10 h-10 rounded-full"
+              className="w-10 h-10 rounded-full border"
             />
             {category?.name}
           </div>
         </td>
         <td>{category?.order}</td>
         <td>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <Link
               to={`/admin/category/edit/${category?._id}`}
-              className="flex gap-1 items-center hover:text-green-700 duration-300"
+              className="hover:text-green-700 duration-200"
             >
               <BiSolidPencil />
-              Edit
             </Link>
+            <button
+              onClick={() => handleDeleteCategory(category?._id)}
+              className="hover:text-red-600 duration-200 text-lg"
+            >
+              <MdDeleteOutline />
+            </button>
           </div>
         </td>
       </tr>

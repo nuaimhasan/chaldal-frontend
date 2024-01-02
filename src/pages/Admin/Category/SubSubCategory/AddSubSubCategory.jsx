@@ -1,38 +1,40 @@
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Swal from "sweetalert2";
-import { useGetCategoriesQuery } from "../../../../Redux/category/categoryApi";
+import {
+  useGetCategoriesQuery,
+  useGetCategoryQuery,
+} from "../../../../Redux/category/categoryApi";
+import { useAddSubSubCategoryMutation } from "../../../../Redux/subSubCategory/subSubCategoryApi";
 
 export default function AddSubSubCategory() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [categoryId, setCategoryId] = useState("");
   const { data, isSuccess } = useGetCategoriesQuery();
+  const { data: category } = useGetCategoryQuery(categoryId);
+  const subCategories = category?.data?.subCategories;
+  const [addSubSubCategory, { isLoading }] = useAddSubSubCategoryMutation();
 
-  const handleAddCategory = (e) => {
+  const handleAddCategory = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
-    const category = e.target.category.value;
-    const subCategory = e.target.sub_category.value;
-    const order = e.target.order.value;
+    const subCategoryId = e.target.subCategory.value;
 
-    if (name === "" && category === "" && subCategory === "") {
-      return Swal.fire("", "Please fill the all field", "warning");
+    const subSubCategory = {
+      name,
+      categoryId,
+      subCategoryId,
+    };
+
+    const result = await addSubSubCategory(subSubCategory);
+
+    if (result?.data?.success) {
+      Swal.fire("", "add success", "success");
+      navigate("/admin/category/sub-sub-categories");
+    } else {
+      Swal.fire("", "Somethin went wrong", "error");
     }
-
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("order", order);
-
-    // addCategory(formData);
   };
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     Swal.fire("", "add success", "success");
-  //     navigate("/admin/category/categories");
-  //   }
-  //   if (isError) {
-  //     Swal.fire("", "Add category fail, please try again", "error");
-  //   }
-  // }, [isSuccess, isError, navigate]);
 
   return (
     <form
@@ -41,41 +43,45 @@ export default function AddSubSubCategory() {
     >
       <div className="form_group mt-2">
         <p className="text-neutral-content">Sub SubCategory Name</p>
-        <input type="text" name="name" />
+        <input type="text" name="name" required />
       </div>
 
       <div className="form_group mt-2">
-        <p className="text-neutral-content">Category</p>
-        <select name="category">
+        <p className="text-neutral-content">Category *</p>
+        <select
+          name="category"
+          required
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option value="">Select Category</option>
           {isSuccess &&
             data?.data?.map((category) => (
-              <option key={category?._id} value={category?.name}>{category?.name}</option>
+              <option key={category?._id} value={category?._id}>
+                {category?.name}
+              </option>
             ))}
         </select>
       </div>
 
       <div className="form_group mt-2">
-        <p className="text-neutral-content">Sub Category</p>
-        <select name="sub_category">
-          {isSuccess &&
-            data?.data?.map((category) => (
-              <option key={category?._id} value={category?.name}>{category?.name}</option>
+        <p className="text-neutral-content">Sub Category *</p>
+        <select name="subCategory" required>
+          <option value="">Select Sub Category</option>
+          {subCategories?.length > 0 &&
+            subCategories?.map((subCategory) => (
+              <option key={subCategory?._id} value={subCategory?._id}>
+                {subCategory?.name}
+              </option>
             ))}
         </select>
-      </div>
-
-      <div className="form_group mt-2">
-        <p className="text-neutral-content">Order</p>
-        <input type="number" name="order" />
       </div>
 
       <div className="mt-4">
         <button
           className="primary_btn text-sm"
-          // disabled={isLoading && "disabled"}
+          disabled={isLoading && "disabled"}
         >
-          Add Sub SubCategory
-          {/* {isLoading ? "Loading.." : "Add category"} */}
+          {isLoading ? "Loading.." : "Add Sub SubCategory"}
         </button>
       </div>
     </form>

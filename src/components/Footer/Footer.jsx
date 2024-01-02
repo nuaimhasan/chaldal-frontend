@@ -100,13 +100,13 @@ export default function Footer() {
             </h2>
             <ul className="text-neutral-content text-[15px]">
               <li className="mb-1">
-                <p className="italic">{contact.data[0]?.address}</p>
+                <p className="italic">{contact?.data[0]?.address}</p>
               </li>
               <li className="mb-1">
-                <p>{contact.data[0]?.phone}</p>
+                <p>{contact?.data[0]?.phone}</p>
               </li>
               <li>
-                <p>{contact.data[0]?.email}</p>
+                <p>{contact?.data[0]?.email}</p>
               </li>
             </ul>
           </div>
@@ -126,20 +126,20 @@ export default function Footer() {
           </span>
           <ul className="flex items-center gap-2 text-neutral-content mt-3 sm:mt-0">
             <li>
-              <Link to={contact.data[0]?.facebookLink} target="_blank">
+              <Link to={contact?.data[0]?.facebookLink} target="_blank">
                 <BsFacebook className="text-lg hover:-mt-2 duration-300" />
               </Link>
             </li>
             <li>
               <Link
-                to={`https://wa.me/${contact.data[0]?.whatsapp}`}
+                to={`https://wa.me/${contact?.data[0]?.whatsapp}`}
                 target="_blank"
               >
                 <IoLogoWhatsapp className="text-xl hover:-mt-2 duration-300" />
               </Link>
             </li>
             <li>
-              <Link to={contact.data[0]?.instagramLink} target="_blank">
+              <Link to={contact?.data[0]?.instagramLink} target="_blank">
                 <AiFillInstagram className="text-xl hover:-mt-2 duration-300" />
               </Link>
             </li>

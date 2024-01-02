@@ -1,45 +1,35 @@
-import { useEffect, useState } from "react";
-import { AiFillDelete } from "react-icons/ai";
-import ImageUploading from "react-images-uploading";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useGetCategoriesQuery } from "../../../../Redux/category/categoryApi";
+import { useAddSubCategoryMutation } from "../../../../Redux/subCategory/subCategoryApi";
 
 export default function AddSubCategory() {
   const navigate = useNavigate();
   const { data, isSuccess } = useGetCategoriesQuery();
-  const [icons, seticons] = useState([]);
+  const [addSubCategory, { isLoading }] = useAddSubCategoryMutation();
 
-  const handleAddCategory = (e) => {
+  const handleAddCategory = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
-    const category = e.target.category.value;
-    const order = e.target.order.value;
+    const categoryId = e.target.category.value;
 
-    if (!icon) {
-      return Swal.fire("", "Icon is required", "error");
-    }
-    if (name === "" && category === "") {
-      return Swal.fire("", "Category is required", "error");
+    if (!categoryId) {
+      return Swal.fire("", "Category is required", "warning");
     }
 
-    const formData = new FormData();
-    formData.append("icon", icon);
-    formData.append("name", name);
-    formData.append("order", order);
+    const subCategory = {
+      name,
+      categoryId,
+    };
 
-    // addCategory(formData);
+    const result = await addSubCategory(subCategory);
+    if (result?.data?.success) {
+      Swal.fire("", "add success", "success");
+      navigate("/admin/category/sub-categories");
+    } else {
+      Swal.fire("", "Somethin went wrong", "error");
+    }
   };
-
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     Swal.fire("", "add success", "success");
-  //     navigate("/admin/category/categories");
-  //   }
-  //   if (isError) {
-  //     Swal.fire("", "Add category fail, please try again", "error");
-  //   }
-  // }, [isSuccess, isError, navigate]);
 
   return (
     <form
@@ -48,7 +38,7 @@ export default function AddSubCategory() {
     >
       <div className="form_group mt-2">
         <p className="text-neutral-content">Sub Category name</p>
-        <input type="text" name="name" />
+        <input type="text" name="name" required />
       </div>
 
       <div className="form_group mt-2">
@@ -56,23 +46,17 @@ export default function AddSubCategory() {
         <select name="category">
           {isSuccess &&
             data?.data?.map((category) => (
-              <option value={category?.name}>{category?.name}</option>
+              <option value={category?._id}>{category?.name}</option>
             ))}
         </select>
-      </div>
-
-      <div className="form_group mt-2">
-        <p className="text-neutral-content">Order</p>
-        <input type="number" name="order" />
       </div>
 
       <div className="mt-4">
         <button
           className="primary_btn text-sm"
-          // disabled={isLoading && "disabled"}
+          disabled={isLoading && "disabled"}
         >
-          Add Sub Category
-          {/* {isLoading ? "Loading.." : "Add category"} */}
+          {isLoading ? "Loading.." : "Add Sub Category"}
         </button>
       </div>
     </form>
