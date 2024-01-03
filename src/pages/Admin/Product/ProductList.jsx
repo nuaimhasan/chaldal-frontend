@@ -24,6 +24,9 @@ export default function ProductList() {
     ...query,
   });
 
+  const products = data?.data;
+  console.log(products);
+
   const [
     deleteProduct,
     { isSuccess, isError: deleteIsError, error: deleteError },
@@ -63,7 +66,7 @@ export default function ProductList() {
     return (content = <Spinner />);
   }
   if (!isLoading && isError) {
-    content = <p>{error.error}</p>;
+    content = <p>{error?.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
@@ -75,30 +78,39 @@ export default function ProductList() {
                 product?.images[0]
               }`}
               alt=""
-              className="w-10 h-10 rounded-full"
+              className="w-9 h-9 rounded-lg"
             />
             {product?.title?.length > 40
               ? product?.title.slice(0, 40) + "..."
               : product?.title}
           </div>
         </td>
-        <td>{product?.category}</td>
-        <td>${product?.sellPrice}</td>
+        <td>{product?.category?.name}</td>
         <td>
-          <div className="flex items-center gap-4">
+          {product?.subCategory
+            ? product?.subCategory?.name
+            : "No Sub Category"}
+        </td>
+        <td>
+          {product?.subSubCategory
+            ? product?.subSubCategory?.name
+            : "No Sub SubCategory"}
+        </td>
+        <td>$100</td>
+        <td>{product?.variants?.length > 0 ? "..." : product?.quantity}</td>
+        <td>
+          <div className="flex items-center gap-2">
             <Link
               to={`/admin/product/edit-product/${product?._id}`}
-              className="flex gap-1 items-center hover:text-green-700 duration-300"
+              className="hover:text-green-700 duration-300"
             >
               <BiSolidPencil />
-              Edit
             </Link>
             <button
               onClick={() => handleDeleteProduct(product?._id)}
-              className="flex gap-1 items-center text-red-500"
+              className="text-red-500"
             >
               <AiOutlineDelete />
-              Detele
             </button>
           </div>
         </td>
@@ -107,42 +119,57 @@ export default function ProductList() {
   }
 
   return (
-    <div className="relative overflow-x-auto shadow-lg">
-      <table className="dashboard_table">
-        <thead>
-          <tr>
-            <th>Product name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>{content}</tbody>
-      </table>
+    <div>
+      <div className="flex justify-end mb-3">
+        <Link
+          to="/admin/product/add-product"
+          className="text-sm bg-primary text-base-100 px-6 py-2 rounded"
+        >
+          Add New Product
+        </Link>
+      </div>
+      <div className="relative overflow-x-auto shadow-lg">
+        <table className="dashboard_table">
+          <thead>
+            <tr>
+              <th>Product name</th>
+              <th>Category</th>
+              <th>Sub Category</th>
+              <th>Sub SubCategory</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>{content}</tbody>
+        </table>
 
-      {data?.data?.length > 0 && (
-        <div className="flex items-center justify-center mt-16 mb-5">
-          <div className="flex items-center space-x-1 border border-gray-300 rounded overflow-hidden text-sm">
-            <button
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-              onClick={() => handlePageChange(page - 1)}
-              disabled={page === 1}
-            >
-              <FaArrowLeft />
-            </button>
-            <button className="px-4 py-2 bg-gray-700 text-gray-100 font-medium focus:outline-none">
-              Page {page}
-            </button>
-            <button
-              className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-              onClick={() => handlePageChange(page + 1)}
-              disabled={data?.meta?.total && page === data?.meta.total / limit}
-            >
-              <FaArrowRight />
-            </button>
+        {data?.data?.length > 0 && (
+          <div className="flex items-center justify-center mt-16 mb-5">
+            <div className="flex items-center space-x-1 border border-gray-300 rounded overflow-hidden text-sm">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+              >
+                <FaArrowLeft />
+              </button>
+              <button className="px-4 py-2 bg-gray-700 text-gray-100 font-medium focus:outline-none">
+                Page {page}
+              </button>
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
+                onClick={() => handlePageChange(page + 1)}
+                disabled={
+                  data?.meta?.total && page === data?.meta.total / limit
+                }
+              >
+                <FaArrowRight />
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

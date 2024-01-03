@@ -12,6 +12,7 @@ import { useAddProductMutation } from "../../../Redux/product/productApi";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 import { useGetSubCategoryQuery } from "../../../Redux/subCategory/subCategoryApi";
+import { useNavigate } from "react-router-dom";
 
 const options = [
   {
@@ -314,6 +315,7 @@ const options = [
 
 export default function AddProduct() {
   const editor = useRef(null);
+  const navigate = useNavigate();
   const [categoryId, setCategoryId] = useState("");
   const [subCategoryId, setSubCategoryId] = useState("");
   const { data: categories } = useGetCategoriesQuery();
@@ -330,14 +332,16 @@ export default function AddProduct() {
 
   const [variants, setVariants] = useState([]);
   const [colors, setColors] = useState([]);
+
+  const [size, setSize] = useState("");
   const [sizes, setSizes] = useState([]);
 
-  const [{ isSuccess, isLoading, isError, error }] = useAddProductMutation();
+  const [addProduct, { isLoading }] = useAddProductMutation();
 
-  const handleAddSizes = (size) => {
-    if (event.key === " " && size !== "") {
+  const handleAddSizes = () => {
+    if (event.key === "Shift" && size !== "") {
       setSizes([...sizes, size]);
-      size = "";
+      setSize("");
     }
   };
 
@@ -373,6 +377,31 @@ export default function AddProduct() {
     });
   };
 
+  // arranged right array
+  const variantsArray = () => {
+    const result = [];
+
+    variants.forEach((colorData, colorIndex) => {
+      const color = colors[colorIndex].name;
+      const colorCode = colors[colorIndex].code;
+
+      // eslint-disable-next-line no-unused-vars
+      colorData.forEach((sizeData, sizeIndex) => {
+        const { size, quantity, sellingPrice, purchasePrice } = sizeData;
+        result.push({
+          color,
+          colorCode,
+          size,
+          quantity,
+          sellingPrice,
+          purchasePrice,
+        });
+      });
+    });
+
+    return result;
+  };
+
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
@@ -395,58 +424,37 @@ export default function AddProduct() {
     const purchasePrice = form.purchase_price ? form.purchase_price.value : "";
     const quantity = form.quantity ? form.quantity.value : "";
 
-    const imagesArray = [];
-    images.map((image) => {
-      imagesArray.push(image?.file);
-    });
-
-    // const product = {
-    //   title,
-    //   category,
-    //   subCategory,
-    //   subSubCategory,
-    //   brand,
-    //   discount,
-    //   sellingPrice,
-    //   purchasePrice,
-    //   quantity,
-    //   details,
-    //   images,
-    //   variants
-    // };
-
     const formData = new FormData();
     formData.append("title", title);
     formData.append("category", category);
-    formData.append("subCategory", subCategory);
-    formData.append("subSubCategory", subSubCategory);
+    if (subCategory) formData.append("subCategory", subCategory);
+    if (subSubCategory) formData.append("subSubCategory", subSubCategory);
     formData.append("brand", brand);
     formData.append("discount", discount);
     formData.append("description", details);
     formData.append("sellingPrice", sellingPrice);
     formData.append("purchasePrice", purchasePrice);
     formData.append("quantity", quantity);
-    formData.append("images", imagesArray);
-    formData.append("variants", variants);
-    // formData.append("colors", JSON.stringify(colors));
-    // formData.append("sizes", JSON.stringify(sizes));
+    images?.map((image) => {
+      formData.append("images", image?.file);
+    });
+    if (variants?.length > 0)
+      formData.append("variants", JSON.stringify(variantsArray()));
 
-    // const res = await addProduct(formData);
-    // console.log(res);
-  };
+    const res = await addProduct(formData);
 
-  useEffect(() => {
-    if (isSuccess) {
+    if (res?.error) {
+      Swal.fire("", "Product add Fail, please try again", "error");
+    }
+
+    if (res?.data?.success) {
       Swal.fire("", "Product add success", "success");
+      form.reset();
+      setImages([]);
+      setDetails("");
+      navigate("/admin/product/all-products");
     }
-    if (isError) {
-      Swal.fire(
-        "",
-        error?.message ? error?.message : "Product add Fail, please try again",
-        "error"
-      );
-    }
-  }, [isSuccess, isError, error]);
+  };
 
   return (
     <div className="add_product  bg-base-100 rounded shadow p-4">
@@ -646,23 +654,25 @@ export default function AddProduct() {
                       <input
                         type="text"
                         name="size"
-                        placeholder="Press Enter and add size"
-                        onKeyDown={(e) => handleAddSizes(e.target.value)}
+                        placeholder="Press Shift and add size"
+                        value={size}
+                        onChange={(e) => setSize(e.target.value)}
+                        onKeyDown={handleAddSizes}
                       />
                       <div className="mt-2">
                         {sizes?.map((size, index) => (
-                          <button
+                          <span
                             key={index}
                             className="mr-2 relative bg-gray-100 py-1 px-3 rounded whitespace-nowrap mb-2"
                           >
                             {size}
                             <span
                               onClick={() => handleRemoveSize(index)}
-                              className="absolute -top-1 -right-1 text-red-500 text-lg"
+                              className="absolute -top-1 -right-1 text-red-500 text-lg cursor-pointer"
                             >
                               <BsX />
                             </span>
-                          </button>
+                          </span>
                         ))}
                       </div>
                     </div>
