@@ -7,55 +7,79 @@ import Swal from "sweetalert2";
 import { addToCart } from "../../Redux/cart/cartSlice";
 
 const ProductInfo = ({ product }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const carts = useSelector((state) => state.cart.carts);
+
   const {
     title,
     images,
     discount,
     brand,
     category,
-    colors,
-    sizes,
-    totalStock,
-    sellPrice,
-    varients,
+    subCategory,
+    subSubCategory,
+    sellingPrice,
+    quantity,
+    variants,
   } = product;
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const carts = useSelector((state) => state.cart.carts);
-
-  // const { wishlists, setCarts, handelAddToCart, handelAddToWishlist } =
-  //   UseContext();
-  // const isWishlist = wishlists?.find((item) => item.id === product.id);
-  const [quantity, setQuantity] = useState(1);
+  // Total Stock
+  const totakStock = variants?.length
+    ? variants?.reduce(
+        (quantity, item) => parseInt(quantity) + parseInt(item.quantity),
+        0
+      )
+    : quantity;
+  const price = variants?.length ? variants[0]?.sellingPrice : sellingPrice;
 
   const [showImage, setShowImage] = useState(images[0]);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
-  const [selectedPrice, setSelectedPrice] = useState(null);
-  const [selectedStock, setSelectedStock] = useState(null);
+  const [availableStock, setAvailableStock] = useState(totakStock);
+  const [selectedPrice, setSelectedPrice] = useState(price);
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [selectedVariant, setSelectedVariant] = useState({});
+
+  const [colors, setColors] = useState([]);
+  const sizes = [
+    ...new Set(variants?.map((size) => size.size !== undefined && size.size)),
+  ];
+
+  console.log(sizes[0]);
 
   useEffect(() => {
-    const selectedColorVarient = varients?.find(
-      (varient) => varient.color === selectedColor
+    const uniqueSet = new Set();
+
+    variants.forEach((item) => {
+      const { color, colorCode } = item;
+      const combinationKey = `${color}-${colorCode}`;
+      uniqueSet.add(combinationKey);
+    });
+
+    const uniqueArray = Array.from(uniqueSet).map((combinationKey) => {
+      const [color, colorCode] = combinationKey.split("-");
+      return { color, colorCode };
+    });
+
+    setColors(uniqueArray);
+  }, [variants]);
+
+  useEffect(() => {
+    const findVariant = variants?.find(
+      (variant) =>
+        variant.color === selectedColor && variant.size === selectedSize
     );
+    setSelectedVariant(findVariant);
 
-    const selectedSizeVarient = selectedColorVarient?.info?.find(
-      (varient) => varient.size === selectedSize
-    );
-
-    if (selectedSizeVarient?.quantity) {
-      setSelectedStock(selectedSizeVarient?.quantity);
+    if (findVariant) {
+      setAvailableStock(findVariant?.quantity);
+      setSelectedPrice(findVariant?.sellingPrice);
     } else {
-      setSelectedStock(totalStock);
+      setAvailableStock(totakStock);
+      setSelectedPrice(price);
     }
-
-    if (selectedSizeVarient?.price) {
-      setSelectedPrice(selectedSizeVarient?.price);
-    } else {
-      setSelectedPrice(sellPrice);
-    }
-  }, [selectedSize, selectedColor, varients, totalStock, sellPrice]);
+  }, [selectedSize, selectedColor]);
 
   const handelSelectSize = (size) => {
     if (selectedSize === size) {
@@ -66,37 +90,37 @@ const ProductInfo = ({ product }) => {
   };
 
   const handelColorSelect = (clr) => {
-    if (selectedColor === clr.name) {
+    if (selectedColor === clr.color) {
       setSelectedColor("");
     } else {
-      setSelectedColor(clr.name);
-    }
-  };
-
-  const handelIncrease = () => {
-    if (selectedStock > quantity) {
-      setQuantity(quantity + 1);
+      setSelectedColor(clr.color);
     }
   };
 
   useEffect(() => {
-    if (selectedStock < quantity) {
-      setQuantity(1);
+    if (availableStock < selectedQuantity) {
+      setSelectedQuantity(1);
     }
-  }, [selectedStock, quantity]);
+  }, [availableStock, selectedQuantity]);
 
   const handelDecrease = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+    if (selectedQuantity > 1) {
+      setSelectedQuantity(selectedQuantity - 1);
+    }
+  };
+
+  const handelIncrease = () => {
+    if (availableStock > selectedQuantity) {
+      setSelectedQuantity(selectedQuantity + 1);
     }
   };
 
   const handleBuyNow = () => {
-    if (varients?.length > 0 && !selectedSize) {
+    if (variants?.length > 0 && sizes[0] && !selectedSize) {
       return Swal.fire("", "Please Select Size", "warning");
     }
 
-    if (varients?.length > 0 && !selectedColor) {
+    if (variants?.length > 0 && !selectedColor) {
       return Swal.fire("", "Please Select Color", "warning");
     }
 
@@ -107,9 +131,10 @@ const ProductInfo = ({ product }) => {
       image: images[0],
       discount: discount,
       price: selectedPrice,
-      quantity: quantity || 1,
+      quantity: selectedQuantity,
       size: selectedSize,
       color: selectedColor,
+      stock: availableStock,
     };
 
     dispatch(addToCart([cartProduct]));
@@ -117,11 +142,11 @@ const ProductInfo = ({ product }) => {
   };
 
   const handelAddToCart = () => {
-    if (varients?.length > 0 && !selectedSize) {
+    if (variants?.length > 0 && sizes[0] && !selectedSize) {
       return Swal.fire("", "Please Select Size", "warning");
     }
 
-    if (varients?.length > 0 && !selectedColor) {
+    if (variants?.length > 0 && !selectedColor) {
       return Swal.fire("", "Please Select Color", "warning");
     }
 
@@ -132,9 +157,10 @@ const ProductInfo = ({ product }) => {
       image: images[0],
       discount: discount,
       price: selectedPrice,
-      quantity: quantity || 1,
+      quantity: selectedQuantity,
       size: selectedSize,
       color: selectedColor,
+      stock: availableStock,
     };
 
     const findProduct = carts?.find(
@@ -164,9 +190,11 @@ const ProductInfo = ({ product }) => {
           />
 
           {/* Discount */}
-          <div className="absolute top-1 text-base-100 right-0 bg-red-600 w-max rounded-l-full px-2 py-px">
-            <p>{discount}%</p>
-          </div>
+          {discount > 0 && (
+            <div className="absolute top-1 text-base-100 right-0 bg-red-600 w-max rounded-l-full px-2 py-px">
+              <p>{discount}%</p>
+            </div>
+          )}
         </div>
 
         <div className="mt-5 grid grid-cols-5 gap-2">
@@ -194,11 +222,15 @@ const ProductInfo = ({ product }) => {
             </p>
             <p>
               <span className="text-neutral/80">Category:</span>{" "}
-              <span>{category}</span>
+              <span>
+                {category?.name}
+                {subCategory && ` - ${subCategory?.name}`}
+                {subSubCategory && ` - ${subSubCategory?.name}`}
+              </span>
             </p>
             <p>
               <span className="text-neutral/80">Available Stock:</span>{" "}
-              <span>{selectedStock}</span>
+              <span>{availableStock}</span>
             </p>
           </div>
         </div>
@@ -227,14 +259,37 @@ const ProductInfo = ({ product }) => {
                 ৳ {parseInt(selectedPrice - (selectedPrice * discount) / 100)}
               </p>
               {discount > 0 && (
-                <del className="text-neutral/70">৳{selectedPrice}</del>
+                <del className="text-neutral/70">
+                  ৳{(selectedPrice * discount) / 100}
+                </del>
               )}
             </div>
           </div>
         </div>
 
-        {/* Variants */}
-        {sizes?.length > 0 && (
+        {colors?.length && (
+          <div className="flex gap-4 items-center my-4">
+            <p>Color :</p>
+
+            <div className="flex gap-2 items-center">
+              {colors?.map((clr) => (
+                <button
+                  key={clr._id}
+                  onClick={() => handelColorSelect(clr)}
+                  className={`text-sm p-4 rounded-full border scale-[.96] hover:scale-[1] duration-300`}
+                  style={{
+                    backgroundColor: clr.colorCode,
+                    borderColor:
+                      clr.color === selectedColor ? "#f47c20" : "#DDD",
+                  }}
+                ></button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Sizes */}
+        {sizes?.length && sizes[0] && (
           <div className="flex gap-4 items-center my-4">
             <p>Size :</p>
 
@@ -254,27 +309,6 @@ const ProductInfo = ({ product }) => {
           </div>
         )}
 
-        {colors?.length > 0 && (
-          <div className="flex gap-4 items-center my-4">
-            <p>Color :</p>
-
-            <div className="flex gap-2 items-center">
-              {colors?.map((clr) => (
-                <button
-                  key={clr._id}
-                  onClick={() => handelColorSelect(clr)}
-                  className={`text-sm p-4 rounded-full border scale-[.96] hover:scale-[1] duration-300`}
-                  style={{
-                    backgroundColor: clr.code,
-                    borderColor:
-                      clr.name === selectedColor ? "#f47c20" : "#DDD",
-                  }}
-                ></button>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Quantity */}
         <div className="py-3 flex gap-4 items-center border-y">
           <h3>Quantity: </h3>
@@ -287,7 +321,9 @@ const ProductInfo = ({ product }) => {
               <FiMinusCircle />
             </button>
             <div>
-              <p className="w-10 font-semibold text-center">{quantity}</p>
+              <p className="w-10 font-semibold text-center">
+                {selectedQuantity}
+              </p>
             </div>
             <button
               onClick={handelIncrease}

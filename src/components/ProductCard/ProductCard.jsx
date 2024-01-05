@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
-  const { slug, images, title, sellPrice, discount } = product;
+  const { slug, images, title, sellingPrice, discount, variants } = product;
 
   return (
     <div className="mt-4 hover:shadow-lg rounded overflow-hidden product-card duration-300">
@@ -20,15 +20,26 @@ const ProductCard = ({ product }) => {
           )}
         </div>
         <div className="p-2">
-          <h1 className="font-medium mb-1">
-            {title.length > 40 ? `${title.slice(0, 40)}...` : title}
+          <h1 className="font-medium mb-1 text-[15px]">
+            {title.length > 35 ? `${title.slice(0, 35)}...` : title}
           </h1>
           <div className="flex items-center gap-2">
             <p className="text-primary text-lg">
-              ৳{parseInt(sellPrice - (sellPrice * discount) / 100)}
+              ৳
+              {variants?.length > 0
+                ? parseInt(
+                    variants[0]?.sellingPrice -
+                      (variants[0]?.sellingPrice * discount) / 100
+                  )
+                : parseInt(sellingPrice - (sellingPrice * discount) / 100)}
             </p>
             {discount > 0 && (
-              <del className="text-neutral/70 text-sm ">৳{sellPrice}</del>
+              <del className="text-neutral/70 text-sm ">
+                ৳
+                {variants?.length > 0
+                  ? parseInt((variants[0]?.sellingPrice * discount) / 100)
+                  : parseInt((sellingPrice * discount) / 100)}
+              </del>
             )}
           </div>
         </div>

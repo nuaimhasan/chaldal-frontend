@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
+import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BiSolidPencil } from "react-icons/bi";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import {
   useDeleteProductMutation,
@@ -80,24 +79,36 @@ export default function ProductList() {
               alt=""
               className="w-9 h-9 rounded-lg"
             />
-            {product?.title?.length > 40
-              ? product?.title.slice(0, 40) + "..."
+            {product?.title?.length > 30
+              ? product?.title.slice(0, 30) + "..."
               : product?.title}
           </div>
         </td>
         <td>{product?.category?.name}</td>
         <td>
-          {product?.subCategory
-            ? product?.subCategory?.name
-            : "No Sub Category"}
+          {product?.subCategory ? (
+            product?.subCategory?.name
+          ) : (
+            <IoMdClose className="text-red-500" />
+          )}
         </td>
         <td>
-          {product?.subSubCategory
-            ? product?.subSubCategory?.name
-            : "No Sub SubCategory"}
+          {product?.subSubCategory ? (
+            product?.subSubCategory?.name
+          ) : (
+            <IoMdClose className="text-red-500" />
+          )}
         </td>
         <td>$100</td>
-        <td>{product?.variants?.length > 0 ? "..." : product?.quantity}</td>
+        <td>
+          {product?.variants?.length > 0
+            ? product?.variants?.reduce(
+                (quantity, item) =>
+                  parseInt(quantity) + parseInt(item.quantity),
+                0
+              )
+            : product?.quantity}
+        </td>
         <td>
           <div className="flex items-center gap-2">
             <Link
@@ -128,24 +139,28 @@ export default function ProductList() {
           Add New Product
         </Link>
       </div>
-      <div className="relative overflow-x-auto shadow-lg">
-        <table className="dashboard_table">
-          <thead>
-            <tr>
-              <th>Product name</th>
-              <th>Category</th>
-              <th>Sub Category</th>
-              <th>Sub SubCategory</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>{content}</tbody>
-        </table>
 
+      <div className="bg-base-100 shadow-lg min-h-[80vh] flex flex-col justify-between">
+        <div className="relative overflow-x-auto">
+          <table className="dashboard_table">
+            <thead>
+              <tr>
+                <th>Product name</th>
+                <th>Category</th>
+                <th>Sub Category</th>
+                <th>Sub SubCategory</th>
+                <th>Price</th>
+                <th>Total Stock</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>{content}</tbody>
+          </table>
+        </div>
+
+        {/* pagination */}
         {data?.data?.length > 0 && (
-          <div className="flex items-center justify-center mt-16 mb-5">
+          <div className="flex items-end justify-end m-4">
             <div className="flex items-center space-x-1 border border-gray-300 rounded overflow-hidden text-sm">
               <button
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
@@ -155,13 +170,13 @@ export default function ProductList() {
                 <FaArrowLeft />
               </button>
               <button className="px-4 py-2 bg-gray-700 text-gray-100 font-medium focus:outline-none">
-                Page {page}
+                {page}
               </button>
               <button
                 className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
                 onClick={() => handlePageChange(page + 1)}
                 disabled={
-                  data?.meta?.total && page === data?.meta.total / limit
+                  data?.meta?.total && page === data?.meta?.total / limit
                 }
               >
                 <FaArrowRight />

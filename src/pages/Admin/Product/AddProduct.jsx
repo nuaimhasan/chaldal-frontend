@@ -360,9 +360,9 @@ export default function AddProduct() {
         updatedVariants[colorIndex] = [];
       }
 
-      if (!updatedVariants[colorIndex][sizeIndex]) {
-        updatedVariants[colorIndex][sizeIndex] = {};
-      }
+      // if (!updatedVariants[colorIndex][sizeIndex]) {
+      //   updatedVariants[colorIndex][sizeIndex] = {};
+      // }
 
       // Store all information (color, size, quantity, price) in each entry
       updatedVariants[colorIndex][sizeIndex] = {
@@ -695,7 +695,6 @@ export default function AddProduct() {
                         </thead>
                         <tbody>
                           {colors?.length > 0 &&
-                            sizes?.length > 0 &&
                             colors?.map((color, colorIndex) => (
                               <tr key={colorIndex}>
                                 <td>{color.name}</td>
@@ -710,55 +709,100 @@ export default function AddProduct() {
                                   ))}
                                 </td>
                                 <td>
-                                  {sizes?.map((size, sizeIndex) => (
+                                  {sizes?.length > 0 ? (
+                                    sizes?.map((size, sizeIndex) => (
+                                      <input
+                                        key={sizeIndex}
+                                        type="number"
+                                        required
+                                        onChange={(e) =>
+                                          handleInputChange(
+                                            colorIndex,
+                                            sizeIndex,
+                                            "quantity",
+                                            e.target.value
+                                          )
+                                        }
+                                      />
+                                    ))
+                                  ) : (
                                     <input
-                                      key={sizeIndex}
                                       type="number"
                                       required
                                       onChange={(e) =>
                                         handleInputChange(
                                           colorIndex,
-                                          sizeIndex,
+                                          0,
                                           "quantity",
                                           e.target.value
                                         )
                                       }
                                     />
-                                  ))}
+                                  )}
                                 </td>
                                 <td>
-                                  {sizes?.map((size, sizeIndex) => (
+                                  {sizes?.length > 0 ? (
+                                    sizes?.map((size, sizeIndex) => (
+                                      <input
+                                        key={sizeIndex}
+                                        type="number"
+                                        required
+                                        onChange={(e) =>
+                                          handleInputChange(
+                                            colorIndex,
+                                            sizeIndex,
+                                            "sellingPrice",
+                                            e.target.value
+                                          )
+                                        }
+                                      />
+                                    ))
+                                  ) : (
                                     <input
-                                      key={sizeIndex}
                                       type="number"
                                       required
                                       onChange={(e) =>
                                         handleInputChange(
                                           colorIndex,
-                                          sizeIndex,
+                                          0,
                                           "sellingPrice",
                                           e.target.value
                                         )
                                       }
                                     />
-                                  ))}
+                                  )}
                                 </td>
                                 <td>
-                                  {sizes?.map((size, sizeIndex) => (
+                                  {sizes?.length > 0 ? (
+                                    sizes?.map((size, sizeIndex) => (
+                                      <input
+                                        key={sizeIndex}
+                                        type="number"
+                                        required
+                                        onChange={(e) =>
+                                          handleInputChange(
+                                            colorIndex,
+                                            sizeIndex,
+                                            "purchasePrice",
+                                            e.target.value
+                                          )
+                                        }
+                                      />
+                                    ))
+                                  ) : (
                                     <input
-                                      key={sizeIndex}
                                       type="number"
                                       required
                                       onChange={(e) =>
                                         handleInputChange(
                                           colorIndex,
-                                          sizeIndex,
+                                          0,
                                           "purchasePrice",
                                           e.target.value
                                         )
                                       }
                                     />
-                                  ))}
+                                  )}
                                 </td>
                               </tr>
                             ))}
