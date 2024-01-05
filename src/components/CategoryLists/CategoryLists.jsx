@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
 import SideCategory from "../Skeleton/SideCategory/SideCategory";
+import Categories from "./Categories";
 
 export default function CategoryLists() {
   const { data, isLoading, isError, error } = useGetCategoriesQuery();
+  const categories = data?.data?.slice(0, 10);
 
   let content = null;
   if (isLoading) {
@@ -12,24 +13,14 @@ export default function CategoryLists() {
   if (!isLoading && isError) {
     content = <p>{error.error}</p>;
   }
-  if (!isLoading && !isError && data?.data?.length > 0) {
-    content = data?.data?.map((category) => (
-      <li key={category?._id}>
-        <Link
-          to={`/shops/${category?.slug}`}
-          className="p-2 flex items-center gap-2 hover:bg-gray-100 duration-300"
-        >
-          <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/categories/${
-              category?.icon
-            }`}
-            alt=""
-            className="w-6 h-6"
-          />
-          {category?.name}
-        </Link>
-      </li>
+  if (!isLoading && !isError && categories?.length > 0) {
+    content = categories?.map((category) => (
+      <Categories key={category?._id} category={category} />
     ));
   }
-  return <ul className="flex flex-col text-[15px]">{content}</ul>;
+  return (
+    <ul className="w-[266px] flex flex-col text-[15px] categories bg-base-100">
+      {content}
+    </ul>
+  );
 }

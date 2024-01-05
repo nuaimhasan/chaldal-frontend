@@ -17,9 +17,7 @@ export default function Hero() {
     content = data?.data?.map((banner) => (
       <SwiperSlide key={banner._id}>
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}/banner/${
-            banner?.image
-          }`}
+          src={`${import.meta.env.VITE_BACKEND_URL}/banner/${banner?.image}`}
           alt=""
           className="w-full h-full rounded"
         />
@@ -31,7 +29,7 @@ export default function Hero() {
     <section>
       <div className="container">
         <div className="lg:flex items-start gap-4">
-          <div className="hidden lg:block w-[270px] border rounded-b">
+          <div className="hidden lg:block border rounded-b md:h-[400px]">
             <CategoryLists />
           </div>
 

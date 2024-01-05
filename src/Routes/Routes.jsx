@@ -65,6 +65,14 @@ export const routes = createBrowserRouter([
         element: <Shop />,
       },
       {
+        path: "/shops/:category/:subCategory",
+        element: <Shop />,
+      },
+      {
+        path: "/shops/:category/:subCategory/:subSubCategory",
+        element: <Shop />,
+      },
+      {
         path: "/product/:id",
         element: <ProductDetails />,
       },

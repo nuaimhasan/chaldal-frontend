@@ -11,20 +11,24 @@ import ShopCategories from "./ShopCategories/ShopCategories";
 export default function Shop() {
   window.scroll(0, 0);
   const params = useParams();
-  let categoryParams = params?.category ? params?.category : "";
+  let category = params?.category ? params?.category : "";
+  let subCategory = params?.subCategory ? params?.subCategory : "";
+  let subSubCategory = params?.subSubCategory ? params?.subSubCategory : "";
+
+  console.log(category, subCategory, subSubCategory);
 
   const query = {};
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
-  const [category, setCategory] = useState("");
+  // const [category, setCategory] = useState("");
 
   query["page"] = page;
   query["limit"] = limit;
   query["category"] = category;
 
-  useEffect(() => {
-    setCategory(categoryParams);
-  }, [categoryParams]);
+  // useEffect(() => {
+  //   setCategory(category);
+  // }, [category]);
 
   const { data, isLoading, isError, error } = useGetAllProductsQuery({
     ...query,
@@ -65,7 +69,6 @@ export default function Shop() {
           <li>
             <MdKeyboardArrowRight />
           </li>
-
           {category ? (
             <>
               <li>
@@ -73,13 +76,56 @@ export default function Shop() {
                   Shops
                 </Link>
               </li>
-              <li>
-                <MdKeyboardArrowRight />
-              </li>
-              <li>{category}</li>
             </>
           ) : (
             <li>Shops</li>
+          )}
+
+          {category && subCategory ? (
+            <>
+              <li>
+                <MdKeyboardArrowRight />
+              </li>
+              <li>
+                <Link to={`/shops/${category?.slug}`} className="text-primary">
+                  {category.split("_")[0]}
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <MdKeyboardArrowRight />
+              </li>
+              <li>{category.split("_")[0]}</li>
+            </>
+          )}
+
+          {category && subCategory && subSubCategory ? (
+            <>
+              <li>
+                <MdKeyboardArrowRight />
+              </li>
+              <li>
+                <Link
+                  to={`/shops/${category}/${subCategory}`}
+                  className="text-primary"
+                >
+                  {subCategory.split("_")[0]}
+                </Link>
+              </li>
+              <li>
+                <MdKeyboardArrowRight />
+              </li>
+              <li>{subSubCategory.split("_")[0]}</li>
+            </>
+          ) : (
+            <>
+              <li>
+                <MdKeyboardArrowRight />
+              </li>
+              <li>{subCategory}</li>
+            </>
           )}
         </ul>
 

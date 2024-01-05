@@ -60,7 +60,7 @@ const MainHeader = () => {
             </Link>
           </div>
 
-          <div className="hidden md:block w-1/2 lg:w-3/5">
+          <div className="hidden lg:block w-1/2 xl:w-3/5">
             <SearchBox />
           </div>
 
@@ -206,7 +206,7 @@ const MainHeader = () => {
               </Link>
             )}
 
-            <div className="md:hidden">
+            <div className="lg:hidden">
               <button
                 onClick={() => setMobileMenu(true)}
                 className="text-2xl text-neutral mt-1.5"

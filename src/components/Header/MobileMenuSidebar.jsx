@@ -6,7 +6,7 @@ import CategoryLists from "../CategoryLists/CategoryLists";
 export default function MobileMenuSidebar({ mobileMenu, setMobileMenu }) {
   const [tab, setTab] = useState(1);
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         onClick={() => setMobileMenu(false)}
         className={`overlay ${mobileMenu && "overlay_show"}`}

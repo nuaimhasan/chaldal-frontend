@@ -100,7 +100,7 @@ h2 {
   visibility: visible;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1024px) {
   .menu_wrap {
     position: fixed;
     top: -33px;
@@ -116,7 +116,7 @@ h2 {
   }
 
   .menu_wrap_show {
-    transform: translateX(0%);
+    transform: translateX(0%) !important;
   }
 }
 
@@ -318,4 +318,29 @@ table tbody td {
 .css-wmy1p7-ReactDropdownSelect:hover,
 .css-wmy1p7-ReactDropdownSelect:focus-within {
   border-color: #ddd !important;
+}
+
+/*------------- Category Dropdown -----------*/
+.category_dropdown,
+.category_sub_dropdown {
+  min-width: 250px;
+  max-width: max-content;
+  background: #fff;
+
+  position: absolute;
+  top: 0;
+  left: 100%;
+  z-index: 99999;
+  box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
+
+  display: none;
+  transition: all 0.3s ease;
+}
+
+.categories li:hover .category_dropdown {
+  display: block;
+}
+
+.category_dropdown li:hover .category_sub_dropdown {
+  display: block;
 }
