@@ -20,15 +20,12 @@ export default function Shop() {
   const query = {};
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
-  // const [category, setCategory] = useState("");
 
   query["page"] = page;
   query["limit"] = limit;
   query["category"] = category;
-
-  // useEffect(() => {
-  //   setCategory(category);
-  // }, [category]);
+  query["subCategory"] = subCategory;
+  query["subSubCategory"] = subSubCategory;
 
   const { data, isLoading, isError, error } = useGetAllProductsQuery({
     ...query,

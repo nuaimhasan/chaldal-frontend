@@ -41,6 +41,7 @@ const ProductInfo = ({ product }) => {
   const [availableStock, setAvailableStock] = useState(totakStock);
   const [selectedPrice, setSelectedPrice] = useState(price);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [selectedVariant, setSelectedVariant] = useState({});
 
   const [colors, setColors] = useState([]);
@@ -81,7 +82,7 @@ const ProductInfo = ({ product }) => {
       setAvailableStock(totakStock);
       setSelectedPrice(price);
     }
-  }, [selectedSize, selectedColor]);
+  }, [selectedSize, selectedColor, totakStock, price, variants]);
 
   const handelSelectSize = (size) => {
     if (selectedSize === size) {
