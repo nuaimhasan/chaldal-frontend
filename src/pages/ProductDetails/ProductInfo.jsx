@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { addToCart } from "../../Redux/cart/cartSlice";
+import { addToWishlist, removeFromWishlist } from "../../Redux/wishlist/wishlistSlice";
 
 const ProductInfo = ({ product }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const carts = useSelector((state) => state.cart.carts);
+  const wishlists = useSelector((state) => state.wishlist.wishlists);
 
   const {
     title,
@@ -46,7 +48,7 @@ const ProductInfo = ({ product }) => {
     ...new Set(variants?.map((size) => size.size !== undefined && size.size)),
   ];
 
-  console.log(sizes[0]);
+  // console.log(sizes[0]);
 
   useEffect(() => {
     const uniqueSet = new Set();
@@ -178,6 +180,19 @@ const ProductInfo = ({ product }) => {
     }
   };
 
+  const handelAddToWishlist = (product) => {
+    const findProduct = wishlists?.find((item) => item._id === product._id);
+
+    if (findProduct) {
+      dispatch(removeFromWishlist(product));
+      return Swal.fire("", "Product removed from wishlist", "warning");
+    } else {
+      dispatch(addToWishlist([...wishlists, product]));
+      Swal.fire("", "Product added to wishlist successfully", "success");
+    }
+  };
+  const isWishlist = wishlists?.find((item) => item._id === product._id);
+
   return (
     <div className="lg:flex gap-6">
       {/* Image */}
@@ -240,10 +255,10 @@ const ProductInfo = ({ product }) => {
           <p></p>
 
           <button
-          // onClick={() => handelAddToWishlist(product)}
-          // className={`shadow-lg p-3 rounded-full ${
-          //   isWishlist && "bg-primary text-base-100"
-          // }`}
+            onClick={() => handelAddToWishlist(product)}
+            className={`shadow-lg p-3 rounded-full ${
+              isWishlist && "bg-primary text-base-100"
+            }`}
           >
             <FiHeart />
           </button>
