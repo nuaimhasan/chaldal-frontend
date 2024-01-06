@@ -107,10 +107,11 @@ export default function Checkout() {
         district,
         street,
       },
+      paymentMethod,
       products,
       totalPrice: grandTotal,
     };
-
+    
     const res = await addOrder(order);
 
     if (res?.data?.success) {
@@ -285,17 +286,17 @@ export default function Checkout() {
                 </h3>
 
                 <ul className="text-sm text-neutral-content flex flex-col gap-1 pl-2 mt-2">
-                  <li class="flex items-center justify-between">
+                  <li className="flex items-center justify-between">
                     <div className="flex items-center">
                       <input
                         id="cod"
                         type="radio"
                         name="payment_method"
-                        class="w-3 h-3"
+                        className="w-3 h-3"
                         checked={paymentMethod === "cod" && true}
                         onClick={() => setPaymentMethod("cod")}
                       />
-                      <label for="cod" class="ms-2">
+                      <label htmlFor="cod" className="ms-2">
                         Cash On Delivery
                       </label>
                     </div>
@@ -305,17 +306,17 @@ export default function Checkout() {
                     </div>
                   </li>
 
-                  <li class="flex items-center justify-between">
+                  <li className="flex items-center justify-between">
                     <div className="flex items-center">
                       <input
                         id="ssl"
                         type="radio"
                         name="payment_method"
-                        class="w-3 h-3"
+                        className="w-3 h-3"
                         checked={paymentMethod === "ssl" && true}
                         onClick={() => setPaymentMethod("ssl")}
                       />
-                      <label for="ssl" class="ms-2">
+                      <label htmlFor="ssl" className="ms-2">
                         SSL
                       </label>
                     </div>
@@ -325,17 +326,17 @@ export default function Checkout() {
                     </div>
                   </li>
 
-                  <li class="flex items-center justify-between">
+                  <li className="flex items-center justify-between">
                     <div className="flex items-center">
                       <input
                         id="amar_pay"
                         type="radio"
                         name="payment_method"
-                        class="w-3 h-3"
+                        className="w-3 h-3"
                         checked={paymentMethod === "amar_pay" && true}
                         onClick={() => setPaymentMethod("amar_pay")}
                       />
-                      <label for="amar_pay" class="ms-2">
+                      <label htmlFor="amar_pay" className="ms-2">
                         Amar pay
                       </label>
                     </div>
