@@ -5,7 +5,10 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { cities, districts } from "../../Data/location";
 import { clearCart } from "../../Redux/cart/cartSlice";
-import { useAddOrderMutation } from "../../Redux/order/orderApi";
+import {
+  useAddOrderMutation,
+  useInitSslPaymentMutation,
+} from "../../Redux/order/orderApi";
 import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
 
 export default function Checkout() {
@@ -13,7 +16,11 @@ export default function Checkout() {
   const navigate = useNavigate();
   const carts = useSelector((state) => state.cart.carts);
   const dispatch = useDispatch();
+
   const [addOrder, { isLoading }] = useAddOrderMutation();
+  const [initSslPayment, { isLoading: sslPaymentLoading }] =
+    useInitSslPaymentMutation();
+
   const { loggedUser } = useSelector((state) => state.user);
   const [cityDropdown, setCityDropdown] = useState(false);
   const [city, setCity] = useState("");
@@ -111,18 +118,29 @@ export default function Checkout() {
       products,
       totalPrice: grandTotal,
     };
-    
-    const res = await addOrder(order);
 
-    if (res?.data?.success) {
-      Swal.fire("", "order success", "success");
-      dispatch(clearCart());
-      form.reset();
-      setCity("");
-      setDistrict("");
-      navigate("/shops");
-    } else {
-      toast.error("Something Wrong");
+    if (paymentMethod === "cod") {
+      const res = await addOrder(order);
+      if (res?.data?.success) {
+        Swal.fire("", "order success", "success");
+        dispatch(clearCart());
+        form.reset();
+        setCity("");
+        setDistrict("");
+        navigate("/shops");
+      } else {
+        toast.error("Something Wrong");
+      }
+    } else if (paymentMethod === "ssl") {
+      const res = await initSslPayment(order);
+      if (res?.data?.success) {
+        dispatch(clearCart());
+        form.reset();
+        setCity("");
+        setDistrict("");
+        window.location.href = res?.data?.data;
+        // window.location.replace(res?.data?.data);
+      }
     }
   };
 
@@ -424,21 +442,18 @@ export default function Checkout() {
                 </div>
               </div>
 
-              {paymentMethod === "cod" ? (
-                <button
-                  type="submit"
-                  className="w-full bg-primary text-base-100 py-2 rounded shadow flex justify-center"
-                >
-                  {isLoading ? <ButtonSpinner /> : "PLACE ORDER"}
-                </button>
-              ) : (
-                <div
-                  type="submit"
-                  className="w-full bg-primary text-base-100 py-2 rounded shadow flex justify-center cursor-pointer"
-                >
-                  {isLoading ? <ButtonSpinner /> : "Payment"}
-                </div>
-              )}
+              <button
+                type="submit"
+                className="w-full bg-primary text-base-100 py-2 rounded shadow flex justify-center"
+              >
+                {isLoading || sslPaymentLoading ? (
+                  <ButtonSpinner />
+                ) : paymentMethod === "cod" ? (
+                  "PLACE ORDER"
+                ) : (
+                  "Payment"
+                )}
+              </button>
             </div>
           </div>
         </form>

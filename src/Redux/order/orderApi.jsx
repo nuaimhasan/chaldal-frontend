@@ -1,7 +1,7 @@
 import { apiSlice } from "../api/apiSlice";
 
 export const orderApi = apiSlice.injectEndpoints({
-  tagTypes: ["order"],
+  // tagTypes: ["order"],
   endpoints: (builder) => ({
     getMyOrders: builder.query({
       query: (userId) => ({
@@ -46,6 +46,20 @@ export const orderApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["order"],
     }),
+    initSslPayment: builder.mutation({
+      query: (order) => ({
+        url: `/payment/ssl-payment`,
+        method: "POST",
+        body: order,
+      }),
+      invalidatesTags: ["order"],
+    }),
+    getOrderByTransactionId: builder.query({
+      query: (transactionId) => ({
+        url: `/order/transaction/${transactionId}`,
+      }),
+      providesTags: ["order"],
+    }),
   }),
 });
 
@@ -56,4 +70,6 @@ export const {
   useGetOrderByIdQuery,
   useDeleteOrderMutation,
   useStatusUpdateMutation,
+  useInitSslPaymentMutation,
+  useGetOrderByTransactionIdQuery,
 } = orderApi;

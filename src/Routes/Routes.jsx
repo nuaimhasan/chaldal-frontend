@@ -46,6 +46,7 @@ import EditSubCategory from "../pages/Admin/Category/SubCategories/EditSubCatego
 import AllSubSubCategory from "../pages/Admin/Category/SubSubCategory/AllSubSubCategory";
 import AddSubSubCategory from "../pages/Admin/Category/SubSubCategory/AddSubSubCategory";
 import EditSubSubCategory from "../pages/Admin/Category/SubSubCategory/EditSubSubCategory";
+import PaymentResult from "../pages/Checkout/PaymentResult";
 
 export const routes = createBrowserRouter([
   {
@@ -101,6 +102,14 @@ export const routes = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Checkout />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment-result/:transactionId",
+        element: (
+          <PrivateRoute>
+            <PaymentResult />
           </PrivateRoute>
         ),
       },
