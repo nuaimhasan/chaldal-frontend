@@ -1,5 +1,5 @@
 import JoditEditor from "jodit-react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Select from "react-dropdown-select";
 import { BsX } from "react-icons/bs";
 import Swal from "sweetalert2";
@@ -11,8 +11,8 @@ import { useAddProductMutation } from "../../../Redux/product/productApi";
 
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
-import { useGetSubCategoryQuery } from "../../../Redux/subCategory/subCategoryApi";
 import { useNavigate } from "react-router-dom";
+import { useGetSubCategoryQuery } from "../../../Redux/subCategory/subCategoryApi";
 
 const options = [
   {
