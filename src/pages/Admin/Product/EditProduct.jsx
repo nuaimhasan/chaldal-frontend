@@ -1,5 +1,5 @@
 import JoditEditor from "jodit-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Select from "react-dropdown-select";
 import { AiFillDelete } from "react-icons/ai";
 import { BsX } from "react-icons/bs";
@@ -326,8 +326,6 @@ export default function EditProduct() {
   const product = data?.data;
   const isVariants = product?.variants?.length > 0;
 
-  // console.log(product, isVariants);
-
   const [categoryId, setCategoryId] = useState("");
   const [subCategoryId, setSubCategoryId] = useState("");
   const { data: categories } = useGetCategoriesQuery();
@@ -341,40 +339,18 @@ export default function EditProduct() {
   const [details, setDetails] = useState("");
 
   const [variants, setVariants] = useState([]);
-  const [colors, setColors] = useState([]);
 
-  const [size, setSize] = useState("");
-  const [sizes, setSizes] = useState([]);
+  useEffect(() => {
+    if (product?.variants?.length > 0) {
+      setVariants(product?.variants);
+    }
+  }, [product]);
 
   const [updateProduct, { isLoading: updateLoading }] =
     useUpdateProductMutation();
 
-  // const handleImageChange = (event) => {
-  //   const files = event.target.files;
-  //   const newImages = Array.from(files);
-  //   setImages([...images, ...newImages]);
-  // };
-  // const handleRemoveImage = (index) => {
-  //   const newImages = [...images];
-  //   newImages.splice(index, 1);
-  //   setImages(newImages);
-  // };
-
-  const handleAddSizes = () => {
-    if (event.key === "Shift" && size !== "") {
-      setSizes([...sizes, size]);
-      setSize("");
-    }
-  };
-
-  const handleRemoveSize = (index) => {
-    const newSizes = [...sizes];
-    newSizes.splice(index, 1);
-    setSizes(newSizes);
-  };
-
   // Function to handle changes in input fields
-  const handleInputChange = (colorIndex, sizeIndex, field, value) => {
+  const handleInputChange = (colorIndex, field, value) => {
     setVariants((prevVariants) => {
       const updatedVariants = [...prevVariants];
 
@@ -383,11 +359,11 @@ export default function EditProduct() {
       }
 
       // Store all information (color, size, quantity, price) in each entry
-      updatedVariants[colorIndex][sizeIndex] = {
-        ...updatedVariants[colorIndex][sizeIndex],
-        colorName: colors[colorIndex].name,
-        colorCode: colors[colorIndex].code,
-        size: sizes[sizeIndex],
+      updatedVariants[colorIndex] = {
+        ...updatedVariants[colorIndex],
+        colorName: product?.variants[colorIndex].color,
+        colorCode: product?.variants[colorIndex].colorCode,
+        size: product?.variants[colorIndex].size,
         [field]: value,
       };
 
@@ -399,22 +375,31 @@ export default function EditProduct() {
   const variantsArray = () => {
     const result = [];
 
-    variants.forEach((colorData, colorIndex) => {
-      const color = colors[colorIndex].name;
-      const colorCode = colors[colorIndex].code;
+    variants?.forEach((colorData, colorIndex) => {
+      const color = product?.variants[colorIndex].color;
+      const colorCode = product?.variants[colorIndex].colorCode;
+
+      result.push({
+        color: colorData?.color,
+        colorCode: colorData?.colorCode,
+        size: colorData?.size,
+        quantity: colorData?.quantity,
+        sellingPrice: colorData?.sellingPrice,
+        purchasePrice: colorData?.purchasePrice,
+      });
 
       // eslint-disable-next-line no-unused-vars
-      colorData.forEach((sizeData, sizeIndex) => {
-        const { size, quantity, sellingPrice, purchasePrice } = sizeData;
-        result.push({
-          color,
-          colorCode,
-          size,
-          quantity,
-          sellingPrice,
-          purchasePrice,
-        });
-      });
+      // colorData.forEach((sizeData) => {
+      //   const { size, quantity, sellingPrice, purchasePrice } = sizeData;
+      // result.push({
+      //   color,
+      //   colorCode,
+      //   size,
+      //   quantity,
+      //   sellingPrice,
+      //   purchasePrice,
+      // });
+      // });
     });
 
     return result;
@@ -422,6 +407,8 @@ export default function EditProduct() {
 
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
+
+    console.log(variants);
 
     // const form = e.target;
     // const title = form.title.value;
@@ -454,8 +441,6 @@ export default function EditProduct() {
 
     // if (variants?.length > 0)
     //   formData.append("variants", JSON.stringify(variantsArray()));
-
-    console.log(variants);
 
     // const res = await updateProduct({ id, formData });
     // console.log(res);
@@ -525,22 +510,6 @@ export default function EditProduct() {
                       </div>
                     ))}
                   </div>
-                  {/* {images.length < 1 &&
-                    product?.images.length > 0 &&
-                    product?.images?.map((img, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col gap-y-1 relative"
-                      >
-                        <img
-                          src={`${
-                            import.meta.env.VITE_BACKEND_URL
-                          }/products/${img}`}
-                          alt="img"
-                          className="w-full h-16 rounded"
-                        />
-                      </div>
-                    ))} */}
                 </div>
               )}
             </ImageUploading>
@@ -566,15 +535,11 @@ export default function EditProduct() {
                     required
                     onChange={(e) => setCategoryId(e.target.value)}
                     defaultValue={product?.category?._id}
+                    disabled
                   >
-                    <option value="">
-                      {product?.category?.name || "Select Category"}
+                    <option value={product?.category?.name}>
+                      {product?.category?.name}
                     </option>
-                    {categories?.data?.map((category) => (
-                      <option key={category?._id} value={category?._id}>
-                        {category?.name}
-                      </option>
-                    ))}
                   </select>
                 </div>
 
@@ -584,16 +549,11 @@ export default function EditProduct() {
                     name="sub_category"
                     onChange={(e) => setSubCategoryId(e.target.value)}
                     defaultValue={product?.subCategory?._id}
+                    disabled
                   >
-                    <option value="">
-                      {product?.subCategory?.name || "Select Sub Category"}
+                    <option value={product?.subCategory?.name}>
+                      {product?.subCategory?.name}
                     </option>
-                    {subCategories?.length > 0 &&
-                      subCategories?.map((subCategory) => (
-                        <option key={subCategory?._id} value={subCategory?._id}>
-                          {subCategory?.name}
-                        </option>
-                      ))}
                   </select>
                 </div>
 
@@ -602,20 +562,11 @@ export default function EditProduct() {
                   <select
                     name="sub_subCategory"
                     defaultValue={product?.subSubCategory?._id}
+                    disabled
                   >
-                    <option value="">
-                      {product?.subSubCategory?.name ||
-                        "Select Sub SubCategory"}
+                    <option value={product?.subSubCategory?.name}>
+                      {product?.subSubCategory?.name}
                     </option>
-                    {subSubCategories?.length > 0 &&
-                      subSubCategories?.map((subSubCategory) => (
-                        <option
-                          key={subSubCategory?._id}
-                          value={subSubCategory?._id}
-                        >
-                          {subSubCategory?.name}
-                        </option>
-                      ))}
                   </select>
                 </div>
               </div>
@@ -697,14 +648,7 @@ export default function EditProduct() {
                             product?.variants?.map((variant, colorIndex) => (
                               <tr key={colorIndex}>
                                 <td>{variant?.color}</td>
-                                <td>
-                                  <input
-                                    type="number"
-                                    required
-                                    disabled
-                                    defaultValue={variant?.size}
-                                  />
-                                </td>
+                                <td>{variant?.size}</td>
                                 <td>
                                   <input
                                     type="number"
@@ -712,7 +656,6 @@ export default function EditProduct() {
                                     defaultValue={variant?.quantity}
                                     onChange={(e) =>
                                       handleInputChange(
-                                        colorIndex,
                                         colorIndex,
                                         "quantity",
                                         e.target.value
@@ -728,7 +671,6 @@ export default function EditProduct() {
                                     onChange={(e) =>
                                       handleInputChange(
                                         colorIndex,
-                                        colorIndex,
                                         "sellingPrice",
                                         e.target.value
                                       )
@@ -742,7 +684,6 @@ export default function EditProduct() {
                                     defaultValue={variant?.purchasePrice}
                                     onChange={(e) =>
                                       handleInputChange(
-                                        colorIndex,
                                         colorIndex,
                                         "purchasePrice",
                                         e.target.value
