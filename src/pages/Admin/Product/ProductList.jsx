@@ -14,6 +14,7 @@ import Spinner from "../../../components/Spinner/Spinner";
 export default function ProductList() {
   const query = {};
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [limit, setLimit] = useState(10);
 
   query["page"] = page;
@@ -23,8 +24,8 @@ export default function ProductList() {
     ...query,
   });
 
-  const products = data?.data;
-  console.log(products);
+  // const products = data?.data;
+  // console.log(products);
 
   const [
     deleteProduct,
