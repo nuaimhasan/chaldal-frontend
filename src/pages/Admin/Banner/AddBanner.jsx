@@ -27,7 +27,7 @@ export default function AddBanner() {
     if (isSuccess) {
       Swal.fire("", "banner add success", "success");
       setbanners([]);
-      navigate("/admin/front-end/home-page/banner");
+      navigate("/admin/front-end/banner");
     }
     if (isError) {
       Swal.fire("", "something went wrong, please try again", "success");

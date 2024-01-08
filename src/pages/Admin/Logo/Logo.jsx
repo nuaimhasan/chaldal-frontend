@@ -11,67 +11,57 @@ import {
 } from "../../../Redux/logo/logoApi";
 
 export default function Logo() {
-  const [mainLogos, setMainLogos] = useState([]);
-  const { data: mainLogo, isLoading } = useGetMainLogoQuery();
+  const [logos, setLogos] = useState([]);
+  const { data, isLoading } = useGetMainLogoQuery();
+  const [addLogo, { isLoading: addLoading, isSuccess, isError }] =
+    useAddLogoMutation();
 
   const [
     updateMainLogo,
     {
-      isLoading: mainLogoLoading,
-      isSuccess: mainLogoSuccess,
-      isError: mainLogoError,
+      isLoading: updateLoading,
+      isSuccess: updateSuccess,
+      isError: updateError,
     },
   ] = useUpdateMainLogoMutation();
 
-  const [
-    addLogo,
-    {
-      isLoading: addLogoLoading,
-      isSuccess: addLogoSuccess,
-      isError: addLogoError,
-    },
-  ] = useAddLogoMutation();
-
-  
-  const id = mainLogo?.data[0]?._id;
+  const id = data?.data[0]?._id;
 
   const handleUpdateAddMainLogo = async () => {
-    const logo = mainLogos[0]?.file;
+    const logo = logos[0]?.file;
 
     if (!logo) {
       return Swal.fire("", "Logo is required", "error");
     }
 
-    const formData = new FormData();
+    let formData = new FormData();
     formData.append("logo", logo);
 
-    if (mainLogo?.data[0]?.logo && id) {
-      // Update the existing logo
+    if (data?.data?.length > 0 && data?.data[0]?.logo) {
       await updateMainLogo({ id, formData });
     } else {
-      const res = await addLogo(formData);
-      console.log(res);
+      await addLogo(formData);
     }
   };
 
   useEffect(() => {
-    if (mainLogoSuccess) {
+    // update
+    if (updateSuccess) {
       Swal.fire("", "Logo Update success", "success");
-      setMainLogos([]);
+      setLogos([]);
     }
-
-    if (addLogoSuccess) {
-      Swal.fire("", "Logo successfully added", "success");
-    }
-
-    if (mainLogoError) {
+    if (updateError) {
       Swal.fire("", "somethin wrong, please try again", "error");
     }
 
-    if (addLogoError) {
+    // Add
+    if (isSuccess) {
+      Swal.fire("", "Logo successfully added", "success");
+    }
+    if (isError) {
       Swal.fire("", "Something went wrong when uploading", "error");
     }
-  }, [mainLogoSuccess, mainLogoError, addLogoSuccess, addLogoError]);
+  }, [updateSuccess, updateError, isSuccess, isError]);
 
   if (isLoading) {
     return <Spinner />;
@@ -91,8 +81,8 @@ export default function Logo() {
             </p>
             <div className="p-4 sm:flex items-center gap-4">
               <ImageUploading
-                value={mainLogos}
-                onChange={(icn) => setMainLogos(icn)}
+                value={logos}
+                onChange={(file) => setLogos(file)}
                 dataURLKey="data_url"
               >
                 {({ onImageUpload, onImageRemove, dragProps }) => (
@@ -111,8 +101,8 @@ export default function Logo() {
                       <p className="text-neutral-content">or Drop here</p>
                     </div>
 
-                    <div className={`${mainLogos?.length > 0 && "mt-4"} `}>
-                      {mainLogos?.map((img, index) => (
+                    <div className={`${logos?.length > 0 && "mt-4"} `}>
+                      {logos?.map((img, index) => (
                         <div key={index} className="image-item relative">
                           <img src={img["data_url"]} alt="" className="w-40" />
                           <div
@@ -128,10 +118,10 @@ export default function Logo() {
                 )}
               </ImageUploading>
 
-              {mainLogo?.data[0]?.logo && mainLogos?.length >= 0 && (
+              {data?.data[0]?.logo && logos?.length >= 0 && (
                 <img
                   src={`${import.meta.env.VITE_BACKEND_URL}/logo/${
-                    mainLogo?.data[0]?.logo
+                    data?.data[0]?.logo
                   }`}
                   alt=""
                   className="w-32 mt-4"
@@ -142,11 +132,11 @@ export default function Logo() {
 
           <div className="flex justify-end mt-6 border-t p-4">
             <button
-              disabled={(mainLogoLoading || addLogoLoading) && "disabled"}
+              disabled={(updateLoading || addLoading) && "disabled"}
               onClick={handleUpdateAddMainLogo}
               className="primary_btn"
             >
-              {mainLogoLoading || addLogoLoading
+              {updateLoading || addLoading
                 ? "Loading"
                 : id
                 ? "Update Logo"
