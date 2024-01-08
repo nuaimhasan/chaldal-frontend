@@ -15,7 +15,6 @@ import {
 import { useGetSubCategoryQuery } from "../../../Redux/subCategory/subCategoryApi";
 import Spinner from "../../../components/Spinner/Spinner";
 
-
 export default function EditProduct() {
   const navigate = useNavigate();
 
@@ -84,7 +83,6 @@ export default function EditProduct() {
     const sellingPrice = form.selling_price ? form.selling_price.value : "";
     const purchasePrice = form.purchase_price ? form.purchase_price.value : "";
     const quantity = form.quantity ? form.quantity.value : "";
-
 
     const formData = new FormData();
     formData.append("title", title);
@@ -176,6 +174,18 @@ export default function EditProduct() {
                         </div>
                       </div>
                     ))}
+
+                    {product?.images?.length &&
+                      !images?.length &&
+                      product?.images?.map((img) => (
+                        <img
+                          src={`${
+                            import.meta.env.VITE_BACKEND_URL
+                          }/products/${img}`}
+                          alt=""
+                          className="w-full h-20"
+                        />
+                      ))}
                   </div>
                 </div>
               )}
