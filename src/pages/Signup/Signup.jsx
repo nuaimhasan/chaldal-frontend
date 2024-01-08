@@ -7,9 +7,11 @@ import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
 import Swal from "sweetalert2";
 import { useRegisterMutation } from "../../Redux/user/authApi";
 import { useEffect } from "react";
+import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
 
 export default function Signup() {
   window.scroll(0, 0);
+  const { data: logo } = useGetMainLogoQuery();
   const [errorMesssage, setErrorMessage] = useState("");
   const [register, { isSuccess, isLoading, isError, error }] =
     useRegisterMutation();
@@ -69,7 +71,17 @@ export default function Signup() {
     <div className="py-6 bg-gray-50">
       <div className="container">
         <div className="sm:w-[420px] mx-auto bg-base-100 shadow-lg rounded-lg p-6">
-          <img src="/images/logo/logo.png" alt="" className="w-32 mx-auto" />
+          <img
+            src={
+              logo?.data[0]?.logo === ""
+                ? "/images/logo/logo.png"
+                : `${import.meta.env.VITE_BACKEND_URL}/logo/${
+                    logo?.data[0]?.logo
+                  }`
+            }
+            alt=""
+            className="w-32 mx-auto"
+          />
           <h6 className="text-xl font-medium mt-2 text-center text-neutral/80">
             Signup
           </h6>

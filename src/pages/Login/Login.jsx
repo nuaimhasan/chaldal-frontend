@@ -6,13 +6,14 @@ import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
 import { useSelector } from "react-redux";
 import { useLoginMutation } from "../../Redux/user/authApi";
 import { toast } from "react-toastify";
+import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
 
 export default function Login() {
   window.scroll(0, 0);
   const [showPassword, setShowPassword] = useState(false);
-
   const { loggedUser } = useSelector((state) => state.user);
   const [login, { isLoading, isError, error, isSuccess }] = useLoginMutation();
+  const { data: logo } = useGetMainLogoQuery();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,10 +34,8 @@ export default function Login() {
       phone,
       password,
     };
-    // console.log(loginInfo);
 
     await login(loginInfo);
-    // console.log(res);
   };
 
   useEffect(() => {
@@ -49,7 +48,17 @@ export default function Login() {
     <div className="py-6 bg-gray-50">
       <div className="container">
         <div className="sm:w-[420px] mx-auto bg-base-100 shadow-lg rounded-lg p-6">
-          <img src="/images/logo/logo.png" alt="" className="w-32 mx-auto" />
+          <img
+            src={
+              logo?.data[0]?.logo === ""
+                ? "/images/logo/logo.png"
+                : `${import.meta.env.VITE_BACKEND_URL}/logo/${
+                    logo?.data[0]?.logo
+                  }`
+            }
+            alt=""
+            className="w-32 mx-auto"
+          />
           <h6 className="text-xl font-medium mt-2 text-center text-neutral/80">
             Log In
           </h6>

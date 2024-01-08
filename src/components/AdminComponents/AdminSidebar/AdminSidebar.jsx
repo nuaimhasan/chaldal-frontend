@@ -134,7 +134,7 @@ export default function AdminSidebar() {
       <div className="bg-[#445360] p-2 flex justify-between items-center font-light">
         <p>Visit Front-End</p>
         <Link to="/" className="text-primary hover:underline">
-          Aestheticcloth
+          Eshop
         </Link>
       </div>
     </div>

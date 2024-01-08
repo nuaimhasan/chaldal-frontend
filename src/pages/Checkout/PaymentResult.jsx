@@ -4,11 +4,8 @@ import Spinner from "../../components/Spinner/Spinner";
 
 export default function PaymentResult() {
   const { transactionId } = useParams();
-
   const { data, isLoading } = useGetOrderByTransactionIdQuery(transactionId);
-
   if (isLoading) return <Spinner />;
-  console.log(data?.data);
 
   return (
     <div className="py-8">
@@ -73,7 +70,9 @@ export default function PaymentResult() {
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
                   Your transaction ID is{" "}
-                  <span className="font-semibold">{data?.data?.transactionId}</span>
+                  <span className="font-semibold">
+                    {data?.data?.transactionId}
+                  </span>
                 </p>
               </div>
               <div className="grid grid-cols-2 justify-center items-center gap-5">
@@ -150,12 +149,12 @@ export default function PaymentResult() {
                 </h2>
               </div>
               <div className="grid grid-cols-2 justify-center items-center gap-5">
-                <Link href="/">
+                <Link to="/">
                   <button className="w-full py-3 rounded-lg text-sm font-medium text-white bg-primary ">
                     Go back to home
                   </button>
                 </Link>
-                <Link href="/shops">
+                <Link to="/shops">
                   <button className="w-full py-3 rounded-lg text-sm font-medium text-white bg-gray-800 ">
                     Go back to Shop
                   </button>

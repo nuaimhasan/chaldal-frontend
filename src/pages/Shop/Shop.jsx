@@ -15,8 +15,6 @@ export default function Shop() {
   let subCategory = params?.subCategory ? params?.subCategory : "";
   let subSubCategory = params?.subSubCategory ? params?.subSubCategory : "";
 
-  console.log(category, subCategory, subSubCategory);
-
   const query = {};
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(8);
@@ -51,8 +49,10 @@ export default function Shop() {
     ));
   }
   if (!isLoading && !isError && data?.data?.length == 0) {
-    content = <div>No Product available</div>;
+    content = <div className="text-red-500 p-4">No Product available</div>;
   }
+
+  console.log(category);
 
   return (
     <section className="py-5 bg-gray-50 min-h-[70vh]">
@@ -78,7 +78,7 @@ export default function Shop() {
             <li>Shops</li>
           )}
 
-          {category && subCategory ? (
+          {subCategory ? (
             <>
               <li>
                 <MdKeyboardArrowRight />
@@ -90,15 +90,17 @@ export default function Shop() {
               </li>
             </>
           ) : (
-            <>
-              <li>
-                <MdKeyboardArrowRight />
-              </li>
-              <li>{category.split("_")[0]}</li>
-            </>
+            category && (
+              <>
+                <li>
+                  <MdKeyboardArrowRight />
+                </li>
+                <li>{category.split("_")[0]}</li>
+              </>
+            )
           )}
 
-          {category && subCategory && subSubCategory ? (
+          {subSubCategory ? (
             <>
               <li>
                 <MdKeyboardArrowRight />
@@ -117,12 +119,14 @@ export default function Shop() {
               <li>{subSubCategory.split("_")[0]}</li>
             </>
           ) : (
-            <>
-              <li>
-                <MdKeyboardArrowRight />
-              </li>
-              <li>{subCategory}</li>
-            </>
+            subCategory && (
+              <>
+                <li>
+                  <MdKeyboardArrowRight />
+                </li>
+                <li>{subCategory}</li>
+              </>
+            )
           )}
         </ul>
 
@@ -134,7 +138,7 @@ export default function Shop() {
               {content}
             </div>
 
-            {data?.data?.length > 0 && (
+            {data?.data?.length > 10 && (
               <div className="flex items-center justify-center mt-16">
                 <div className="flex items-center space-x-1 border border-gray-300 rounded overflow-hidden text-sm">
                   <button
@@ -145,7 +149,7 @@ export default function Shop() {
                     <FaArrowLeft />
                   </button>
                   <button className="px-4 py-2 bg-gray-700 text-gray-100 font-medium focus:outline-none">
-                    Page {page}
+                    {page}
                   </button>
                   <button
                     className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"

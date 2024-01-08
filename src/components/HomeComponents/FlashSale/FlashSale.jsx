@@ -7,6 +7,8 @@ import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 const FlashSale = () => {
   const { data, isLoading, isError, error } = useGetFlashProductsQuery();
 
+  console.log(data);
+
   let content = null;
   if (isLoading) {
     content = <ProductCards />;

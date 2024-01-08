@@ -18,7 +18,7 @@ export default function SubCategories({ category, subCategory }) {
 
         <ol className="category_sub_dropdown">
           {subCategory?.subSubCategories?.map((subSubCategory) => (
-            <li>
+            <li key={subSubCategory?._id}>
               <Link
                 to={`/shops/${category?.slug}/${subCategory?.slug}/${subSubCategory?.slug}`}
                 className="flex p-2 hover:bg-gray-100 duration-300"
