@@ -106,11 +106,10 @@ export default function EditProduct() {
       });
     }
 
-    if (variants?.length > 0)
-      formData.append("variants", JSON.stringify(variants));
+    formData.append("variants", JSON.stringify(variants));
 
     const res = await updateProduct({ id, formData });
-    console.log(res);
+    // console.log(res);
 
     if (res?.error) {
       Swal.fire("", "Product update Fail, please try again", "error");
