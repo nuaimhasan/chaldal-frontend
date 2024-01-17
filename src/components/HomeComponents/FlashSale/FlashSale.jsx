@@ -7,7 +7,6 @@ import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 const FlashSale = () => {
   const { data, isLoading, isError, error } = useGetFlashProductsQuery();
 
-  console.log(data);
 
   let content = null;
   if (isLoading) {
@@ -18,7 +17,7 @@ const FlashSale = () => {
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
     content = data?.data?.map((product) => (
-      <ProductCard key={product?.id} product={product} />
+      <ProductCard key={product?._id} product={product} />
     ));
   }
 
@@ -27,7 +26,7 @@ const FlashSale = () => {
       <div className="container bg-base-100 p-4 rounded-lg shadow-lg">
         <div className="flex justify-between sm:items-center border-b pb-2 border-primary">
           <h1 className="md:text-xl font-medium md:font-semibold text-neutral">
-            FlashSale
+            Featured Products
           </h1>
 
           <div>

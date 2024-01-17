@@ -1,3 +1,113 @@
+export const locations = [
+  {
+    name: "Dhaka City",
+    cities: [
+      {
+        name: "ADABOR"
+      },
+      {
+        name: "Aftabnagar"
+      },
+      {
+        name: "Agargaon"
+      },
+      {
+        name: "Azimpur"
+      },
+      {
+        name: "Ashrafabad"
+      },
+      {
+        name: "Malibagh"
+      }
+    ]
+  },
+  {
+    name: "Dhaka Out City",
+    cities: [
+      {
+        name: "Gazipur"
+      },
+      {
+        name: "Savar"
+      },
+      {
+        name: "Narayanganj"
+      },
+      {
+        name: "Asulia"
+      }
+    ]
+  },
+  {
+    name: "Rajshahi",
+    cities: [
+      {
+        name: "Rajshahi"
+      },
+      {
+        name: "Natore"
+      },
+      {
+        name: "Puthia"
+      },
+      {
+        name: "Gurudashpur"
+      }
+    ]
+  },
+  {
+    name: "Rangpur",
+    cities: [
+      {
+        name: "Rangpur"
+      },
+    ]
+  },
+  {
+    name: "Mymensingh",
+    cities: [
+      {
+        name: "Mymensingh"
+      },
+    ]
+  },
+  {
+    name: "Khulna",
+    cities: [
+      {
+        name: "Khulna"
+      },
+    ]
+  },
+  {
+    name: "Sylhet",
+    cities: [
+      {
+        name: "Sylhet"
+      },
+    ]
+  },
+  {
+    name: "Chattogram",
+    cities: [
+      {
+        name: "Chattogram"
+      },
+    ]
+  },
+  {
+    name: "Barishal",
+    cities: [
+      {
+        name: "Barishal"
+      },
+    ]
+  }
+]
+
+
+
 export const cities = [
   "Rajshahi",
   "Rangpur",
@@ -75,3 +185,4 @@ export const districts = [
   "Narail",
   "Satkhira",
 ];
+

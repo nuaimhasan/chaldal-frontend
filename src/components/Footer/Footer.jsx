@@ -11,12 +11,16 @@ export default function Footer() {
   const { data: contact, isLoading: contactLoading } = useGetContactQuery();
   const { data: logo, isLoading: logoLoading } = useGetMainLogoQuery();
 
+  const fiveCategories = data?.data.slice(0,6)
+
   if (isLoading || contactLoading || logoLoading) {
     return null;
   }
 
+
+
   return (
-    <footer className="border-t pt-8 pb-4">
+    <footer className="pt-8 pb-4 bg-gray-50">
       <div className="container">
         <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           <div className="md:col-span-2">
@@ -52,7 +56,7 @@ export default function Footer() {
               Categories
             </h2>
             <ul className="text-neutral-content text-[15px]">
-              {data?.data?.map((category, i) => (
+              {fiveCategories?.map((category, i) => (
                 <li key={i} className="mb-2">
                   <Link
                     to={`/shops/${category?.slug}`}
@@ -111,16 +115,24 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+
         <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700" />
 
+        <div>
+          <img src="/images/sslcommerz-banner.png" alt="" className="md:w-full md:h-[130px]" />
+        </div>
+
+        <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700" />
+
+        {/* bottom */}
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-[15px] text-neutral-content">
-            © 2023{" "}
+            © 2024{" "}
             <a
-              to="https://www.facebook.com/aestheticcloth247"
+              to="https://www.facebook.com/eManagerbd.xyz"
               className="hover:underline"
             >
-              aestheticcloth
+              eshop
             </a>
             . All Rights Reserved.
           </span>

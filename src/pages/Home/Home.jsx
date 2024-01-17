@@ -1,3 +1,4 @@
+import CategoryWaysProducts from "../../components/HomeComponents/CategoryWaysProducts/CategoryWaysProducts";
 import ChooseByCategory from "../../components/HomeComponents/ChooseByCategory/ChooseByCategory";
 import FlashSale from "../../components/HomeComponents/FlashSale/FlashSale";
 import Hero from "../../components/HomeComponents/Hero/Hero";
@@ -14,6 +15,7 @@ export default function Home() {
       <FlashSale />
       <ChooseByCategory />
       <PopularProducts />
+      <CategoryWaysProducts/>
       <Services />
     </>
   );

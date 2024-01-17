@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { cities, districts } from "../../Data/location";
+import { locations } from "../../Data/location";
 import { clearCart } from "../../Redux/cart/cartSlice";
 import {
   useAddOrderMutation,
@@ -24,24 +24,37 @@ export default function Checkout() {
   const { loggedUser } = useSelector((state) => state.user);
   const [cityDropdown, setCityDropdown] = useState(false);
   const [city, setCity] = useState("");
+  const [areas, setAreas] = useState([]);
   const [searchCity, setSearchCity] = useState("");
 
-  const [districtDropdown, setDistrictDropdown] = useState(false);
-  const [district, setDistrict] = useState("");
-  const [searchDistrict, setSearchDistrict] = useState("");
+  const [areaDropdown, setAreaDropdown] = useState(false);
+  const [area, setArea] = useState("");
+  const [searchArea, setSearchArea] = useState("");
+
+  const [vCode, setVCode] = useState("");
+  const [discount, setDiscount] = useState(0);
 
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
   const handelSetCity = (selectedCity) => {
-    setCity(selectedCity);
+    setCity(selectedCity.name);
+    setAreas(selectedCity.cities);
     setCityDropdown(false);
     setSearchCity("");
+    setArea("");
   };
 
-  const handelSetDistrict = (selectedDistrict) => {
-    setDistrict(selectedDistrict);
-    setDistrictDropdown(false);
-    setSearchDistrict("");
+  const handelSetArea = (selectedArea) => {
+    setArea(selectedArea.name);
+    setAreaDropdown(false);
+    setSearchArea("");
+  };
+
+  const handelDiscount = () => {
+    if (vCode == "eshop2024") {
+      setDiscount(10);
+      setVCode("");
+    }
   };
 
   // Remove City Dropdown click other side
@@ -53,11 +66,11 @@ export default function Checkout() {
     });
   }, []);
 
-  // Remove District Dropdown click other side
+  // Remove area Dropdown click other side
   useEffect(() => {
     window.addEventListener("click", (e) => {
-      if (!e.target.closest(".district")) {
-        setDistrictDropdown(false);
+      if (!e.target.closest(".area")) {
+        setAreaDropdown(false);
       }
     });
   }, []);
@@ -72,16 +85,17 @@ export default function Checkout() {
 
   let shipping = 0;
 
-  if (city !== "" && city === "Dhaka") {
-    shipping = 80;
-  } else if (city !== "" && city !== "Dhaka") {
+  if (city !== "" && city === "Dhaka City") {
+    shipping = 70;
+  } else if (city == "Dhaka Out City") {
+    shipping = 100;
+  } else if (city !== "Dhaka City" && city !== "Dhaka Out City") {
     shipping = 150;
-  } else {
-    shipping = 0;
   }
 
   const tax = 0;
-  const grandTotal = subTotal + tax + parseInt(shipping);
+  const discountTk = ((subTotal + tax + parseInt(shipping)) * discount) / 100;
+  const grandTotal = subTotal + tax + parseInt(shipping) - discountTk;
 
   const handelPlaceOrder = async (e) => {
     e.preventDefault();
@@ -92,8 +106,8 @@ export default function Checkout() {
     if (!city) {
       return alert("Please Provide Your City name");
     }
-    if (!district) {
-      return alert("Please Provide Your district name");
+    if (!area) {
+      return alert("Please Provide Your area name");
     }
 
     const products = [];
@@ -111,7 +125,7 @@ export default function Checkout() {
       userId: loggedUser?.data?._id,
       shippingInfo: {
         city,
-        district,
+        area,
         street,
       },
       paymentMethod,
@@ -126,7 +140,7 @@ export default function Checkout() {
         dispatch(clearCart());
         form.reset();
         setCity("");
-        setDistrict("");
+        setArea("");
         navigate("/shops");
       } else {
         toast.error("Something Wrong");
@@ -137,7 +151,7 @@ export default function Checkout() {
         dispatch(clearCart());
         form.reset();
         setCity("");
-        setDistrict("");
+        setArea("");
         window.location.href = res?.data?.data;
         // window.location.replace(res?.data?.data);
       }
@@ -195,7 +209,7 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <div className="relative city">
                   <div className="text-sm mt-2">
                     <h3>City</h3>
@@ -219,9 +233,9 @@ export default function Checkout() {
                         />
                       </div>
                       <ul>
-                        {cities
+                        {locations
                           .filter((city) =>
-                            city
+                            city.name
                               .toLowerCase()
                               .includes(searchCity.toLowerCase())
                           )
@@ -231,7 +245,7 @@ export default function Checkout() {
                               onClick={() => handelSetCity(city)}
                               className="p-1 hover:bg-gray-200 duration-200 cursor-pointer"
                             >
-                              {city}
+                              {city.name}
                             </li>
                           ))}
                       </ul>
@@ -239,41 +253,41 @@ export default function Checkout() {
                   )}
                 </div>
 
-                <div className="relative district">
+                <div className="relative area">
                   <div className="text-sm mt-2">
-                    <h3>District</h3>
+                    <h3>Area</h3>
                     <div
-                      onClick={() => setDistrictDropdown(!districtDropdown)}
+                      onClick={() => setAreaDropdown(!areaDropdown)}
                       className="p-2 h-9 border rounded mt-2 cursor-pointer"
                     >
-                      {district}
+                      {area}
                     </div>
                   </div>
 
-                  {districtDropdown && (
+                  {areaDropdown && (
                     <div className="absolute bg-base-100 border rounded top-full left-0 p-2 w-full max-h-60 overflow-y-auto">
                       <div>
                         <input
-                          onChange={(e) => setSearchDistrict(e.target.value)}
+                          onChange={(e) => setSearchArea(e.target.value)}
                           type="text"
                           className="px-2 py-1 rounded w-full border outline-none placeholder:font-light"
-                          placeholder="search District"
+                          placeholder="search area"
                         />
                       </div>
                       <ul>
-                        {districts
-                          .filter((district) =>
-                            district
+                        {areas
+                          .filter((area) =>
+                            area.name
                               .toLowerCase()
-                              .includes(searchDistrict.toLowerCase())
+                              .includes(searchArea.toLowerCase())
                           )
-                          .map((district, i) => (
+                          .map((area, i) => (
                             <li
                               key={i}
-                              onClick={() => handelSetDistrict(district)}
+                              onClick={() => handelSetArea(area)}
                               className="p-1 hover:bg-gray-200 duration-200 cursor-pointer"
                             >
-                              {district}
+                              {area.name}
                             </li>
                           ))}
                       </ul>
@@ -286,6 +300,17 @@ export default function Checkout() {
                 <h3>Street address</h3>
                 <textarea
                   name="street"
+                  rows="3"
+                  placeholder="House number and street name"
+                  className="border-2 w-full p-2 mt-2 outline-none rounded"
+                  required
+                ></textarea>
+              </div>
+
+              <div className="text-sm mt-2">
+                <h3>Order Note</h3>
+                <textarea
+                  name="note"
                   rows="4"
                   placeholder="House number and street name"
                   className="border-2 w-full p-2 mt-2 outline-none rounded"
@@ -299,9 +324,34 @@ export default function Checkout() {
           <div>
             <div className="checkout-output bg-gray-50 relative p-6">
               <div className="border-b mb-4 pb-4">
-                <h3 className="tetx-xl font-medium text-neutral">
-                  Payment Method
+                <h3 className="text-[17px] font-medium text-neutral">
+                  Discounts
                 </h3>
+                <div>
+                  <small className="text-neutral-content text-xs">
+                    REFERRAL OR PROMO CODE
+                  </small>
+                  <div className="flex items-center gap-px">
+                    <input
+                      onChange={(e) => setVCode(e.target.value)}
+                      type="text"
+                      className="text-sm border rounded outline-none w-full px-3 py-[7px]"
+                      placeholder="Enter Code"
+                      value={vCode}
+                    />
+                    <div
+                      onClick={handelDiscount}
+                      className="primary_btn cursor-pointer"
+                      style={{ fontSize: "13px" }}
+                    >
+                      Apply
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-b mb-4 pb-4">
+                <h3 className="font-medium text-neutral">Payment Method</h3>
 
                 <ul className="text-sm text-neutral-content flex flex-col gap-1 pl-2 mt-2">
                   <li className="flex items-center justify-between">
@@ -310,11 +360,11 @@ export default function Checkout() {
                         id="cod"
                         type="radio"
                         name="payment_method"
-                        className="w-3 h-3"
+                        className="w-3 h-3 cursor-pointer"
                         checked={paymentMethod === "cod" && true}
                         onClick={() => setPaymentMethod("cod")}
                       />
-                      <label htmlFor="cod" className="ms-2">
+                      <label htmlFor="cod" className="ms-2 cursor-pointer">
                         Cash On Delivery
                       </label>
                     </div>
@@ -330,11 +380,11 @@ export default function Checkout() {
                         id="ssl"
                         type="radio"
                         name="payment_method"
-                        className="w-3 h-3"
+                        className="w-3 h-3 cursor-pointer"
                         checked={paymentMethod === "ssl" && true}
                         onClick={() => setPaymentMethod("ssl")}
                       />
-                      <label htmlFor="ssl" className="ms-2">
+                      <label htmlFor="ssl" className="ms-2 cursor-pointer">
                         SSL
                       </label>
                     </div>
@@ -350,11 +400,11 @@ export default function Checkout() {
                         id="amar_pay"
                         type="radio"
                         name="payment_method"
-                        className="w-3 h-3"
+                        className="w-3 h-3 cursor-pointer"
                         checked={paymentMethod === "amar_pay" && true}
                         onClick={() => setPaymentMethod("amar_pay")}
                       />
-                      <label htmlFor="amar_pay" className="ms-2">
+                      <label htmlFor="amar_pay" className="ms-2 cursor-pointer">
                         Amar pay
                       </label>
                     </div>
@@ -416,9 +466,9 @@ export default function Checkout() {
                     Shipping{" "}
                     <small>
                       {city !== "" &&
-                        (city === "Dhaka"
+                        (city === "Dhaka City"
                           ? "(inside Dhaka)"
-                          : "(outside Dhaka)")}
+                          : city === "Dhaka Out City" ? "(Dhaka Out City)" : "(outside Dhaka)")}
                     </small>
                   </h3>
                   <div className="text-end">
@@ -430,6 +480,13 @@ export default function Checkout() {
                   <h3>Tax</h3>
                   <div className="text-end">
                     ৳<span>{tax}.00</span>
+                  </div>
+                </div>
+
+                <div className="flex justify-between items-center border-b py-1.5 text-sm text-red-500">
+                  <h3>Discount</h3>
+                  <div className="text-end">
+                    - ৳<span>{discountTk}.00</span>
                   </div>
                 </div>
 
