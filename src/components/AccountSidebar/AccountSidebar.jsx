@@ -1,8 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { AiOutlineHeart, AiOutlineSetting } from "react-icons/ai";
 import { FiMonitor } from "react-icons/fi";
 import { IoBagCheckOutline } from "react-icons/io5";
-import { AiOutlineHeart, AiOutlineSetting } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 export default function AccountSidebar() {
   const { loggedUser } = useSelector((state) => state.user);
@@ -48,6 +48,14 @@ export default function AccountSidebar() {
             <span className="flex items-center gap-2 hover:text-primary duration-300">
               <IoBagCheckOutline className="text-xl" />
               My Order List
+            </span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/account/reviews">
+            <span className="flex items-center gap-2 hover:text-primary duration-300">
+              <IoBagCheckOutline className="text-xl" />
+              My Reviews
             </span>
           </NavLink>
         </li>

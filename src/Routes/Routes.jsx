@@ -9,14 +9,14 @@ import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import Shop from "../pages/Shop/Shop";
 import Signup from "../pages/Signup/Signup";
 
-import PrivateRoute from "../PrivateRoute/PrivateRoute";
-import Checkout from "../pages/Checkout/Checkout";
 import AccountLayout from "../Layout/AccountLayout";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import EditePeofile from "../pages/Account/EditePeofile/EditePeofile";
 import Orders from "../pages/Account/Orders/Orders";
 import Profile from "../pages/Account/Profile/Profile";
 import Setting from "../pages/Account/Setting/Setting";
 import Wishlist from "../pages/Account/Wishlist/Wishlist";
+import Checkout from "../pages/Checkout/Checkout";
 
 import AdminLayout from "../Layout/AdminLayout/AdminLayout";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
@@ -24,29 +24,31 @@ import AddProduct from "../pages/Admin/Product/AddProduct";
 import ProductList from "../pages/Admin/Product/ProductList";
 
 import AdminRoute from "../PrivateRoute/AdminRoute";
+import OrderDetailsPage from "../pages/Account/OrderDetails/OrderDetails";
 import About from "../pages/Admin/About/About";
 import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
 import Administrator from "../pages/Admin/Administrator/Administrator";
-import Contact from "../pages/Admin/Contact/Contact";
-import Banner from "../pages/Admin/Banner/Banner";
 import AddBanner from "../pages/Admin/Banner/AddBanner";
+import Banner from "../pages/Admin/Banner/Banner";
+import Contact from "../pages/Admin/Contact/Contact";
 import Logo from "../pages/Admin/Logo/Logo";
 import AllOrders from "../pages/Admin/Order/AllOrders";
 import OrderDetails from "../pages/Admin/Order/OrderDetails";
 import EditProduct from "../pages/Admin/Product/EditProduct";
 import AllUsers from "../pages/Admin/user/AllUsers";
-import OrderDetailsPage from "../pages/Account/OrderDetails/OrderDetails";
 
-import AllCategories from "../pages/Admin/Category/Categories/AllCategories";
+import MyReviews from "../pages/Account/Reviews/MyReviews";
 import AddCategory from "../pages/Admin/Category/Categories/AddCategory";
+import AllCategories from "../pages/Admin/Category/Categories/AllCategories";
 import EditCategory from "../pages/Admin/Category/Categories/EditCategory";
-import AllSubCategories from "../pages/Admin/Category/SubCategories/AllSubCategories";
 import AddSubCategory from "../pages/Admin/Category/SubCategories/AddSubCategory";
+import AllSubCategories from "../pages/Admin/Category/SubCategories/AllSubCategories";
 import EditSubCategory from "../pages/Admin/Category/SubCategories/EditSubCategory";
-import AllSubSubCategory from "../pages/Admin/Category/SubSubCategory/AllSubSubCategory";
 import AddSubSubCategory from "../pages/Admin/Category/SubSubCategory/AddSubSubCategory";
+import AllSubSubCategory from "../pages/Admin/Category/SubSubCategory/AllSubSubCategory";
 import EditSubSubCategory from "../pages/Admin/Category/SubSubCategory/EditSubSubCategory";
 import PaymentResult from "../pages/Checkout/PaymentResult";
+import AllReview from "../pages/Admin/AllReview/AllReview";
 
 export const routes = createBrowserRouter([
   {
@@ -142,6 +144,10 @@ export const routes = createBrowserRouter([
       {
         path: "/account/orders/:id",
         element: <OrderDetailsPage />,
+      },
+      {
+        path: "/account/reviews",
+        element: <MyReviews />,
       },
       {
         path: "/account/setting",
@@ -252,6 +258,10 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/administrator/add-administrator",
         element: <AddAdministrator />,
+      },
+      {
+        path: "/admin/reviews",
+        element: <AllReview />,
       },
     ],
   },

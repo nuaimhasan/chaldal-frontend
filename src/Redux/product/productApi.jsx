@@ -1,13 +1,12 @@
 import { apiSlice } from "../api/apiSlice";
 
 export const productApi = apiSlice.injectEndpoints({
-  tagTypes: ["product"],
   endpoints: (builder) => ({
     getFlashProducts: builder.query({
       query: () => ({
         url: "/product/flash-products",
       }),
-      providesTags: ["product"],
+      providesTags: ["product", "review"],
     }),
     getAllProducts: builder.query({
       query: (query) => ({
@@ -15,17 +14,19 @@ export const productApi = apiSlice.injectEndpoints({
         method: "GET",
         params: query,
       }),
-      providesTags: ["product"],
+      providesTags: ["product", "review"],
     }),
     getProductById: builder.query({
       query: (id) => ({
         url: `/product/${id}`,
       }),
+      providesTags: ["product", "review"],
     }),
     getProductBySlug: builder.query({
       query: (slug) => ({
         url: `/product/getbyslug/${slug}`,
       }),
+      providesTags: ["product", "review"],
     }),
     addProduct: builder.mutation({
       query: (formData) => ({
@@ -33,7 +34,7 @@ export const productApi = apiSlice.injectEndpoints({
         method: "POST",
         body: formData,
       }),
-      invalidatesTags: ["product"],
+      invalidatesTags: ["product", "review"],
     }),
     updateProduct: builder.mutation({
       query: ({ id, formData }) => ({
@@ -41,14 +42,14 @@ export const productApi = apiSlice.injectEndpoints({
         method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: ["product"],
+      invalidatesTags: ["product", "review"],
     }),
     deleteProduct: builder.mutation({
       query: (id) => ({
         url: `/product/delete/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["product"],
+      invalidatesTags: ["product", "review"],
     }),
   }),
 });

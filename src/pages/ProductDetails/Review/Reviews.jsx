@@ -1,25 +1,35 @@
 import { useState } from "react";
-import { MdDeleteOutline } from "react-icons/md";
+import { MdDeleteOutline, MdEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   useDeleteReviewMutation,
-  useGetReviewsQuery,
+  useGetReviewsByProductIdQuery,
 } from "../../../Redux/review/reviewApi";
+import Pagination from "../../../components/Pagination/Pagination";
 import Rating from "../../../components/Rating/Rating";
+// import EditReviewModalForm from "./EditReviewModalForm";
 import ReviewModalForm from "./ReviewModalForm";
 
 export default function Reviews({ product }) {
   const [modal, setModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { loggedUser } = useSelector((state) => state.user);
   const user = loggedUser?.data;
 
   const productId = product?._id;
-  const { data } = useGetReviewsQuery(productId);
+  const query = {};
+  query["limit"] = 5;
+  query["page"] = currentPage;
+  const { data } = useGetReviewsByProductIdQuery({ productId, ...query });
   const [deleteReview] = useDeleteReviewMutation();
   // console.log(data?.data);
+
+  const pages = Math.ceil(
+    parseInt(data?.meta?.total) / parseInt(data?.meta?.limit)
+  );
 
   const handleReviewDelete = async (reviewId) => {
     const confirm = window.confirm(
@@ -29,8 +39,8 @@ export default function Reviews({ product }) {
 
     const data = {
       user: user?._id,
-    }
-    await deleteReview({reviewId, data}).unwrap();
+    };
+    await deleteReview({ reviewId, data }).unwrap();
     Swal.fire("", "Review deleted successfully", "success");
   };
 
@@ -42,7 +52,8 @@ export default function Reviews({ product }) {
           <Rating rating={product?.rating || 0} />
 
           <p className="mt-1 text-neutral-content text-sm">
-            13 Ratings and 3 Reviews
+            {(product?.rating * product?.reviewer).toFixed(0)} Ratings and{" "}
+            {product?.reviewer} Reviews
           </p>
         </div>
 
@@ -108,23 +119,38 @@ export default function Reviews({ product }) {
               </p>
 
               {review?.user?._id === user?._id && (
-                <button
-                  onClick={() => handleReviewDelete(review?._id)}
-                  className="text-sm text-neutral-content hover:text-primary duration-200 absolute top-3 right-3 cursor-pointer"
-                >
-                  <MdDeleteOutline className="text-lg" />
-                </button>
+                <div className="absolute top-3 right-3 flex items-center gap-1">
+                  <button
+                    // onClick={() => setModal(!modal)}
+                    className="text-neutral-content text-lg hover:text-primary duration-200"
+                  >
+                    <MdEdit />
+                  </button>
+
+                  {/* <EditReviewModalForm
+                    modal={modal}
+                    setModal={setModal}
+                    review={review}
+                  /> */}
+
+                  <button
+                    onClick={() => handleReviewDelete(review?._id)}
+                    className="text-lg text-neutral-content hover:text-primary duration-200 "
+                  >
+                    <MdDeleteOutline />
+                  </button>
+                </div>
               )}
             </div>
           ))}
 
           {/* pagination */}
           <div className="p-3">
-            <div className="flex justify-end items-center gap-1 text-sm">
-              <button className="border px-3 py-1 rounded">1</button>
-              <button className="border px-3 py-1 rounded">2</button>
-              <button className="border px-3 py-1 rounded">next</button>
-            </div>
+            <Pagination
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+              pages={pages}
+            />
           </div>
         </div>
       ) : (

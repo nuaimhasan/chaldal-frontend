@@ -1,7 +1,6 @@
 import { apiSlice } from "../api/apiSlice";
 
 export const reviewApi = apiSlice.injectEndpoints({
-  tagTypes: ["review"],
   endpoints: (builder) => ({
     addReview: builder.mutation({
       query: (data) => ({
@@ -9,12 +8,34 @@ export const reviewApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["review"],
+      invalidatesTags: ["review", "product"],
     }),
 
-    getReviews: builder.query({
-      query: (productId) => `/review/get-reviews/${productId}`,
-      providesTags: ["review"],
+    getReviewsByProductId: builder.query({
+      query: ({ productId, query }) => ({
+        url: `/review/get-reviews-by-productId/${productId}`,
+        method: "GET",
+        params: query,
+      }),
+      providesTags: ["review", "product"],
+    }),
+
+    getReviewsByUserId: builder.query({
+      query: ({ userId, query }) => ({
+        url: `/review/get-reviews-by-user/${userId}`,
+        method: "GET",
+        params: query,
+      }),
+      providesTags: ["review", "product"],
+    }),
+
+    getAllReviews: builder.query({
+      query: (query) => ({
+        url: `/review/get-all-reviews`,
+        method: "GET",
+        params: query,
+      }),
+      providesTags: ["review", "product"],
     }),
 
     deleteReview: builder.mutation({
@@ -23,13 +44,15 @@ export const reviewApi = apiSlice.injectEndpoints({
         method: "DELETE",
         body: data,
       }),
-      invalidatesTags: ["review"],
+      invalidatesTags: ["review", "product"],
     }),
   }),
 });
 
 export const {
   useAddReviewMutation,
-  useGetReviewsQuery,
+  useGetReviewsByProductIdQuery,
+  useGetReviewsByUserIdQuery,
   useDeleteReviewMutation,
+  useGetAllReviewsQuery,
 } = reviewApi;

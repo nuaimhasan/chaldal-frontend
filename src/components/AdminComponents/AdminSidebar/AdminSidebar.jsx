@@ -10,6 +10,7 @@ import { FaUsers } from "react-icons/fa";
 import { BiSolidShoppingBags } from "react-icons/bi";
 import SidebarItems from "./SidebarItems";
 import { useGetMainLogoQuery } from "../../../Redux/logo/logoApi";
+import { VscPreview } from "react-icons/vsc";
 
 const adminSidebarItems = [
   {
@@ -90,6 +91,11 @@ const adminSidebarItems = [
         path: "/admin/front-end/contact-us",
       },
     ],
+  },
+  {
+    icon: <VscPreview />,
+    title: "Review",
+    path: "/admin/reviews",
   },
   {
     icon: <RiAdminFill />,
