@@ -1,3 +1,4 @@
+import CampaignBanner from "../../components/HomeComponents/CampaignBanner/CampaignBanner";
 import CategoryWaysProducts from "../../components/HomeComponents/CategoryWaysProducts/CategoryWaysProducts";
 import ChooseByCategory from "../../components/HomeComponents/ChooseByCategory/ChooseByCategory";
 import FlashSale from "../../components/HomeComponents/FlashSale/FlashSale";
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <FlashSale />
       <ChooseByCategory />
+      <CampaignBanner />
       <PopularProducts />
       <CategoryWaysProducts/>
       <Services />
