@@ -11,7 +11,7 @@ export default function Reviews() {
       <div className="flex justify-between items-center border-b p-3">
         <div>
           <h1 className="text-2xl">4.5</h1>
-          <div className="flex items-center gap-1 text-xs text-primary">
+          <div className="flex items-center gap-1 text-xs text-yellow-400">
             <FaStar />
             <FaStar />
             <FaStar />
@@ -55,7 +55,7 @@ export default function Reviews() {
                 <p>Nasim Uddin</p>
                 <p className="text-neutral-content text-sm">08 Mar 2023</p>
               </div>
-              <div className="flex items-center gap-1 text-xs text-primary">
+              <div className="flex items-center gap-1 text-xs text-yellow-400">
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -79,7 +79,7 @@ export default function Reviews() {
                 <p>Nasim Uddin</p>
                 <p className="text-neutral-content text-sm">08 Mar 2023</p>
               </div>
-              <div className="flex items-center gap-1 text-xs text-primary">
+              <div className="flex items-center gap-1 text-xs text-yellow-400">
                 <FaStar />
                 <FaStar />
                 <FaStar />
@@ -103,7 +103,7 @@ export default function Reviews() {
                 <p>Nasim Uddin</p>
                 <p className="text-neutral-content text-sm">08 Mar 2023</p>
               </div>
-              <div className="flex items-center gap-1 text-xs text-primary">
+              <div className="flex items-center gap-1 text-xs text-yellow-400">
                 <FaStar />
                 <FaStar />
                 <FaStar />

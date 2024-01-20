@@ -41,7 +41,7 @@ export default function ReviewModalForm({ modal, setModal }) {
                   onMouseOver={() => setHoverValue(index + 1)}
                   onMouseLeave={()=>setHoverValue(undefined)}
                   color={
-                    (hoverValue || currentValue) > index ? "#f47c20" : "#a9a9a9"
+                    (hoverValue || currentValue) > index ? "#facc15" : "#a9a9a9"
                   }
                   style={{
                     marginRight: 10,

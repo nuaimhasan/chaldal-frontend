@@ -1,7 +1,23 @@
 import { Link } from "react-router-dom";
+import {FaStar,FaStarHalfAlt} from "react-icons/fa"
 
 const ProductCard = ({ product }) => {
   const { slug, images, title, sellingPrice, discount, variants } = product;
+
+  let rating = 4.5;
+  const ratingStar = Array.from({ length: 5 }, (element, index) => {
+    return (
+      <span key={index}>
+        {rating >= index + 1 ? (
+          <FaStar className="text-yellow-400" />
+        ) : rating >= index + 0.5 ? (
+          <FaStarHalfAlt className="text-yellow-400" />
+        ) : (
+          <FaStar className="text-gray-300" />
+        )}
+      </span>
+    );
+  });
 
   return (
     <div className="mt-4 hover:shadow-lg rounded overflow-hidden product-card duration-300">
@@ -42,6 +58,7 @@ const ProductCard = ({ product }) => {
               </del>
             )}
           </div>
+          <div className="flex text-sm mt-1">{ratingStar}</div>
         </div>
       </Link>
     </div>
