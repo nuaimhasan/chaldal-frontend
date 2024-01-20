@@ -1,12 +1,49 @@
-import { IoClose } from "react-icons/io5";
+import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { useState } from "react";
+import { IoClose } from "react-icons/io5";
+import Swal from "sweetalert2";
+import { useAddReviewMutation } from "../../../Redux/review/reviewApi";
 
-export default function ReviewModalForm({ modal, setModal }) {
+export default function ReviewModalForm({ modal, setModal, product, user }) {
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
+  const [description, setDescription] = useState("");
   const stars = Array(5).fill(0);
 
+  // console.log(user);
+
+  const [addReview, { isLoading, isError, error, isSuccess }] =
+    useAddReviewMutation();
+
+  useEffect(() => {
+    if (isError) {
+      setModal(false);
+      Swal.fire("", error.data.error, "error");
+    }
+
+    if (isSuccess) {
+      Swal.fire("", "Review added successfully", "success");
+      setModal(false);
+      setDescription("");
+      setCurrentValue(0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError, isSuccess, error]);
+
+  const handleAddReview = async () => {
+    if (!user?._id) {
+      return Swal.fire("", "Please login to write review", "warning");
+    }
+
+    const data = {
+      rating: currentValue,
+      description,
+      user: user?._id,
+      product: product?._id,
+    };
+
+    await addReview(data).unwrap();
+  };
 
   return (
     <>
@@ -39,7 +76,7 @@ export default function ReviewModalForm({ modal, setModal }) {
                   size={20}
                   onClick={() => setCurrentValue(index + 1)}
                   onMouseOver={() => setHoverValue(index + 1)}
-                  onMouseLeave={()=>setHoverValue(undefined)}
+                  onMouseLeave={() => setHoverValue(undefined)}
                   color={
                     (hoverValue || currentValue) > index ? "#facc15" : "#a9a9a9"
                   }
@@ -57,13 +94,19 @@ export default function ReviewModalForm({ modal, setModal }) {
               rows="4"
               className="border w-full rounded outline-none p-2 text-sm text-neutral"
               placeholder="Type your comment..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
         </div>
 
         <div className="mt-1 p-3">
-          <button className="bg-primary text-base-100 px-4 py-1 rounded">
-            Submit
+          <button
+            onClick={handleAddReview}
+            disabled={isLoading && "disabled"}
+            className="bg-primary text-base-100 px-4 py-1 rounded"
+          >
+            {isLoading ? "Loading..." : "Submit"}
           </button>
         </div>
       </div>
