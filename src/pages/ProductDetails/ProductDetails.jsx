@@ -4,9 +4,14 @@ import { useGetProductBySlugQuery } from "../../Redux/product/productApi";
 import Spinner from "../../components/Spinner/Spinner";
 import ProductInfo from "./ProductInfo";
 import RightSideInfo from "./RightSideInfo";
+import { useEffect, useState } from "react";
+import Reviews from "./Review/Reviews";
 
 export default function ProductDetails() {
-  window.scroll(0, 0);
+  useEffect(()=>{
+    window.scroll(0, 0);
+  },[]);
+  const [tab,setTab] = useState("description");
   const params = useParams();
   let slug = params?.id;
   const { data, isLoading, isError, error, isSuccess } =
@@ -14,6 +19,7 @@ export default function ProductDetails() {
 
   const description = isSuccess ? data?.data?.description : "";
   const parcerDescription = parcer(description);
+
 
   let content = null;
   if (isLoading) {
@@ -37,15 +43,28 @@ export default function ProductDetails() {
 
         {/* Details */}
         <div className="bg-base-100 shadow-lg p-4 rounded mt-6">
-          <h1 className="font-semibold text-lg">Product Description of</h1>
+          <div className="flex items-center gap-6 border-b">
+            <button onClick={()=>setTab("description")} className={`${tab === "description" && "border-b border-primary"} pb-2`}>Description</button>
+            <button onClick={()=>setTab("reviews")} className={`${tab === "reviews" && "border-b border-primary"} pb-2`}>Reviews</button>
+          </div>
 
-          <div className="mt-3 pl-2 text-sm text-neutral-content">
-            {parcerDescription}
+          <div>
+            {
+              tab === "description" && <div className="mt-3 pl-2 text-sm text-neutral-content">
+              {parcerDescription}
+            </div>
+            }
+            {
+              tab === "reviews" && <Reviews />
+            }
           </div>
         </div>
       </div>
     );
   }
+
+
+
 
   return (
     <section className="pb-8">
