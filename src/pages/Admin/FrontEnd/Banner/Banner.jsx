@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
-import {
-  useDeleteBannerMutation,
-  useGetBannersQuery,
-} from "../../../Redux/banner/bannerApi";
-import Spinner from "../../../components/Spinner/Spinner";
+
+import Spinner from "../../../../components/Spinner/Spinner";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import { useDeleteBannerMutation, useGetBannersQuery } from "../../../../Redux/banner/bannerApi";
 
 export default function Banner() {
   const { data, isLoading, isError } = useGetBannersQuery();

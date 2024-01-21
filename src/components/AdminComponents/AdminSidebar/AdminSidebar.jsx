@@ -83,6 +83,10 @@ const adminSidebarItems = [
         path: "/admin/front-end/banner",
       },
       {
+        title: "Campaign Banner",
+        path: "/admin/front-end/campaign-banner",
+      },
+      {
         title: "About Us",
         path: "/admin/front-end/about-us",
       },

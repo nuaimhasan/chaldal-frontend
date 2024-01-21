@@ -28,8 +28,7 @@ import OrderDetailsPage from "../pages/Account/OrderDetails/OrderDetails";
 import About from "../pages/Admin/About/About";
 import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
 import Administrator from "../pages/Admin/Administrator/Administrator";
-import AddBanner from "../pages/Admin/Banner/AddBanner";
-import Banner from "../pages/Admin/Banner/Banner";
+
 import Contact from "../pages/Admin/Contact/Contact";
 import Logo from "../pages/Admin/Logo/Logo";
 import AllOrders from "../pages/Admin/Order/AllOrders";
@@ -49,6 +48,13 @@ import AllSubSubCategory from "../pages/Admin/Category/SubSubCategory/AllSubSubC
 import EditSubSubCategory from "../pages/Admin/Category/SubSubCategory/EditSubSubCategory";
 import PaymentResult from "../pages/Checkout/PaymentResult";
 import AllReview from "../pages/Admin/AllReview/AllReview";
+
+import Banner from "../pages/Admin/FrontEnd/Banner/Banner";
+import AddBanner from "../pages/Admin/FrontEnd/Banner/AddBanner";
+
+import CampaignBanners from "../pages/Admin/FrontEnd/CampaignBanners/CampaignBanners";
+import AddCampaignBanner from "../pages/Admin/FrontEnd/CampaignBanners/AddCampaignBanner";
+import EditCampaignBanner from "../pages/Admin/FrontEnd/CampaignBanners/EditCampaignBanner";
 
 export const routes = createBrowserRouter([
   {
@@ -250,6 +256,18 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/front-end/add-banner",
         element: <AddBanner />,
+      },
+      {
+        path: "/admin/front-end/campaign-banner",
+        element: <CampaignBanners />,
+      },
+      {
+        path: "/admin/front-end/add-campaign-banner",
+        element: <AddCampaignBanner />,
+      },
+      {
+        path: "/admin/front-end/edit-campaign-banner/:id",
+        element: <EditCampaignBanner />,
       },
       {
         path: "/admin/administrator/all-administrator",

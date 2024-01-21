@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
-import { useAddBannerMutation } from "../../../Redux/banner/bannerApi";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAddBannerMutation } from "../../../../Redux/banner/bannerApi";
 
 export default function AddBanner() {
   const [banners, setbanners] = useState([]);
@@ -33,6 +33,7 @@ export default function AddBanner() {
       Swal.fire("", "something went wrong, please try again", "success");
     }
   }, [isSuccess, isError, navigate]);
+  
   return (
     <section className="md:w-[600px] bg-base-100 shadow rounded">
       <div className="p-4 border-b text-neutral font-medium">
