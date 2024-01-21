@@ -1,58 +1,48 @@
 import { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { useEditReviewMutation } from "../../../Redux/review/reviewApi";
 import Swal from "sweetalert2";
-import { useAddReviewMutation } from "../../../Redux/review/reviewApi";
 
-export default function ReviewModalForm({ modal, setModal, product, user }) {
+export default function ReviewEditForm({ editModal, setEditModal, review }) {
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
-  const [description, setDescription] = useState("");
   const stars = Array(5).fill(0);
 
-  // console.log(user);
-
-  const [addReview, { isLoading, isError, error, isSuccess }] =
-    useAddReviewMutation();
-
-  useEffect(() => {
-    if (isError) {
-      setModal(false);
-      Swal.fire("", error.data.error, "error");
+  useEffect(()=>{
+    if(review?.rating){
+      setCurrentValue(review?.rating)
     }
+  },[review?.rating])
 
-    if (isSuccess) {
-      Swal.fire("", "Review added successfully", "success");
-      setModal(false);
-      setDescription("");
-      setCurrentValue(0);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isError, isSuccess, error]);
+  const [editReview,{isLoading}] = useEditReviewMutation()
 
-  const handleAddReview = async () => {
-    if (!user?._id) {
-      return Swal.fire("", "Please login to write review", "warning");
-    }
-
+  const handleEditReview = async (e) => {
+    e.preventDefault();
+    const id = review?._id;
+    const description = e.target.description.value;
     const data = {
       rating: currentValue,
       description,
-      user: user?._id,
-      product: product?._id,
+      user: review?.user?._id,
+      product: review?.product,
     };
-
-    await addReview(data).unwrap();
+    const res = await editReview({data,id}).unwrap();
+    if(res?.success){
+      setEditModal(false);
+      Swal.fire("","Edit Success", "success")
+    }
   };
 
   return (
     <>
       <button
-        onClick={() => setModal(false)}
-        className={`modal_overlay ${modal && "modal_overlay_show"}`}
+        onClick={() => setEditModal(false)}
+        className={`modal_overlay ${editModal && "modal_overlay_show"}`}
       ></button>
-      <div
-        className={`modal w-[95%] sm:w-[500px] p-4 ${modal && "modal_show"}`}
+      <form
+      onSubmit={handleEditReview}
+        className={`modal w-[95%] sm:w-[500px] p-4 ${editModal && "modal_show"}`}
       >
         <div className="flex justify-between items-start">
           <div>
@@ -60,7 +50,7 @@ export default function ReviewModalForm({ modal, setModal, product, user }) {
             <p className="text-neutral-content text-sm">Rate this product</p>
           </div>
           <button
-            onClick={() => setModal(false)}
+            onClick={() => setEditModal(false)}
             className="text-neutral-content hover:text-primary duration-200 text-lg"
           >
             <IoClose />
@@ -90,26 +80,26 @@ export default function ReviewModalForm({ modal, setModal, product, user }) {
           </div>
           <div className="mt-5">
             <textarea
-              name=""
+              name="description"
               rows="4"
               className="border w-full rounded outline-none p-2 text-sm text-neutral"
               placeholder="Type your comment..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              defaultValue={review?.description}
             ></textarea>
           </div>
         </div>
 
         <div className="mt-1 p-3">
           <button
-            onClick={handleAddReview}
-            disabled={isLoading && "disabled"}
             className="bg-primary text-base-100 px-4 py-1 rounded"
+            disabled={isLoading && "disabled"}
           >
-            {isLoading ? "Loading..." : "Submit"}
+            {
+              isLoading ? "Loading..." : "Edit"
+            }
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 }

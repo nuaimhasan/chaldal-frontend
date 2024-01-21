@@ -397,9 +397,9 @@ table tbody td {
 }
 
 .pagination-container button.active {
-  background: #ef233c;
+  background: #f47c20;
   color: #fff;
-  border-color: 1px solid #ef233c;
+  border-color: 1px solid #f47c20;
 }
 
 @media only screen and (max-width: 640px) {

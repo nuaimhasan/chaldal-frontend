@@ -21,6 +21,7 @@ export default function ProductDetails() {
   const parcerDescription = parcer(description);
 
 
+
   let content = null;
   if (isLoading) {
     return (content = <Spinner />);

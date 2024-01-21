@@ -8,10 +8,10 @@ import {
 } from "../../../Redux/review/reviewApi";
 import Pagination from "../../../components/Pagination/Pagination";
 import Rating from "../../../components/Rating/Rating";
-import EditReviewModalForm from "../../ProductDetails/Review/EditReviewModalForm";
+import ReviewEditForm from "../../ProductDetails/Review/ReviewEditForm";
 
 export default function MyReviews() {
-  const [modal, setModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
   const { loggedUser } = useSelector((state) => state.user);
   const userId = loggedUser?.data?._id;
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,6 +39,13 @@ export default function MyReviews() {
     await deleteReview({ reviewId, data }).unwrap();
     Swal.fire("", "Review deleted successfully", "success");
   };
+
+   // Edit Review
+   const [editedReview, setEditedReview] = useState({});
+   const handleReviewEdit = (review) => {
+     setEditedReview(review);
+     setEditModal(true);
+   };
 
   return (
     <div>
@@ -77,18 +84,18 @@ export default function MyReviews() {
             </p>
 
             <div className="absolute top-3 right-3 flex items-center gap-1">
-              <button
-                //   onClick={() => setModal(!modal)}
-                className="text-neutral-content text-lg hover:text-primary duration-200"
-              >
-                <MdEdit />
-              </button>
+            <button
+                    onClick={() => handleReviewEdit(review)}
+                    className="text-lg text-neutral-content hover:text-primary duration-200 "
+                  >
+                    <MdEdit />
+                  </button>
 
-              <EditReviewModalForm
-                modal={modal}
-                setModal={setModal}
-                review={review}
-              />
+                  <ReviewEditForm
+                    editModal={editModal}
+                    setEditModal={setEditModal}
+                    review={editedReview}
+                  />
 
               <button
                 onClick={() => handleReviewDelete(review?._id)}

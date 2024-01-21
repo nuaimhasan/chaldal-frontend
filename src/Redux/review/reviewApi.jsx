@@ -46,11 +46,21 @@ export const reviewApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["review", "product"],
     }),
+
+    editReview: builder.mutation({
+      query: ({data,id}) => ({
+        url: `/review/update-review/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["review", "product"],
+    }),
   }),
 });
 
 export const {
   useAddReviewMutation,
+  useEditReviewMutation,
   useGetReviewsByProductIdQuery,
   useGetReviewsByUserIdQuery,
   useDeleteReviewMutation,
