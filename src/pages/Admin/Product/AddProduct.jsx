@@ -326,20 +326,26 @@ export default function AddProduct() {
   const subSubCategories = subCategory?.data?.subSubCategories;
 
   const [images, setImages] = useState([]);
+  const [title, setTitle] = useState("");
+  const [subSubCategoryId, setSubSubCategoryId] = useState("");
+  const [brand, setBrand] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [sellingPrice, setSellingPrice] = useState(0);
+  const [purchasePrice, setPurchasePrice] = useState(0);
+  const [quantity, setQuantity] = useState(0);
+  const [featured, setFeatured] = useState(false);
   const [details, setDetails] = useState("");
 
   const [variant, setVariant] = useState("no");
-
   const [variants, setVariants] = useState([]);
   const [colors, setColors] = useState([]);
-
   const [size, setSize] = useState("");
   const [sizes, setSizes] = useState([]);
 
   const [addProduct, { isLoading }] = useAddProductMutation();
 
   const handleAddSizes = () => {
-    if (event.key === "Shift" && size !== "") {
+    if (event.key === "Enter" && size !== "") {
       setSizes([...sizes, size]);
       setSize("");
     }
@@ -402,35 +408,37 @@ export default function AddProduct() {
     return result;
   };
 
+  // Add product
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
-    if (images?.length <= 0) {
+    if (images?.length <= 0)
       return Swal.fire("", "Image is required", "warning");
+    if (!title) return Swal.fire("", "Title is required", "warning");
+    if (!categoryId) return Swal.fire("", "Category is required", "warning");
+    if (!brand) return Swal.fire("", "Brand is required", "warning");
+    if (!details) return Swal.fire("", "Details is required", "warning");
+    if (variant == "yes" && variants?.length <= 0) {
+      return Swal.fire("", "Variants is required", "warning");
     }
-
-    if (details === "") {
-      return Swal.fire("", "Details is required", "warning");
+    if (variant == "no" && !sellingPrice) {
+      return Swal.fire("", "sellingPrice is required", "warning");
     }
-
-    const form = e.target;
-    const title = form.title.value;
-    const category = form.category.value;
-    const subCategory = form.sub_category.value;
-    const subSubCategory = form.sub_subCategory.value;
-    const brand = form.brand.value;
-    const discount = form.discount.value;
-    const sellingPrice = form.selling_price ? form.selling_price.value : "";
-    const purchasePrice = form.purchase_price ? form.purchase_price.value : "";
-    const quantity = form.quantity ? form.quantity.value : "";
+    if (variant == "no" && !purchasePrice) {
+      return Swal.fire("", "purchasePrice is required", "warning");
+    }
+    if (variant == "no" && !quantity) {
+      return Swal.fire("", "quantity is required", "warning");
+    }
 
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("category", category);
-    if (subCategory) formData.append("subCategory", subCategory);
-    if (subSubCategory) formData.append("subSubCategory", subSubCategory);
+    formData.append("category", categoryId);
+    if (subSubCategoryId) formData.append("subCategory", subSubCategoryId);
+    if (subSubCategoryId) formData.append("subSubCategory", subSubCategoryId);
     formData.append("brand", brand);
     formData.append("discount", discount);
+    formData.append("featured", featured);
     formData.append("description", details);
     formData.append("sellingPrice", sellingPrice);
     formData.append("purchasePrice", purchasePrice);
@@ -449,8 +457,18 @@ export default function AddProduct() {
 
     if (res?.data?.success) {
       Swal.fire("", "Product add success", "success");
-      form.reset();
       setImages([]);
+      setTitle("");
+      setCategoryId("");
+      setSubCategoryId("");
+      setSubSubCategoryId("");
+      setBrand("");
+      setDiscount("");
+      setSellingPrice("");
+      setPurchasePrice("");
+      setQuantity("");
+      setFeatured(false);
+      setVariants("");
       setDetails("");
       navigate("/admin/product/all-products");
     }
@@ -459,7 +477,7 @@ export default function AddProduct() {
   return (
     <div className="add_product  bg-base-100 rounded shadow p-4">
       <h3 className="text-lg text-neutral font-medium mb-4">Add Product</h3>
-      <form onSubmit={handleAddProduct} className="text-neutral-content">
+      <div className="text-neutral-content">
         <div className="mb-5 border rounded p-4">
           <p className="text-sm mb-2">Add Images (max 5 images select)</p>
           <ImageUploading
@@ -508,7 +526,12 @@ export default function AddProduct() {
           <div className="border rounded p-4  flex flex-col gap-3 mb-5">
             <div>
               <p className="text-sm">Product Title</p>
-              <input type="text" name="title" required />
+              <input
+                type="text"
+                name="title"
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
             </div>
 
             <div className="grid md:grid-cols-3 gap-4">
@@ -546,7 +569,10 @@ export default function AddProduct() {
 
               <div>
                 <p className="text-sm">Sub SubCategory</p>
-                <select name="sub_subCategory">
+                <select
+                  name="sub_subCategory"
+                  onChange={(e) => setSubSubCategoryId(e.target.value)}
+                >
                   <option value="">Select Sub SubCategory</option>
                   {subSubCategories?.length > 0 &&
                     subSubCategories?.map((subSubCategory) => (
@@ -564,12 +590,19 @@ export default function AddProduct() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm">Brand</p>
-                <input type="text" name="brand" />
+                <select name="brand" onChange={(e) => setBrand(e.target.value)}>
+                  <option value="">Select Brand</option>
+                  <option value="No Brand">No Brand</option>
+                </select>
               </div>
 
               <div>
                 <p className="text-sm">Discount %</p>
-                <input type="number" name="discount" />
+                <input
+                  type="number"
+                  name="discount"
+                  onChange={(e) => setDiscount(e.target.value)}
+                />
               </div>
             </div>
           </div>
@@ -621,15 +654,30 @@ export default function AddProduct() {
                 <div className="grid grid-cols-3 gap-4">
                   <div>
                     <p className="text-sm">Selling Price</p>
-                    <input type="number" name="selling_price" required />
+                    <input
+                      type="number"
+                      name="selling_price"
+                      required
+                      onChange={(e) => setSellingPrice(e.target.value)}
+                    />
                   </div>
                   <div>
                     <p className="text-sm">Purchase Price</p>
-                    <input type="number" name="purchase_price" required />
+                    <input
+                      type="number"
+                      name="purchase_price"
+                      required
+                      onChange={(e) => setPurchasePrice(e.target.value)}
+                    />
                   </div>
                   <div>
                     <p className="text-sm">Quantity</p>
-                    <input type="number" name="quantity" required />
+                    <input
+                      type="number"
+                      name="quantity"
+                      required
+                      onChange={(e) => setQuantity(e.target.value)}
+                    />
                   </div>
                 </div>
               )}
@@ -654,7 +702,7 @@ export default function AddProduct() {
                       <input
                         type="text"
                         name="size"
-                        placeholder="Press Shift and add size"
+                        placeholder="Press Enter and add size"
                         value={size}
                         onChange={(e) => setSize(e.target.value)}
                         onKeyDown={handleAddSizes}
@@ -815,6 +863,25 @@ export default function AddProduct() {
             </div>
           </div>
 
+          {/*  Featured */}
+          <div className="mt-6 border rounded p-4">
+            <p className="text-sm">Featured Product</p>
+            <div className="mt-2">
+              <div className="flex items-center gap-2">
+                <p>Status:</p>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input
+                    onChange={() => setFeatured(!featured)}
+                    type="checkbox"
+                    value={featured}
+                    class="sr-only peer"
+                  />
+                  <div class="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
           {/* Details */}
           <div className="mt-6 add_product_details border rounded p-4">
             <p className="text-sm">Description</p>
@@ -831,6 +898,7 @@ export default function AddProduct() {
           {/* Buttons */}
           <div className="mt-6 flex justify-end">
             <button
+              onClick={handleAddProduct}
               type="submit"
               disabled={isLoading && "disabled"}
               className="bg-primary text-base-100 px-10 py-2 rounded"
@@ -839,7 +907,7 @@ export default function AddProduct() {
             </button>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

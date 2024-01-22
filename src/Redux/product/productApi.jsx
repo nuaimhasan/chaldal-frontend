@@ -2,9 +2,11 @@ import { apiSlice } from "../api/apiSlice";
 
 export const productApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getFlashProducts: builder.query({
-      query: () => ({
-        url: "/product/flash-products",
+    getFeaturedProducts: builder.query({
+      query: (query) => ({
+        url: `/product/featured-products`,
+        method: "GET",
+        params: query,
       }),
       providesTags: ["product", "review"],
     }),
@@ -55,8 +57,8 @@ export const productApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetFlashProductsQuery,
   useGetAllProductsQuery,
+  useGetFeaturedProductsQuery,
   useGetProductByIdQuery,
   useGetProductBySlugQuery,
   useAddProductMutation,

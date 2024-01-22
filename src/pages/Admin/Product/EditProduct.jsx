@@ -35,7 +35,11 @@ export default function EditProduct() {
   const subSubCategories = subCategory?.data?.subSubCategories;
 
   const [images, setImages] = useState([]);
+  const [featured, setFeatured] = useState(null);
   const [details, setDetails] = useState("");
+  useEffect(() => {
+    if (product?.featured) setFeatured(product?.featured);
+  }, [product]);
 
   const [variants, setVariants] = useState([]);
 
@@ -91,6 +95,7 @@ export default function EditProduct() {
     if (subSubCategory) formData.append("subSubCategory", subSubCategory);
     formData.append("brand", brand);
     formData.append("discount", discount);
+    formData.append("featured", featured);
     formData.append(
       "description",
       details.length > 0 ? details : product?.description
@@ -391,6 +396,26 @@ export default function EditProduct() {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+
+            {/*  Featured */}
+            <div className="mt-6 border rounded p-4">
+              <p className="text-sm">Featured Product</p>
+              <div className="mt-2">
+                <div className="flex items-center gap-2">
+                  <p>Status:</p>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input
+                      onChange={() => setFeatured(!featured)}
+                      type="checkbox"
+                      value={featured}
+                      class="sr-only peer"
+                      checked={product?.featured && featured}
+                    />
+                    <div class="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  </label>
+                </div>
               </div>
             </div>
 

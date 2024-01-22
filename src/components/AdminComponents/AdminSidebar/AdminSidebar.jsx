@@ -61,12 +61,27 @@ const adminSidebarItems = [
     ],
   },
   {
+    icon: <VscPreview />,
+    title: "Review",
+    path: "/admin/reviews",
+  },
+  {
     icon: <FaUsers />,
     title: "Customer",
     subMenu: [
       {
         title: "All Customers",
         path: "/admin/customer/all-customers",
+      },
+    ],
+  },
+  {
+    icon: <RiAdminFill />,
+    title: "Administrator",
+    subMenu: [
+      {
+        title: "All Administrator",
+        path: "/admin/administrator/all-administrator",
       },
     ],
   },
@@ -93,21 +108,6 @@ const adminSidebarItems = [
       {
         title: "Contact Us",
         path: "/admin/front-end/contact-us",
-      },
-    ],
-  },
-  {
-    icon: <VscPreview />,
-    title: "Review",
-    path: "/admin/reviews",
-  },
-  {
-    icon: <RiAdminFill />,
-    title: "Administrator",
-    subMenu: [
-      {
-        title: "All Administrator",
-        path: "/admin/administrator/all-administrator",
       },
     ],
   },

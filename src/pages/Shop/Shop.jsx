@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Redux/product/productApi";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ProductCards from "../../components/Skeleton/ProductCards/ProductCards";
 import ShopCategories from "./ShopCategories/ShopCategories";
+import Pagination from "../../components/Pagination/Pagination";
 
 export default function Shop() {
   window.scroll(0, 0);
@@ -16,25 +15,17 @@ export default function Shop() {
   let subSubCategory = params?.subSubCategory ? params?.subSubCategory : "";
 
   const query = {};
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(8);
-
-  query["page"] = page;
-  query["limit"] = limit;
+  const [currentPage, setCurrentPage] = useState(1);
+  query["page"] = currentPage;
+  query["limit"] = 8;
   query["category"] = category;
   query["subCategory"] = subCategory;
   query["subSubCategory"] = subSubCategory;
-
   const { data, isLoading, isError, error } = useGetAllProductsQuery({
     ...query,
   });
 
-  const handlePageChange = (pageNumber) => {
-    if (pageNumber < 1) return;
-    if (data?.meta?.total && pageNumber > data?.meta.total / limit) return;
-
-    setPage(pageNumber);
-  };
+  console.log(data?.meta);
 
   let content = null;
   if (isLoading) {
@@ -51,8 +42,6 @@ export default function Shop() {
   if (!isLoading && !isError && data?.data?.length == 0) {
     content = <div className="text-red-500 p-4">No Product available</div>;
   }
-
-  console.log(category);
 
   return (
     <section className="py-5 bg-gray-50 min-h-[70vh]">
@@ -138,31 +127,11 @@ export default function Shop() {
               {content}
             </div>
 
-            {data?.data?.length > 10 && (
-              <div className="flex items-center justify-center mt-16">
-                <div className="flex items-center space-x-1 border border-gray-300 rounded overflow-hidden text-sm">
-                  <button
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                    onClick={() => handlePageChange(page - 1)}
-                    disabled={page === 1}
-                  >
-                    <FaArrowLeft />
-                  </button>
-                  <button className="px-4 py-2 bg-gray-700 text-gray-100 font-medium focus:outline-none">
-                    {page}
-                  </button>
-                  <button
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800 focus:outline-none"
-                    onClick={() => handlePageChange(page + 1)}
-                    disabled={
-                      data?.meta?.total && page === data?.meta.total / limit
-                    }
-                  >
-                    <FaArrowRight />
-                  </button>
-                </div>
-              </div>
-            )}
+            <Pagination
+              pages={data?.meta?.pages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </div>
         </div>
       </div>

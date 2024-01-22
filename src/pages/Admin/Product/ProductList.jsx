@@ -14,7 +14,6 @@ import Spinner from "../../../components/Spinner/Spinner";
 export default function ProductList() {
   const query = {};
   const [page, setPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
   const [limit, setLimit] = useState(10);
 
   query["page"] = page;
@@ -23,9 +22,6 @@ export default function ProductList() {
   const { data, isLoading, isError, error } = useGetAllProductsQuery({
     ...query,
   });
-
-  // const products = data?.data;
-  // console.log(products);
 
   const [
     deleteProduct,
@@ -87,20 +83,36 @@ export default function ProductList() {
         </td>
         <td>{product?.category?.name}</td>
         <td>
-          {product?.subCategory ? (
-            product?.subCategory?.name
+          {product?.featured ? (
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                checked={product?.featured && product?.featured}
+                type="checkbox"
+                value={product?.featured}
+                class="sr-only peer"
+                disabled
+              />
+              <div class="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
           ) : (
-            <IoMdClose className="text-red-500" />
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                checked={product?.featured && product?.featured}
+                type="checkbox"
+                value={product?.featured}
+                class="sr-only peer"
+                disabled
+              />
+              <div class="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
           )}
         </td>
         <td>
-          {product?.subSubCategory ? (
-            product?.subSubCategory?.name
-          ) : (
-            <IoMdClose className="text-red-500" />
-          )}
+          $
+          {product?.variants?.length
+            ? product?.variants[0]?.sellingPrice
+            : product?.sellingPrice}
         </td>
-        <td>$100</td>
         <td>
           {product?.variants?.length > 0
             ? product?.variants?.reduce(
@@ -148,8 +160,7 @@ export default function ProductList() {
               <tr>
                 <th>Product name</th>
                 <th>Category</th>
-                <th>Sub Category</th>
-                <th>Sub SubCategory</th>
+                <th>Featured</th>
                 <th>Price</th>
                 <th>Total Stock</th>
                 <th>Action</th>

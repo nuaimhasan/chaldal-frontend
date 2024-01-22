@@ -1,7 +1,7 @@
 import CampaignBanner from "../../components/HomeComponents/CampaignBanner/CampaignBanner";
 import CategoryWaysProducts from "../../components/HomeComponents/CategoryWaysProducts/CategoryWaysProducts";
 import ChooseByCategory from "../../components/HomeComponents/ChooseByCategory/ChooseByCategory";
-import FlashSale from "../../components/HomeComponents/FlashSale/FlashSale";
+import FeaturedProducts from "../../components/HomeComponents/FeaturedProducts/FeaturedProducts";
 import Hero from "../../components/HomeComponents/Hero/Hero";
 import Menu from "../../components/HomeComponents/Menu/Menu";
 import PopularProducts from "../../components/HomeComponents/PopularProducts/PopularProducts";
@@ -13,11 +13,11 @@ export default function Home() {
     <>
       <Menu />
       <Hero />
-      <FlashSale />
+      <FeaturedProducts />
       <ChooseByCategory />
       <CampaignBanner />
       <PopularProducts />
-      <CategoryWaysProducts/>
+      <CategoryWaysProducts />
       <Services />
     </>
   );
