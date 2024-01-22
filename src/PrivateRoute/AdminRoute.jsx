@@ -21,6 +21,10 @@ const AdminRoute = ({ children }) => {
     return children;
   }
 
+  if (!loggedUser?.success || !token) {
+    return <Spinner />;
+  }
+
   return <Spinner></Spinner>;
 };
 

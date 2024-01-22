@@ -25,8 +25,6 @@ export default function Shop() {
     ...query,
   });
 
-  console.log(data?.meta);
-
   let content = null;
   if (isLoading) {
     content = <ProductCards />;

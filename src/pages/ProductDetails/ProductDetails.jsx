@@ -6,12 +6,13 @@ import ProductInfo from "./ProductInfo";
 import RightSideInfo from "./RightSideInfo";
 import { useEffect, useState } from "react";
 import Reviews from "./Review/Reviews";
+import RelatedProducts from "./RelatedProducts/RelatedProducts";
 
 export default function ProductDetails() {
-  useEffect(()=>{
+  useEffect(() => {
     window.scroll(0, 0);
-  },[]);
-  const [tab,setTab] = useState("description");
+  }, []);
+  const [tab, setTab] = useState("description");
   const params = useParams();
   let slug = params?.id;
   const { data, isLoading, isError, error, isSuccess } =
@@ -19,8 +20,6 @@ export default function ProductDetails() {
 
   const description = isSuccess ? data?.data?.description : "";
   const parcerDescription = parcer(description);
-
-
 
   let content = null;
   if (isLoading) {
@@ -72,12 +71,11 @@ export default function ProductDetails() {
             {tab === "reviews" && <Reviews product={data?.data} />}
           </div>
         </div>
+
+        <RelatedProducts category={data?.data?.category} />
       </div>
     );
   }
-
-
-
 
   return (
     <section className="pb-8">

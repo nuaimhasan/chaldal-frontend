@@ -59,6 +59,9 @@ import EditBanner from "../pages/Admin/FrontEnd/Banner/EditBanner";
 import AllBrands from "../pages/Admin/Brand/AllBrands";
 import AddBrand from "../pages/Admin/Brand/AddBrand";
 import EditBrand from "../pages/Admin/Brand/EditBrand";
+import CouponLists from "../pages/Admin/EcommerceSetting/Coupon/CouponLists";
+import AddCoupon from "../pages/Admin/EcommerceSetting/Coupon/AddCoupon";
+import EditCoupon from "../pages/Admin/EcommerceSetting/Coupon/EditCoupon";
 
 export const routes = createBrowserRouter([
   {
@@ -300,6 +303,18 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/reviews",
         element: <AllReview />,
+      },
+      {
+        path: "/admin/ecommerce-setting/coupons",
+        element: <CouponLists />,
+      },
+      {
+        path: "/admin/ecommerce-setting/coupons/add-coupon",
+        element: <AddCoupon />,
+      },
+      {
+        path: "/admin/ecommerce-setting/coupons/edit-coupon/:id",
+        element: <EditCoupon />,
       },
     ],
   },

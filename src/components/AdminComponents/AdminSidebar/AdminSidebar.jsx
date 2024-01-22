@@ -3,6 +3,7 @@ import {
   MdOutlineCategory,
   MdOutlineDashboard,
   MdMonitor,
+  MdOutlineSettings,
 } from "react-icons/md";
 import { SiBrandfolder } from "react-icons/si";
 import { RiAdminFill } from "react-icons/ri";
@@ -88,6 +89,16 @@ const adminSidebarItems = [
       {
         title: "All Administrator",
         path: "/admin/administrator/all-administrator",
+      },
+    ],
+  },
+  {
+    icon: <MdOutlineSettings />,
+    title: "E-commerce Setting",
+    subMenu: [
+      {
+        title: "Coupon",
+        path: "/admin/ecommerce-setting/coupons",
       },
     ],
   },
