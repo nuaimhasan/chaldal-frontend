@@ -4,6 +4,7 @@ import "swiper/css";
 import { Autoplay, Navigation } from "swiper/modules";
 import { useGetBannersQuery } from "../../../Redux/banner/bannerApi";
 import Banner from "../../Skeleton/Banner/Banner";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   const { data, isLoading, isError } = useGetBannersQuery();
@@ -16,11 +17,13 @@ export default function Hero() {
   if (!isLoading && !isError) {
     content = data?.data?.map((banner) => (
       <SwiperSlide key={banner._id}>
-        <img
-          src={`${import.meta.env.VITE_BACKEND_URL}/banner/${banner?.image}`}
-          alt=""
-          className="w-full h-full rounded"
-        />
+        <Link to={banner?.link}>
+          <img
+            src={`${import.meta.env.VITE_BACKEND_URL}/banner/${banner?.image}`}
+            alt=""
+            className="w-full h-full rounded"
+          />
+        </Link>
       </SwiperSlide>
     ));
   }

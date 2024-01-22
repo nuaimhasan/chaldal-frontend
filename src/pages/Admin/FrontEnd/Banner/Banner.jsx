@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
-
+import { MdDelete, MdEdit } from "react-icons/md";
 import Spinner from "../../../../components/Spinner/Spinner";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
-import { useDeleteBannerMutation, useGetBannersQuery } from "../../../../Redux/banner/bannerApi";
+import {
+  useDeleteBannerMutation,
+  useGetBannersQuery,
+} from "../../../../Redux/banner/bannerApi";
 
 export default function Banner() {
   const { data, isLoading, isError } = useGetBannersQuery();
@@ -46,15 +49,16 @@ export default function Banner() {
           <table className="dashboard_table">
             <thead>
               <tr>
-                <th>SL</th>
+                <th>Order</th>
                 <th>Banner Image</th>
+                <th>Link</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {data?.data?.map((banner, i) => (
                 <tr key={banner?._id}>
-                  <td>{i + 1}</td>
+                  <td>{banner?.order}</td>
                   <td>
                     <div className="flex items-center gap-2">
                       <img
@@ -66,13 +70,22 @@ export default function Banner() {
                       />
                     </div>
                   </td>
+                  <td>{banner?.link}</td>
                   <td>
-                    <button
-                      onClick={() => handleDeleteBanner(banner?._id)}
-                      className="hover:text-red-500 duration-200"
-                    >
-                      Delete
-                    </button>
+                    <div className="flex items-center gap-2 text-lg">
+                      <Link
+                        to={`/admin/front-end/edit-banner/${banner?._id}`}
+                        className="hover:text-red-500 duration-200"
+                      >
+                        <MdEdit />
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteBanner(banner?._id)}
+                        className="hover:text-red-500 duration-200"
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

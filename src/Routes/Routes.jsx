@@ -55,6 +55,10 @@ import AddBanner from "../pages/Admin/FrontEnd/Banner/AddBanner";
 import CampaignBanners from "../pages/Admin/FrontEnd/CampaignBanners/CampaignBanners";
 import AddCampaignBanner from "../pages/Admin/FrontEnd/CampaignBanners/AddCampaignBanner";
 import EditCampaignBanner from "../pages/Admin/FrontEnd/CampaignBanners/EditCampaignBanner";
+import EditBanner from "../pages/Admin/FrontEnd/Banner/EditBanner";
+import AllBrands from "../pages/Admin/Brand/AllBrands";
+import AddBrand from "../pages/Admin/Brand/AddBrand";
+import EditBrand from "../pages/Admin/Brand/EditBrand";
 
 export const routes = createBrowserRouter([
   {
@@ -214,6 +218,18 @@ export const routes = createBrowserRouter([
         element: <EditSubSubCategory />,
       },
       {
+        path: "/admin/brands",
+        element: <AllBrands />,
+      },
+      {
+        path: "/admin/add-brand",
+        element: <AddBrand />,
+      },
+      {
+        path: "/admin/edit-brand/:id",
+        element: <EditBrand />,
+      },
+      {
         path: "/admin/product/all-products",
         element: <ProductList />,
       },
@@ -256,6 +272,10 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/front-end/add-banner",
         element: <AddBanner />,
+      },
+      {
+        path: "/admin/front-end/edit-banner/:id",
+        element: <EditBanner />,
       },
       {
         path: "/admin/front-end/campaign-banner",

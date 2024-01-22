@@ -13,6 +13,7 @@ import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 import { useNavigate } from "react-router-dom";
 import { useGetSubCategoryQuery } from "../../../Redux/subCategory/subCategoryApi";
+import { useAllBrandsQuery } from "../../../Redux/brand/brandApi";
 
 const options = [
   {
@@ -321,6 +322,7 @@ export default function AddProduct() {
   const { data: categories } = useGetCategoriesQuery();
   const { data: category } = useGetCategoryQuery(categoryId);
   const { data: subCategory } = useGetSubCategoryQuery(subCategoryId);
+  const { data: brands } = useAllBrandsQuery();
 
   const subCategories = category?.data?.subCategories;
   const subSubCategories = subCategory?.data?.subSubCategories;
@@ -593,6 +595,12 @@ export default function AddProduct() {
                 <select name="brand" onChange={(e) => setBrand(e.target.value)}>
                   <option value="">Select Brand</option>
                   <option value="No Brand">No Brand</option>
+                  {brands?.data?.length > 0 &&
+                    brands?.data?.map((brand) => (
+                      <option key={brand?._id} value={brand?.slug}>
+                        {brand?.name}
+                      </option>
+                    ))}
                 </select>
               </div>
 

@@ -24,6 +24,20 @@ export const bannerApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["banner"],
     }),
+    getBannerById: builder.query({
+      query: (id) => ({
+        url: `/banner/single/${id}`,
+      }),
+      providesTags: ["banner"],
+    }),
+    editBanner: builder.mutation({
+      query: ({ formData, id }) => ({
+        url: `/banner/edit/${id}`,
+        method: "PATCH",
+        body: formData,
+      }),
+      invalidatesTags: ["banner"],
+    }),
   }),
 });
 
@@ -31,4 +45,6 @@ export const {
   useAddBannerMutation,
   useGetBannersQuery,
   useDeleteBannerMutation,
+  useGetBannerByIdQuery,
+  useEditBannerMutation,
 } = bannerApi;

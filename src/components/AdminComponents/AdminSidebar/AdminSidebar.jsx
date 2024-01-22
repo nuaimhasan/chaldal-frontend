@@ -4,6 +4,7 @@ import {
   MdOutlineDashboard,
   MdMonitor,
 } from "react-icons/md";
+import { SiBrandfolder } from "react-icons/si";
 import { RiAdminFill } from "react-icons/ri";
 import { BsCart4 } from "react-icons/bs";
 import { FaUsers } from "react-icons/fa";
@@ -35,6 +36,11 @@ const adminSidebarItems = [
         path: "/admin/category/sub-sub-categories",
       },
     ],
+  },
+  {
+    icon: <SiBrandfolder />,
+    title: "Brand",
+    path: "/admin/brands",
   },
   {
     icon: <BsCart4 />,
