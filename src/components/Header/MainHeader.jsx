@@ -142,7 +142,8 @@ const MainHeader = () => {
                       </div>
                     </li>
 
-                    {loggedUser?.data?.role === "admin" && (
+                    {(loggedUser?.data?.role === "admin" ||
+                      loggedUser?.data?.role === "superAdmin") && (
                       <li>
                         <Link
                           to="/admin/dashboard"

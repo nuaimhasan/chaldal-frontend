@@ -1,42 +1,49 @@
 import { useState } from "react";
 import ImageUploading from "react-images-uploading";
 import { AiFillDelete } from "react-icons/ai";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEditCampaignBannerMutation, useGetCampaignBannerByIdQuery } from "../../../../Redux/campaignBanner/campaignBannerApi";
 import Swal from "sweetalert2";
+import { useAddCampaignBannerMutation } from "../../../../Redux/campaignBanner/campaignBannerApi";
+import { useNavigate } from "react-router-dom";
 
-export default function EditCampaignBanner() {
+export default function AddCampaignBanner() {
   const [images, setImages] = useState([]);
-  const { id } = useParams();
-  const { data } = useGetCampaignBannerByIdQuery(id);
-  const [editCampaignBanner] = useEditCampaignBannerMutation();
 
-  const navigate = useNavigate()
+  const [addBanner, { isLoading, isError, error }] =
+    useAddCampaignBannerMutation();
 
-  const handleEditCampaign = async (e) => {
+  const navigate = useNavigate();
+
+  const handleAddCampaign = async (e) => {
     e.preventDefault();
     const image = images[0]?.file;
-    const link = e.target.link.value;
-    const order = e.target.order.value;
+    if (!image) {
+      return Swal.fire("", "Image is required", "error");
+    }
+
+    const form = e.target;
+    const link = form.link.value;
+    const order = form.order.value;
 
     const formData = new FormData();
-    if (images?.length > 0) formData.append("image", image);
+    formData.append("image", image);
     formData.append("link", link);
     formData.append("order", order);
 
-    const res = await editCampaignBanner({formData,id});
-    if(res?.data?.success){
-      Swal.fire("","Update success", "success")
-      navigate("/admin/front-end/campaign-banner")
+    const res = await addBanner(formData);
+    if (res?.data?.success) {
+      Swal.fire("", "Banner add success", "success");
+      navigate("/admin/ecommerce-setting/campaign-banner");
+      setImages([]);
+      form.reset();
     }
   };
 
   return (
     <section className="md:w-[600px] bg-base-100 shadow rounded">
       <div className="p-4 border-b text-neutral font-medium">
-        <h3>Edit Campaign Banner</h3>
+        <h3>Add New Campaign Banner</h3>
       </div>
-      <form onSubmit={handleEditCampaign} className="p-4 flex flex-col gap-4">
+      <form onSubmit={handleAddCampaign} className="p-4 flex flex-col gap-4">
         <div>
           <ImageUploading
             value={images}
@@ -75,16 +82,6 @@ export default function EditCampaignBanner() {
               </div>
             )}
           </ImageUploading>
-
-          {data?.data?.image && (
-            <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/campaignBanner/${
-                data?.data?.image
-              }`}
-              alt=""
-              className="w-40 rounded mt-4"
-            />
-          )}
         </div>
 
         <div className="flex flex-col gap-1">
@@ -95,24 +92,30 @@ export default function EditCampaignBanner() {
             placeholder="Enter Link"
             className="w-full px-3 py-2 border rounded outline-none text-sm"
             required
-            defaultValue={data?.data?.link}
           />
         </div>
 
         <div className="flex flex-col gap-1">
           <p className="text-neutral-content">Order</p>
           <input
-            type="text"
+            type="number"
             name="order"
             placeholder="Enter Link"
             className="w-full px-3 py-2 border rounded outline-none text-sm"
             required
-            defaultValue={data?.data?.order}
           />
         </div>
 
+        {isError && (
+          <p className="text-xs text-red-500">
+            {error?.data?.error ? error?.data?.error : "Something went wrong"}
+          </p>
+        )}
+
         <div className="flex justify-end mt-6 border-t p-4">
-          <button className="primary_btn">Edit Campaign Banner</button>
+          <button disabled={isLoading && "disabled"} className="primary_btn">
+            {isLoading ? "Loading..." : "Add Campaign Banner"}
+          </button>
         </div>
       </form>
     </section>

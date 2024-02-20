@@ -107,7 +107,7 @@ export default function Login() {
               </div>
 
               {isError && (
-                <p className="text-sm text-red-500">{error?.data?.message}</p>
+                <p className="text-sm text-red-500">{error?.data?.error}</p>
               )}
 
               <div className="mt-2 flex justify-end">

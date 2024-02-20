@@ -5,11 +5,8 @@ import { useGetAllOrdersQuery } from "../../../Redux/order/orderApi";
 import { useGetAllProductsQuery } from "../../../Redux/product/productApi";
 import { useGetSubCategoriesQuery } from "../../../Redux/subCategory/subCategoryApi";
 import { useGetSubSubCategoriesQuery } from "../../../Redux/subSubCategory/subSubCategoryApi";
-import {
-  useAllAdministratorQuery,
-  useAllUsersQuery,
-} from "../../../Redux/user/userApi";
-
+import { useAllUsersQuery } from "../../../Redux/user/userApi";
+import { useGetAllAdminsQuery } from "../../../Redux/admin/adminApi";
 import { FaBoxOpen, FaUsers, FaUserShield, FaCartPlus } from "react-icons/fa";
 import { GrView } from "react-icons/gr";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -18,7 +15,7 @@ export default function Dashboard() {
   const { data: products } = useGetAllProductsQuery();
   const { data: orders } = useGetAllOrdersQuery();
   const { data: users } = useAllUsersQuery();
-  const { data: admin } = useAllAdministratorQuery();
+  const { data: admin } = useGetAllAdminsQuery();
   const { data: category } = useGetCategoriesQuery();
   const { data: subCategory } = useGetSubCategoriesQuery();
   const { data: subSubCategory } = useGetSubSubCategoriesQuery();

@@ -8,7 +8,7 @@ export default function EditePeofile() {
   window.scroll(0, 0);
   const { loggedUser } = useSelector((state) => state.user);
 
-  const { id, name, phone, email, city, district, street } = loggedUser?.data;
+  const { _id, name, phone, email, city, district, street } = loggedUser?.data;
   const [editUserInfo, { isLoading, isSuccess, isError }] =
     useEditUserInfoMutation();
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function EditePeofile() {
       street,
     };
 
-    editUserInfo({ id, userInfo });
+    await editUserInfo({ id: _id, userInfo });
   };
 
   useEffect(() => {

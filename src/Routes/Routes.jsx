@@ -17,51 +17,79 @@ import Profile from "../pages/Account/Profile/Profile";
 import Setting from "../pages/Account/Setting/Setting";
 import Wishlist from "../pages/Account/Wishlist/Wishlist";
 import Checkout from "../pages/Checkout/Checkout";
+import PaymentResult from "../pages/Checkout/PaymentResult";
 
-import AdminLayout from "../Layout/AdminLayout/AdminLayout";
-import Dashboard from "../pages/Admin/Dashboard/Dashboard";
-import AddProduct from "../pages/Admin/Product/AddProduct";
-import ProductList from "../pages/Admin/Product/ProductList";
-
-import AdminRoute from "../PrivateRoute/AdminRoute";
 import OrderDetailsPage from "../pages/Account/OrderDetails/OrderDetails";
-import About from "../pages/Admin/About/About";
-import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
-import Administrator from "../pages/Admin/Administrator/Administrator";
-
-import Contact from "../pages/Admin/Contact/Contact";
-import Logo from "../pages/Admin/Logo/Logo";
-import AllOrders from "../pages/Admin/Order/AllOrders";
-import OrderDetails from "../pages/Admin/Order/OrderDetails";
-import EditProduct from "../pages/Admin/Product/EditProduct";
-import AllUsers from "../pages/Admin/user/AllUsers";
-
 import MyReviews from "../pages/Account/Reviews/MyReviews";
+
+//------------------------Admin Layout
+import AdminLayout from "../Layout/AdminLayout/AdminLayout";
+import AdminRoute from "../PrivateRoute/AdminRoute";
+
+//---------------Dashboard
+import Dashboard from "../pages/Admin/Dashboard/Dashboard";
+
+//---------------Category
 import AddCategory from "../pages/Admin/Category/Categories/AddCategory";
 import AllCategories from "../pages/Admin/Category/Categories/AllCategories";
 import EditCategory from "../pages/Admin/Category/Categories/EditCategory";
+
 import AddSubCategory from "../pages/Admin/Category/SubCategories/AddSubCategory";
 import AllSubCategories from "../pages/Admin/Category/SubCategories/AllSubCategories";
 import EditSubCategory from "../pages/Admin/Category/SubCategories/EditSubCategory";
+
 import AddSubSubCategory from "../pages/Admin/Category/SubSubCategory/AddSubSubCategory";
 import AllSubSubCategory from "../pages/Admin/Category/SubSubCategory/AllSubSubCategory";
 import EditSubSubCategory from "../pages/Admin/Category/SubSubCategory/EditSubSubCategory";
-import PaymentResult from "../pages/Checkout/PaymentResult";
-import AllReview from "../pages/Admin/AllReview/AllReview";
 
-import Banner from "../pages/Admin/FrontEnd/Banner/Banner";
-import AddBanner from "../pages/Admin/FrontEnd/Banner/AddBanner";
-
-import CampaignBanners from "../pages/Admin/FrontEnd/CampaignBanners/CampaignBanners";
-import AddCampaignBanner from "../pages/Admin/FrontEnd/CampaignBanners/AddCampaignBanner";
-import EditCampaignBanner from "../pages/Admin/FrontEnd/CampaignBanners/EditCampaignBanner";
-import EditBanner from "../pages/Admin/FrontEnd/Banner/EditBanner";
+//---------------Brand
 import AllBrands from "../pages/Admin/Brand/AllBrands";
 import AddBrand from "../pages/Admin/Brand/AddBrand";
 import EditBrand from "../pages/Admin/Brand/EditBrand";
+
+//---------------Product
+import AddProduct from "../pages/Admin/Product/AddProduct";
+import ProductList from "../pages/Admin/Product/ProductList";
+import EditProduct from "../pages/Admin/Product/EditProduct";
+
+//---------------Order
+import AllOrders from "../pages/Admin/Order/AllOrders";
+import OrderDetails from "../pages/Admin/Order/OrderDetails";
+
+//---------------Review
+import AllReview from "../pages/Admin/AllReview/AllReview";
+
+//---------------User
+import AllUsers from "../pages/Admin/user/AllUsers";
+
+//---------------Administrator
+import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
+import Administrator from "../pages/Admin/Administrator/Administrator";
+
+//--------------ecommerce-setting
 import CouponLists from "../pages/Admin/EcommerceSetting/Coupon/CouponLists";
 import AddCoupon from "../pages/Admin/EcommerceSetting/Coupon/AddCoupon";
 import EditCoupon from "../pages/Admin/EcommerceSetting/Coupon/EditCoupon";
+
+import Banner from "../pages/Admin/EcommerceSetting/Banner/Banner";
+import AddBanner from "../pages/Admin/EcommerceSetting/Banner/AddBanner";
+import EditBanner from "../pages/Admin/EcommerceSetting/Banner/EditBanner";
+
+//-----------General Setting
+import AdminProfile from "../pages/Admin/GeneralSetting/AdminProfile/AdminProfile";
+import Themes from "../pages/Admin/GeneralSetting/Theme/Themes";
+import BusinessInfo from "../pages/Admin/GeneralSetting/BusinessInfo/BusinessInfo";
+
+import CampaignBanners from "../pages/Admin/EcommerceSetting/CampaignBanners/CampaignBanners";
+import AddCampaignBanner from "../pages/Admin/EcommerceSetting/CampaignBanners/AddCampaignBanner";
+import EditCampaignBanner from "../pages/Admin/EcommerceSetting/CampaignBanners/EditCampaignBanner";
+
+//--------------Front-End
+import About from "../pages/Admin/FrontEnd/About/About";
+import Contact from "../pages/Admin/FrontEnd/Contact/Contact";
+import Logo from "../pages/Admin/FrontEnd/Logo/Logo";
+import Favicon from "../pages/Admin/FrontEnd/Favicon/Favicon";
+import EditAdministrator from "../pages/Admin/Administrator/EditAdmin";
 
 export const routes = createBrowserRouter([
   {
@@ -256,42 +284,14 @@ export const routes = createBrowserRouter([
         path: "/admin/customer/all-customers",
         element: <AllUsers />,
       },
+
+      //--------------Review
       {
-        path: "/admin/front-end/logo",
-        element: <Logo />,
+        path: "/admin/reviews",
+        element: <AllReview />,
       },
-      {
-        path: "/admin/front-end/about-us",
-        element: <About />,
-      },
-      {
-        path: "/admin/front-end/contact-us",
-        element: <Contact />,
-      },
-      {
-        path: "/admin/front-end/banner",
-        element: <Banner />,
-      },
-      {
-        path: "/admin/front-end/add-banner",
-        element: <AddBanner />,
-      },
-      {
-        path: "/admin/front-end/edit-banner/:id",
-        element: <EditBanner />,
-      },
-      {
-        path: "/admin/front-end/campaign-banner",
-        element: <CampaignBanners />,
-      },
-      {
-        path: "/admin/front-end/add-campaign-banner",
-        element: <AddCampaignBanner />,
-      },
-      {
-        path: "/admin/front-end/edit-campaign-banner/:id",
-        element: <EditCampaignBanner />,
-      },
+
+      //--------------Administrator
       {
         path: "/admin/administrator/all-administrator",
         element: <Administrator />,
@@ -301,9 +301,11 @@ export const routes = createBrowserRouter([
         element: <AddAdministrator />,
       },
       {
-        path: "/admin/reviews",
-        element: <AllReview />,
+        path: "/admin/administrator/edit-administrator/:id",
+        element: <EditAdministrator />,
       },
+
+      //--------------ecommerce-setting
       {
         path: "/admin/ecommerce-setting/coupons",
         element: <CouponLists />,
@@ -315,6 +317,64 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/ecommerce-setting/coupons/edit-coupon/:id",
         element: <EditCoupon />,
+      },
+      //--Banner
+      {
+        path: "/admin/ecommerce-setting/banner",
+        element: <Banner />,
+      },
+      {
+        path: "/admin/ecommerce-setting/add-banner",
+        element: <AddBanner />,
+      },
+      {
+        path: "/admin/ecommerce-setting/edit-banner/:id",
+        element: <EditBanner />,
+      },
+      //--CampaignBanner
+      {
+        path: "/admin/ecommerce-setting/campaign-banner",
+        element: <CampaignBanners />,
+      },
+      {
+        path: "/admin/ecommerce-setting/add-campaign-banner",
+        element: <AddCampaignBanner />,
+      },
+      {
+        path: "/admin/ecommerce-setting/edit-campaign-banner/:id",
+        element: <EditCampaignBanner />,
+      },
+
+      //----------General Setting
+      {
+        path: "/admin/general-setting/profile",
+        element: <AdminProfile />,
+      },
+      {
+        path: "/admin/general-setting/business-info",
+        element: <BusinessInfo />,
+      },
+      {
+        path: "/admin/general-setting/themes",
+        element: <Themes />,
+      },
+
+      //--------------Front-End
+      {
+        path: "/admin/front-end/logo",
+        element: <Logo />,
+      },
+      {
+        path: "/admin/front-end/favicon",
+        element: <Favicon />,
+      },
+      {
+        path: "/admin/front-end/about-us",
+        element: <About />,
+      },
+      {
+        path: "/admin/front-end/contact-us",
+        element: <Contact />,
       },
     ],
   },

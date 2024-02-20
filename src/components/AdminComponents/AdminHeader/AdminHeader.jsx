@@ -1,10 +1,23 @@
+import { useEffect, useState } from "react";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { FaRegUserCircle } from "react-icons/fa";
+import { userLogout } from "../../../Redux/user/userSlice";
 
 export default function AdminHeader({ setSidebar }) {
+  const [dropdown, setDropdown] = useState(false);
   const { pathname } = useLocation();
   const { loggedUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.addEventListener("click", (e) => {
+      if (!e.target.closest(".d_btn")) {
+        setDropdown(false);
+      }
+    });
+  }, []);
 
   return (
     <header className="py-3 px-6 bg-base-100 text-neutral shadow">
@@ -24,21 +37,31 @@ export default function AdminHeader({ setSidebar }) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <img
-            src={
-              loggedUser?.data?.image === ""
-                ? "/images/demo_user.jpg"
-                : `${import.meta.env.VITE_BACKEND_URL}/user/${
-                    loggedUser?.data?.image
-                  }`
-            }
-            alt=""
-            className="w-8 h-8 rounded-full"
-          />
-          <p className="hidden sm:block">
-            {loggedUser?.data?.firstName} {loggedUser?.data?.lastName}
-          </p>
+        <div className="relative">
+          <button
+            onClick={() => setDropdown(!dropdown)}
+            className="d_btn flex items-center gap-1"
+          >
+            <FaRegUserCircle className="text-lg" />
+            {loggedUser?.data?.name}
+          </button>
+
+          {dropdown && (
+            <div className="absolute top-[140%] right-0 w-40 bg-base-100 rounded shadow p-2">
+              <Link
+                to="/admin/general-setting/profile"
+                className="block hover:bg-gray-100 w-full text-start px-2 py-1 rounded"
+              >
+                Profile
+              </Link>
+              <button
+                onClick={() => dispatch(userLogout())}
+                className="hover:bg-gray-100 text-red-500 w-full text-start px-2 py-1 rounded"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>

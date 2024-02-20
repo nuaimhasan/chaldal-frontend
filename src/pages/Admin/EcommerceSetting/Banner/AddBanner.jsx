@@ -34,7 +34,7 @@ export default function AddBanner() {
     if (isSuccess) {
       Swal.fire("", "banner add success", "success");
       setbanners([]);
-      navigate("/admin/front-end/banner");
+      navigate("/admin/ecommerce-setting/banner");
     }
     if (isError) {
       Swal.fire("", "something went wrong, please try again", "error");

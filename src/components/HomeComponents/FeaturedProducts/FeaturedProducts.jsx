@@ -5,7 +5,12 @@ import ProductCard from "../../ProductCard/ProductCard";
 import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
 export default function FeaturedProducts() {
-  const { data, isLoading, isError, error } = useGetFeaturedProductsQuery();
+  let query = {
+    limit: 5,
+  };
+
+  const { data, isLoading, isError, error } =
+    useGetFeaturedProductsQuery(query);
 
   let content = null;
   if (isLoading) {

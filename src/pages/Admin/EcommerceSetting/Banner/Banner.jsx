@@ -40,7 +40,7 @@ export default function Banner() {
     <section className="bg-base-100 shadow rounded">
       <div className="p-4 border-b text-neutral font-medium flex justify-between items-center">
         <h3>Banner Lists</h3>
-        <Link to="/admin/front-end/add-banner" className="primary_btn">
+        <Link to="/admin/ecommerce-setting/add-banner" className="primary_btn">
           Add Banner
         </Link>
       </div>
@@ -74,7 +74,7 @@ export default function Banner() {
                   <td>
                     <div className="flex items-center gap-2 text-lg">
                       <Link
-                        to={`/admin/front-end/edit-banner/${banner?._id}`}
+                        to={`/admin/ecommerce-setting/edit-banner/${banner?._id}`}
                         className="hover:text-red-500 duration-200"
                       >
                         <MdEdit />

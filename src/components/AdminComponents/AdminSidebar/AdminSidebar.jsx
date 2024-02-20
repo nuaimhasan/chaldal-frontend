@@ -13,6 +13,7 @@ import { BiSolidShoppingBags } from "react-icons/bi";
 import SidebarItems from "./SidebarItems";
 import { useGetMainLogoQuery } from "../../../Redux/logo/logoApi";
 import { VscPreview } from "react-icons/vsc";
+import { IoMdSettings } from "react-icons/io";
 
 const adminSidebarItems = [
   {
@@ -100,6 +101,33 @@ const adminSidebarItems = [
         title: "Coupon",
         path: "/admin/ecommerce-setting/coupons",
       },
+      {
+        title: "Banner",
+        path: "/admin/ecommerce-setting/banner",
+      },
+      {
+        title: "Campaign Banner",
+        path: "/admin/ecommerce-setting/campaign-banner",
+      },
+    ],
+  },
+  {
+    icon: <IoMdSettings />,
+    title: "General Setting",
+    slug: "general-setting",
+    subMenu: [
+      {
+        title: "Profile",
+        path: "/admin/general-setting/profile",
+      },
+      {
+        title: "Business Info",
+        path: "/admin/general-setting/business-info",
+      },
+      {
+        title: "Themes",
+        path: "/admin/general-setting/themes",
+      },
     ],
   },
   {
@@ -111,12 +139,8 @@ const adminSidebarItems = [
         path: "/admin/front-end/logo",
       },
       {
-        title: "Banner",
-        path: "/admin/front-end/banner",
-      },
-      {
-        title: "Campaign Banner",
-        path: "/admin/front-end/campaign-banner",
+        title: "Favicon",
+        path: "/admin/front-end/favicon",
       },
       {
         title: "About Us",
@@ -160,8 +184,12 @@ export default function AdminSidebar() {
 
       <div className="bg-[#445360] p-2 flex justify-between items-center font-light">
         <p>Visit Front-End</p>
-        <Link to="/" className="text-primary hover:underline">
-          Eshop
+        <Link
+          to="/"
+          target="_blank"
+          className="text-orange-400 hover:underline"
+        >
+          Attica-Furniture
         </Link>
       </div>
     </div>

@@ -1,49 +1,45 @@
 import { useState } from "react";
 import ImageUploading from "react-images-uploading";
 import { AiFillDelete } from "react-icons/ai";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useAddCampaignBannerMutation } from "../../../../Redux/campaignBanner/campaignBannerApi";
-import { useNavigate } from "react-router-dom";
+import {
+  useEditBannerMutation,
+  useGetBannerByIdQuery,
+} from "../../../../Redux/banner/bannerApi";
 
-export default function AddCampaignBanner() {
+export default function EditBanner() {
   const [images, setImages] = useState([]);
-
-  const [addBanner, { isLoading, isError, error }] =
-    useAddCampaignBannerMutation();
+  const { id } = useParams();
+  const { data } = useGetBannerByIdQuery(id);
+  const [editCampaignBanner] = useEditBannerMutation();
 
   const navigate = useNavigate();
 
-  const handleAddCampaign = async (e) => {
+  const handleEditCampaign = async (e) => {
     e.preventDefault();
     const image = images[0]?.file;
-    if (!image) {
-      return Swal.fire("", "Image is required", "error");
-    }
-
-    const form = e.target;
-    const link = form.link.value;
-    const order = form.order.value;
+    const link = e.target.link.value;
+    const order = e.target.order.value;
 
     const formData = new FormData();
-    formData.append("image", image);
+    if (images?.length > 0) formData.append("image", image);
     formData.append("link", link);
     formData.append("order", order);
 
-    const res = await addBanner(formData);
+    const res = await editCampaignBanner({ formData, id });
     if (res?.data?.success) {
-      Swal.fire("", "Banner add success", "success");
-      navigate("/admin/front-end/campaign-banner");
-      setImages([]);
-      form.reset();
+      Swal.fire("", "Banner update success", "success");
+      navigate("/admin/ecommerce-setting/banner");
     }
   };
 
   return (
     <section className="md:w-[600px] bg-base-100 shadow rounded">
       <div className="p-4 border-b text-neutral font-medium">
-        <h3>Add New Campaign Banner</h3>
+        <h3>Edit Campaign Banner</h3>
       </div>
-      <form onSubmit={handleAddCampaign} className="p-4 flex flex-col gap-4">
+      <form onSubmit={handleEditCampaign} className="p-4 flex flex-col gap-4">
         <div>
           <ImageUploading
             value={images}
@@ -82,6 +78,16 @@ export default function AddCampaignBanner() {
               </div>
             )}
           </ImageUploading>
+
+          {data?.data?.image && (
+            <img
+              src={`${import.meta.env.VITE_BACKEND_URL}/banner/${
+                data?.data?.image
+              }`}
+              alt=""
+              className="w-40 rounded mt-4"
+            />
+          )}
         </div>
 
         <div className="flex flex-col gap-1">
@@ -92,30 +98,24 @@ export default function AddCampaignBanner() {
             placeholder="Enter Link"
             className="w-full px-3 py-2 border rounded outline-none text-sm"
             required
+            defaultValue={data?.data?.link}
           />
         </div>
 
         <div className="flex flex-col gap-1">
           <p className="text-neutral-content">Order</p>
           <input
-            type="number"
+            type="text"
             name="order"
             placeholder="Enter Link"
             className="w-full px-3 py-2 border rounded outline-none text-sm"
             required
+            defaultValue={data?.data?.order}
           />
         </div>
 
-        {isError && (
-          <p className="text-xs text-red-500">
-            {error?.data?.error ? error?.data?.error : "Something went wrong"}
-          </p>
-        )}
-
         <div className="flex justify-end mt-6 border-t p-4">
-          <button disabled={isLoading && "disabled"} className="primary_btn">
-            {isLoading ? "Loading..." : "Add Campaign Banner"}
-          </button>
+          <button className="primary_btn">Edit Campaign Banner</button>
         </div>
       </form>
     </section>

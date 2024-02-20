@@ -5,19 +5,24 @@ import { Link } from "react-router-dom";
 import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
 import { useGetContactQuery } from "../../Redux/contact/contactApi";
 import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
+import { useGetBusinessInfoQuery } from "../../Redux/businessInfoApi/businessInfoApi";
 
 export default function Footer() {
   const { data, isLoading } = useGetCategoriesQuery();
   const { data: contact, isLoading: contactLoading } = useGetContactQuery();
   const { data: logo, isLoading: logoLoading } = useGetMainLogoQuery();
 
-  const fiveCategories = data?.data.slice(0,6)
+  const fiveCategories = data?.data.slice(0, 5);
+
+  const { data: business } = useGetBusinessInfoQuery();
+  const businessInfo = business?.data[0];
+
+  let yearNow = new Date().getFullYear();
+  const startYear = businessInfo?.companyStartYear;
 
   if (isLoading || contactLoading || logoLoading) {
     return null;
   }
-
-
 
   return (
     <footer className="pt-8 pb-4 bg-gray-50">
@@ -40,14 +45,11 @@ export default function Footer() {
               </Link>
             </div>
             <p className="text-neutral-content mt-1 font-medium">
-              Your trusted online shop
+              {businessInfo?.tagline}
             </p>
 
             <div className="mt-2 text-sm text-neutral-content">
-              <p>
-                We offer a variety of fashionable & branded sportswear,polo
-                shirt,t-shirt at a very reasonable price.
-              </p>
+              <p>{businessInfo?.bio}</p>
             </div>
           </div>
 
@@ -103,14 +105,14 @@ export default function Footer() {
               Get in Touch
             </h2>
             <ul className="text-neutral-content text-[15px]">
-              <li className="mb-1">
-                <p className="italic">{contact?.data[0]?.address}</p>
-              </li>
-              <li className="mb-1">
+              <li>
                 <p>{contact?.data[0]?.phone}</p>
               </li>
-              <li>
+              <li className="my-1">
                 <p>{contact?.data[0]?.email}</p>
+              </li>
+              <li>
+                <p className="italic">{contact?.data[0]?.address}</p>
               </li>
             </ul>
           </div>
@@ -119,7 +121,11 @@ export default function Footer() {
         <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700" />
 
         <div>
-          <img src="/images/sslcommerz-banner.png" alt="" className="md:w-full md:h-[130px]" />
+          <img
+            src="/images/sslcommerz-banner.png"
+            alt=""
+            className="md:w-full md:h-[130px]"
+          />
         </div>
 
         <hr className="my-4 border-gray-200 sm:mx-auto dark:border-gray-700" />
@@ -127,14 +133,15 @@ export default function Footer() {
         {/* bottom */}
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-[15px] text-neutral-content">
-            © 2024{" "}
-            <a
-              to="https://www.facebook.com/eManagerbd.xyz"
+            Copyright© {yearNow != startYear && startYear + " -"} {yearNow}{" "}
+            {businessInfo?.companyName}. All Rights Reserved. develop by{" "}
+            <Link
+              to="https://emanagerit.com"
+              target="_blank"
               className="hover:underline"
             >
-              eshop
-            </a>
-            . All Rights Reserved.
+              eManager
+            </Link>
           </span>
           <ul className="flex items-center gap-2 text-neutral-content mt-3 sm:mt-0">
             <li>

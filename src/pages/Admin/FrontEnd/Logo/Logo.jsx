@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 import Swal from "sweetalert2";
-import Spinner from "../../../components/Spinner/Spinner";
+import Spinner from "../../../../components/Spinner/Spinner";
 
 import {
   useAddLogoMutation,
   useGetMainLogoQuery,
   useUpdateMainLogoMutation,
-} from "../../../Redux/logo/logoApi";
+} from "../../../../Redux/logo/logoApi";
 
 export default function Logo() {
   const [logos, setLogos] = useState([]);
@@ -29,7 +29,6 @@ export default function Logo() {
 
   const handleUpdateAddMainLogo = async () => {
     const logo = logos[0]?.file;
-
     if (!logo) {
       return Swal.fire("", "Logo is required", "error");
     }
@@ -37,7 +36,7 @@ export default function Logo() {
     let formData = new FormData();
     formData.append("logo", logo);
 
-    if (data?.data?.length > 0 && data?.data[0]?.logo) {
+    if (data?.data?.length > 0) {
       await updateMainLogo({ id, formData });
     } else {
       await addLogo(formData);
@@ -57,6 +56,7 @@ export default function Logo() {
     // Add
     if (isSuccess) {
       Swal.fire("", "Logo successfully added", "success");
+      setLogos([]);
     }
     if (isError) {
       Swal.fire("", "Something went wrong when uploading", "error");

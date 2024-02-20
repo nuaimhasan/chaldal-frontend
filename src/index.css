@@ -1,5 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Itim&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+:root {
+  --primary: #ba2f3e;
+  --secondary: #bf5d4d;
+  --accent: #031a2f;
+  --neutral: #3d3d3f;
+  --neutralContent: #636363;
+  --base100: #fff;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,7 +33,7 @@ h2 {
 }
 
 .active {
-  color: #f47c20;
+  color: var(--primary);
 }
 
 .shadow {
@@ -35,16 +44,17 @@ h2 {
 }
 
 .primary_btn {
-  background: #f47c20;
-  color: #fff;
+  background: var(--primary);
+  color: var(--base100);
   padding: 7px 20px;
   border-radius: 4px;
-  border: 1px solid #f47c20;
+  border: 1px solid var(--primary);
   font-size: 15px;
   transition: all 0.3s ease;
 }
+
 .primary_btn:hover {
-  color: #f47c20;
+  color: var(--primary);
   background: transparent;
 }
 
@@ -108,7 +118,7 @@ h2 {
     width: 300px;
     height: 110vh;
     z-index: 9999;
-    background: #fff;
+    background: var(--base100);
     box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
 
     transition: all 0.3s ease;
@@ -131,7 +141,7 @@ h2 {
 /* ---------------Shop page -------------------*/
 .shop_categories {
   width: 300px;
-  background: #fff;
+  background: var(--base100);
   border-radius: 5px;
   padding: 6px;
   position: sticky;
@@ -141,7 +151,7 @@ h2 {
 
 .shop_products {
   width: calc(100% - 300px);
-  background: #fff;
+  background: var(--base100);
   border-radius: 5px;
   padding: 6px;
 }
@@ -157,7 +167,7 @@ h2 {
 }
 .shop_categories ul li a:hover {
   background: #dddddd32;
-  color: #f47c20;
+  color: var(--primary);
 }
 
 @media only screen and (max-width: 768px) {
@@ -170,14 +180,14 @@ h2 {
 .account_sidebar {
   width: 300px;
   min-height: 70vh;
-  background: #fff;
+  background: var(--base100);
   box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
   padding: 10px;
   border-radius: 5px;
 }
 .account_content {
   width: calc(100% - 300px);
-  background: #fff;
+  background: var(--base100);
   box-shadow: 3px -2px 20px 0px #0000000c, 0px 4px 20px 0px #0000000c;
   padding: 10px;
   border-radius: 5px;
@@ -191,7 +201,7 @@ h2 {
     left: 0;
     transform: translateX(-100%);
     z-index: 9999;
-    background: #fff;
+    background: var(--base100);
     transition: all 0.3s ease;
   }
 
@@ -294,7 +304,7 @@ table tbody td {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #fff;
+  background: var(--base100);
   border-radius: 10px;
   z-index: 9999;
 
@@ -344,7 +354,7 @@ table tbody td {
 .category_sub_dropdown {
   min-width: 250px;
   max-width: max-content;
-  background: #fff;
+  background: var(--base100);
 
   position: absolute;
   top: 0;
@@ -395,9 +405,9 @@ table tbody td {
 }
 
 .pagination-container button.active {
-  background: #f47c20;
-  color: #fff;
-  border-color: 1px solid #f47c20;
+  background: var(--primary);
+  color: var(--base100);
+  border-color: 1px solid var(--primary);
 }
 
 @media only screen and (max-width: 640px) {

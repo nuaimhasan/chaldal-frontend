@@ -21,7 +21,7 @@ export const logoApi = apiSlice.injectEndpoints({
       query: (formData) => ({
         url: "/logo/add-logo",
         method: "POST",
-        data: formData,
+        body: formData,
       }),
       invalidatesTags: ["mainLogo"],
     }),

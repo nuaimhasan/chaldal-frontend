@@ -7,17 +7,20 @@ const AdminRoute = ({ children }) => {
   const { loggedUser } = useSelector((state) => state.user);
   const location = useLocation();
   const token = localStorage.getItem("eshop_jwt");
+  let admin =
+    loggedUser?.data?.role === "admin" ||
+    loggedUser?.data?.role === "superAdmin";
 
   if (!loggedUser?.success && !token) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (loggedUser?.success && loggedUser?.data?.role !== "admin") {
-    Swal.fire("", "you can't access this page", "error");
+  if (!loggedUser?.success && !admin) {
+    Swal.fire("", "You can't access this page", "error");
     return <Navigate to="/login" replace />;
   }
 
-  if (loggedUser?.success && loggedUser?.data?.role === "admin") {
+  if (loggedUser?.success && admin) {
     return children;
   }
 

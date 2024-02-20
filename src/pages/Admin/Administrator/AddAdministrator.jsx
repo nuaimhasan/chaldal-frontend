@@ -1,21 +1,21 @@
-import { useAddAdministratorMutation } from "../../../Redux/user/userApi";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useAddAdminMutation } from "../../../Redux/admin/adminApi";
 
 export default function AddAdministrator() {
-  const [addAdministrator, { isLoading, isError, error, isSuccess }] =
-    useAddAdministratorMutation();
+  const [addAdmin, { isLoading, isError, error, isSuccess }] =
+    useAddAdminMutation();
   const navigate = useNavigate();
 
-  const handleAdd = (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const phone = form.phone.value;
     const password = form.password.value;
-    const role = "admin";
+    const role = form.role.value;
     const info = {
       name,
       role,
@@ -24,7 +24,8 @@ export default function AddAdministrator() {
       password,
     };
 
-    addAdministrator(info);
+    const res = await addAdmin(info);
+    console.log(res);
   };
 
   useEffect(() => {
@@ -60,6 +61,19 @@ export default function AddAdministrator() {
             <div>
               <p className="text-neutral-content text-sm">Phone</p>
               <input type="text" name="phone" required />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <p className="text-neutral-content text-sm">Role</p>
+              <select name="role">
+                <option value="user">User</option>
+                <option value="admin" selected>
+                  Admin
+                </option>
+                <option value="superAdmin">Super Admin</option>
+              </select>
             </div>
           </div>
 

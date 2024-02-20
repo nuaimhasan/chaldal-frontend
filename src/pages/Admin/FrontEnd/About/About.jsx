@@ -7,8 +7,8 @@ import {
   useCreateAboutMutation,
   useGetAboutQuery,
   useUpdateAboutMutation,
-} from "../../../Redux/about/aboutApi";
-import Spinner from "../../../components/Spinner/Spinner";
+} from "../../../../Redux/about/aboutApi";
+import Spinner from "../../../../components/Spinner/Spinner";
 
 export default function About() {
   const editor = useRef(null);
@@ -34,7 +34,8 @@ export default function About() {
     e.preventDefault();
 
     const image = images[0]?.file;
-    const description = details?.length > 0 ? details : data?.data[0]?.description;
+    const description =
+      details?.length > 0 ? details : data?.data[0]?.description;
     const title = e.target.title.value;
     const subtitle = e.target.subtitle.value;
 

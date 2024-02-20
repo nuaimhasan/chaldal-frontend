@@ -15,7 +15,7 @@ export default function CampaignBanners() {
     const isConfirm = window.confirm("are you sure delete this banner?");
     if (isConfirm) {
       await deleteCampaignBanner(id);
-      Swal.fire("","Delete success", "success")
+      Swal.fire("", "Delete success", "success");
     }
   };
 
@@ -27,7 +27,10 @@ export default function CampaignBanners() {
     <section className="bg-base-100 shadow rounded">
       <div className="p-4 border-b text-neutral font-medium flex justify-between items-center">
         <h3>Campaign Banner Lists</h3>
-        <Link to="/admin/front-end/add-campaign-banner" className="primary_btn">
+        <Link
+          to="/admin/ecommerce-setting/add-campaign-banner"
+          className="primary_btn"
+        >
           Add Campaign Banner
         </Link>
       </div>
@@ -62,7 +65,7 @@ export default function CampaignBanners() {
                     <td>
                       <div className="flex items-center gap-2 text-lg">
                         <Link
-                          to={`/admin/front-end/edit-campaign-banner/${banner?._id}`}
+                          to={`/admin/ecommerce-setting/edit-campaign-banner/${banner?._id}`}
                           className="hover:text-red-500 duration-200"
                         >
                           <MdEdit />

@@ -1,24 +1,30 @@
 import { useEffect } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
-import {
-  useAllAdministratorQuery,
-  useDeleteAdministratorMutation,
-} from "../../../Redux/user/userApi";
 import Spinner from "../../../components/Spinner/Spinner";
+import {
+  useDeleteAdminMutation,
+  useGetAllAdminsQuery,
+} from "../../../Redux/admin/adminApi";
+import { useSelector } from "react-redux";
 
 export default function Administrator() {
-  const { data, isLoading, isError, error } = useAllAdministratorQuery();
-  const [
-    deleteAdministrator,
-    { isSuccess, isError: deleteIsError, error: deleteError },
-  ] = useDeleteAdministratorMutation();
+  const { data, isLoading, isError, error } = useGetAllAdminsQuery();
+  const { loggedUser } = useSelector((state) => state.user);
+  const role = loggedUser?.data?.role;
 
-  const handleDlete = (id) => {
+  const [
+    deleteAdmin,
+    { isSuccess, isError: deleteIsError, error: deleteError },
+  ] = useDeleteAdminMutation();
+
+  const handleDlete = async (id) => {
     const isConfirm = window.confirm("Are you sure delete Administrator");
     if (isConfirm) {
-      deleteAdministrator(id);
+      const res = await deleteAdmin(id);
+      console.log(res);
     }
   };
 
@@ -55,9 +61,16 @@ export default function Administrator() {
         <td>{user?.phone}</td>
         <td>{user?.role}</td>
         <td>
-          <button onClick={() => handleDlete(user?.id)}>
-            <AiOutlineDelete className="text-lg hover:text-red-500" />
-          </button>
+          <div className="flex items-center gap-2">
+            {role === "superAdmin" && (
+              <Link to={`/admin/administrator/edit-administrator/${user?._id}`}>
+                <FaEdit className="text-[17px] text-gray-700 hover:text-green-500 duration-200" />
+              </Link>
+            )}
+            <button onClick={() => handleDlete(user?._id)}>
+              <AiOutlineDelete className="text-lg hover:text-red-500" />
+            </button>
+          </div>
         </td>
       </tr>
     ));

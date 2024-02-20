@@ -2,19 +2,17 @@ import { useState } from "react";
 import ImageUploading from "react-images-uploading";
 import { AiFillDelete } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
-import Swal from "sweetalert2";
 import {
-  useEditBannerMutation,
-  useGetBannerByIdQuery,
-} from "../../../../Redux/banner/bannerApi";
+  useEditCampaignBannerMutation,
+  useGetCampaignBannerByIdQuery,
+} from "../../../../Redux/campaignBanner/campaignBannerApi";
+import Swal from "sweetalert2";
 
-export default function EditBanner() {
+export default function EditCampaignBanner() {
   const [images, setImages] = useState([]);
   const { id } = useParams();
-  const { data } = useGetBannerByIdQuery(id);
-  const [editCampaignBanner] = useEditBannerMutation();
-
-  console.log(data);
+  const { data } = useGetCampaignBannerByIdQuery(id);
+  const [editCampaignBanner] = useEditCampaignBannerMutation();
 
   const navigate = useNavigate();
 
@@ -31,8 +29,8 @@ export default function EditBanner() {
 
     const res = await editCampaignBanner({ formData, id });
     if (res?.data?.success) {
-      Swal.fire("", "Banner update success", "success");
-      navigate("/admin/front-end/banner");
+      Swal.fire("", "Update success", "success");
+      navigate("/admin/ecommerce-setting/campaign-banner");
     }
   };
 
@@ -83,7 +81,7 @@ export default function EditBanner() {
 
           {data?.data?.image && (
             <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/banner/${
+              src={`${import.meta.env.VITE_BACKEND_URL}/campaignBanner/${
                 data?.data?.image
               }`}
               alt=""

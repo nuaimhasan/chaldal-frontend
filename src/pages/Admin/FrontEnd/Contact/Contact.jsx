@@ -4,8 +4,8 @@ import {
   useAddContactMutation,
   useGetContactQuery,
   useUpdateContactMutation,
-} from "../../../Redux/contact/contactApi";
-import Spinner from "../../../components/Spinner/Spinner";
+} from "../../../../Redux/contact/contactApi";
+import Spinner from "../../../../components/Spinner/Spinner";
 
 export default function Contact() {
   const { data, isLoading, isError, error } = useGetContactQuery();
@@ -54,8 +54,7 @@ export default function Contact() {
     };
 
     if (id) {
-       await updateContact({ id, contactInfo });
-     
+      await updateContact({ id, contactInfo });
     } else {
       await addContact(contactInfo);
     }
