@@ -4,6 +4,7 @@ import ChooseByCategory from "../../components/HomeComponents/ChooseByCategory/C
 import FeaturedProducts from "../../components/HomeComponents/FeaturedProducts/FeaturedProducts";
 import Hero from "../../components/HomeComponents/Hero/Hero";
 import Menu from "../../components/HomeComponents/Menu/Menu";
+import MobileCategories from "../../components/HomeComponents/MobileCategories/MobileCategories";
 import PopularProducts from "../../components/HomeComponents/PopularProducts/PopularProducts";
 import Services from "../../components/HomeComponents/Services/Services";
 
@@ -13,6 +14,7 @@ export default function Home() {
     <>
       <Menu />
       <Hero />
+      <MobileCategories />
       <FeaturedProducts />
       <ChooseByCategory />
       <CampaignBanner />

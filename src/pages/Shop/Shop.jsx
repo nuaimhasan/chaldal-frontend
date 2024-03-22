@@ -2,9 +2,9 @@ import { useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../Redux/product/productApi";
+import MobileCategoriesSidebar from "../../components/MobileCategoriesSidebar/MobileCategoriesSidebar";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import ProductCards from "../../components/Skeleton/ProductCards/ProductCards";
-import ShopCategories from "./ShopCategories/ShopCategories";
 import Pagination from "../../components/Pagination/Pagination";
 
 export default function Shop() {
@@ -111,14 +111,21 @@ export default function Shop() {
                 <li>
                   <MdKeyboardArrowRight />
                 </li>
-                <li>{subCategory}</li>
+                <li>{subCategory.split("_")[0]}</li>
               </>
             )
           )}
         </ul>
 
         <div className="md:flex gap-4 mt-4">
-          <ShopCategories />
+          <div className="shop_categories h-full">
+            <h3 className="font-medium pb-1 border-b text-neutral">
+              Categories
+            </h3>
+            <div className="mt-2 text-[15px]">
+              <MobileCategoriesSidebar />
+            </div>
+          </div>
 
           <div className="shop_products min-h-[70vh]">
             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">

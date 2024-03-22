@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Itim&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 :root {
-  --primary: #ba2f3e;
+  --primary: #d57507;
   --secondary: #bf5d4d;
   --accent: #031a2f;
   --neutral: #3d3d3f;
@@ -158,13 +158,14 @@ h2 {
 
 .shop_categories ul li a {
   color: #404145e4;
-  padding: 6px 10px;
+
   display: flex;
   align-items: center;
   gap: 8px;
 
   transition: all 0.3s ease;
 }
+
 .shop_categories ul li a:hover {
   background: #dddddd32;
   color: var(--primary);
@@ -347,6 +348,31 @@ table tbody td {
 .css-wmy1p7-ReactDropdownSelect:hover,
 .css-wmy1p7-ReactDropdownSelect:focus-within {
   border-color: #ddd !important;
+}
+
+/* -----------Mobile dropdown---------------- */
+.mobile_categories::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile_dropdown,
+.mobile_sub_dropdown {
+  max-height: 0px;
+  overflow: hidden;
+
+  transition: all 0.3s ease;
+}
+
+.mobile_dropdown li {
+  padding-left: 40px;
+}
+
+.mobile_sub_dropdown li {
+  padding-left: 10px;
+}
+
+.dropdown_active {
+  max-height: max-content;
 }
 
 /*------------- Category Dropdown -----------*/

@@ -27,14 +27,16 @@ const ChooseByCategory = () => {
             alt=""
             className="w-14 h-14 mx-auto"
           />
-          <h6 className="mt-2 font-medium text-sm md:text-base">{category?.name}</h6>
+          <h6 className="mt-2 font-medium text-sm md:text-base">
+            {category?.name}
+          </h6>
         </div>
       </Link>
     ));
   }
 
   return (
-    <div className="mt-6">
+    <div className="mt-6 hidden md:block">
       <div className="container">
         <div className="sm:flex gap-8 items-center border-b pb-2 border-primary">
           <h1 className="md:text-xl font-medium md:font-semibold text-neutral">

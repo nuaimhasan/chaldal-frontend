@@ -36,7 +36,7 @@ export default function Hero() {
             <CategoryLists />
           </div>
 
-          <div className="hero_slider h-40 md:h-[400px] mt-2 lg:mt-0">
+          <div className="hero_slider h-36 sm:h-52 lg:h-[400px] mt-2 lg:mt-0">
             <Swiper
               navigation={true}
               modules={[Navigation, Autoplay]}

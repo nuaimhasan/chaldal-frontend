@@ -2,6 +2,7 @@ import { useState } from "react";
 import SearchBox from "./SearchBox";
 import { NavLink } from "react-router-dom";
 import CategoryLists from "../CategoryLists/CategoryLists";
+import MobileCategoriesSidebar from "../MobileCategoriesSidebar/MobileCategoriesSidebar";
 
 export default function MobileMenuSidebar({ mobileMenu, setMobileMenu }) {
   const [tab, setTab] = useState(1);
@@ -11,7 +12,7 @@ export default function MobileMenuSidebar({ mobileMenu, setMobileMenu }) {
         onClick={() => setMobileMenu(false)}
         className={`overlay ${mobileMenu && "overlay_show"}`}
       ></button>
-      <div className={`menu_wrap ${mobileMenu && "menu_wrap_show"}`}>
+      <div className={`menu_wrap ${mobileMenu && "menu_wrap_show"} text-sm`}>
         <div className="m-2">
           <SearchBox />
         </div>
@@ -46,11 +47,7 @@ export default function MobileMenuSidebar({ mobileMenu, setMobileMenu }) {
             </ul>
           )}
 
-          {tab === 2 && (
-            <ul>
-              <CategoryLists />
-            </ul>
-          )}
+          {tab === 2 && <MobileCategoriesSidebar />}
         </div>
       </div>
     </div>

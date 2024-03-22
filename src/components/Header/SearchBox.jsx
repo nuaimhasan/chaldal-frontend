@@ -39,7 +39,7 @@ export default function SearchBox() {
         placeholder="search Product..."
         className="searchInput border w-full px-3 py-1.5 outline-none"
       />
-      <div className="searchIcon px-3 text-lg text-base-100 bg-primary flex justify-center items-center rounded-r">
+      <div className="searchIcon px-3 md:text-lg text-base-100 bg-primary flex justify-center items-center rounded-r">
         <BsSearch />
       </div>
 
@@ -63,9 +63,9 @@ export default function SearchBox() {
                       product?.images[0]
                     }`}
                     alt=""
-                    className="w-12"
+                    className="w-10 h-10 sm:w-12 sm:h-12"
                   />
-                  <h6>{product?.title}</h6>
+                  <h6 className="text-sm sm:text-base">{product?.title}</h6>
                 </Link>
               </li>
             ))}

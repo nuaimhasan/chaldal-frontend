@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BiLogOutCircle } from "react-icons/bi";
 import { FiHeart, FiLogIn, FiMonitor } from "react-icons/fi";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
@@ -10,11 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
 import { userLogout } from "../../Redux/user/userSlice";
-import MobileMenuSidebar from "./MobileMenuSidebar";
 import SearchBox from "./SearchBox";
 
-const MainHeader = () => {
-  const [mobileMenu, setMobileMenu] = useState(false);
+export default function MainHeader() {
   const dispatch = useDispatch();
   const carts = useSelector((state) => state.cart.carts);
   const { loggedUser } = useSelector((state) => state.user);
@@ -32,19 +29,11 @@ const MainHeader = () => {
     });
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("click", (e) => {
-      if (e.target.closest(".menu_wrap ul li a")) {
-        setMobileMenu(false);
-      }
-    });
-  }, []);
-
   return (
-    <div className="py-2 text-neutral border-b sticky top-0 z-40 bg-[#ffffffcc] backdrop-blur-[10px]">
+    <header className="py-2 text-neutral border-b sticky top-0 z-40 bg-[#ffffffcc] backdrop-blur-[10px]">
       <div className="container">
         <div className="flex items-center justify-between gap-2">
-          <div>
+          <div className="hidden sm:block">
             <Link to="/">
               <img
                 src={
@@ -60,25 +49,25 @@ const MainHeader = () => {
             </Link>
           </div>
 
-          <div className="hidden lg:block w-1/2 xl:w-3/5">
+          <div className="block w-full sm:w-1/2 xl:w-3/5">
             <SearchBox />
           </div>
 
-          <div className="flex gap-4 lg:gap-6 items-center">
+          <div className="hidden sm:flex gap-3 lg:gap-6 items-center">
             <Link
               to="/account/wishlist"
-              className="hidden sm:flex gap-1 items-center text-neutral hover:text-primary duration-300"
+              className="flex gap-1 items-center text-neutral hover:text-primary duration-300"
             >
-              <FiHeart className="text-lg sm:text-[17px]" />
-              <h1 className="font-medium hidden sm:block">wishlist</h1>
+              <FiHeart className="text-xl lg:text-[17px]" />
+              <h1 className="font-medium hidden lg:block">wishlist</h1>
             </Link>
 
             <Link
               to="/cart"
-              className="flex sm:gap-3 items-center hover:text-primary duration-300"
+              className="flex gap-2 lg:gap-3 items-center hover:text-primary duration-300"
             >
               <div className="relative">
-                <RiShoppingCartLine className="text-2xl" />
+                <RiShoppingCartLine className="text-xl lg:text-2xl" />
                 <div className="absolute flex items-center justify-center w-4 h-4 text-xs font-bold bg-primary text-base-100 rounded-full -top-2 -right-2">
                   <span className="mt-px">{carts?.length || 0}</span>
                 </div>
@@ -206,25 +195,9 @@ const MainHeader = () => {
                 <h1 className="font-medium hidden sm:block">Login</h1>
               </Link>
             )}
-
-            <div className="lg:hidden">
-              <button
-                onClick={() => setMobileMenu(true)}
-                className="text-2xl text-neutral mt-1.5"
-              >
-                <HiOutlineMenuAlt3 />
-              </button>
-            </div>
           </div>
         </div>
       </div>
-
-      <MobileMenuSidebar
-        mobileMenu={mobileMenu}
-        setMobileMenu={setMobileMenu}
-      />
-    </div>
+    </header>
   );
-};
-
-export default MainHeader;
+}
