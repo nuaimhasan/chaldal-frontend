@@ -91,6 +91,10 @@ import Logo from "../pages/Admin/FrontEnd/Logo/Logo";
 import Favicon from "../pages/Admin/FrontEnd/Favicon/Favicon";
 import EditAdministrator from "../pages/Admin/Administrator/EditAdmin";
 
+//--------------Flash Deal
+import FlashDealList from "../pages/Admin/FlashDeal/FlashDealList";
+import AddFlashDeal from "../pages/Admin/FlashDeal/AddFlashDeal";
+
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -283,6 +287,16 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/customer/all-customers",
         element: <AllUsers />,
+      },
+
+      //--------------Flash Deal
+      {
+        path: "/admin/flash-deal/add",
+        element: <AddFlashDeal />,
+      },
+      {
+        path: "/admin/flash-deal",
+        element: <FlashDealList />,
       },
 
       //--------------Review

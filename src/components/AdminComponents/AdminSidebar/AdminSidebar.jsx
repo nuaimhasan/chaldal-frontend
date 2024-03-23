@@ -14,6 +14,7 @@ import SidebarItems from "./SidebarItems";
 import { useGetMainLogoQuery } from "../../../Redux/logo/logoApi";
 import { VscPreview } from "react-icons/vsc";
 import { IoMdSettings } from "react-icons/io";
+import { MdFlashOn } from "react-icons/md";
 import { useGetBusinessInfoQuery } from "../../../Redux/businessInfoApi/businessInfoApi";
 
 const adminSidebarItems = [
@@ -70,6 +71,11 @@ const adminSidebarItems = [
     ],
   },
   {
+    icon: <MdFlashOn />,
+    title: "Flash Deal",
+    path: "/admin/flash-deal",
+  },
+  {
     icon: <VscPreview />,
     title: "Review",
     path: "/admin/reviews",
@@ -96,19 +102,25 @@ const adminSidebarItems = [
   },
   {
     icon: <MdOutlineSettings />,
-    title: "E-commerce Setting",
+    title: "Banner",
     subMenu: [
       {
-        title: "Coupon",
-        path: "/admin/ecommerce-setting/coupons",
-      },
-      {
-        title: "Banner",
+        title: "Main Banner",
         path: "/admin/ecommerce-setting/banner",
       },
       {
         title: "Campaign Banner",
         path: "/admin/ecommerce-setting/campaign-banner",
+      },
+    ],
+  },
+  {
+    icon: <MdOutlineSettings />,
+    title: "E-commerce Setting",
+    subMenu: [
+      {
+        title: "Coupon",
+        path: "/admin/ecommerce-setting/coupons",
       },
     ],
   },
