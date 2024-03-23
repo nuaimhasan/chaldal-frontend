@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import AccountSidebar from "../components/AccountSidebar/AccountSidebar";
@@ -12,6 +12,8 @@ export default function AccountLayout() {
   pathnameArray.shift();
   const join = pathnameArray.join(" - ");
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     window.addEventListener("click", (e) => {
       if (
@@ -23,6 +25,12 @@ export default function AccountLayout() {
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (location?.pathname === "/account") {
+      navigate("/account/profile");
+    }
+  }, [location?.pathname, navigate]);
 
   return (
     <>

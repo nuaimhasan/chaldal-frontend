@@ -10,6 +10,7 @@ import {
   useInitSslPaymentMutation,
 } from "../../Redux/order/orderApi";
 import ButtonSpinner from "../../components/ButtonSpinner/ButtonSpinner";
+import { useApplyCouponMutation } from "../../Redux/coupon/couponApi";
 
 export default function Checkout() {
   window.scroll(0, 0);
@@ -21,6 +22,8 @@ export default function Checkout() {
   const [initSslPayment, { isLoading: sslPaymentLoading }] =
     useInitSslPaymentMutation();
 
+  const [applyCoupon, { isLoading: couponLoading }] = useApplyCouponMutation();
+
   const { loggedUser } = useSelector((state) => state.user);
   const [cityDropdown, setCityDropdown] = useState(false);
   const [city, setCity] = useState("");
@@ -31,8 +34,9 @@ export default function Checkout() {
   const [area, setArea] = useState("");
   const [searchArea, setSearchArea] = useState("");
 
-  const [vCode, setVCode] = useState("");
+  const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [couponError, setCouponError] = useState("");
 
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
@@ -48,13 +52,6 @@ export default function Checkout() {
     setArea(selectedArea.name);
     setAreaDropdown(false);
     setSearchArea("");
-  };
-
-  const handelDiscount = () => {
-    if (vCode == "eshop2024") {
-      setDiscount(10);
-      setVCode("");
-    }
   };
 
   // Remove City Dropdown click other side
@@ -155,6 +152,25 @@ export default function Checkout() {
         window.location.href = res?.data?.data;
         // window.location.replace(res?.data?.data);
       }
+    }
+  };
+
+  const handelDiscount = async () => {
+    const couponInfo = {
+      coupon: couponCode,
+      totalShopping: subTotal,
+    };
+    const res = await applyCoupon(couponInfo);
+    if (res?.error) {
+      setCouponError(res?.error?.data?.error);
+    } else {
+      setCouponError("");
+    }
+
+    if (res?.data?.success) {
+      setDiscount(res?.data?.data?.discount);
+      toast.success("Coupon add success");
+      setCouponCode("");
     }
   };
 
@@ -333,20 +349,22 @@ export default function Checkout() {
                   </small>
                   <div className="flex items-center gap-px">
                     <input
-                      onChange={(e) => setVCode(e.target.value)}
+                      onChange={(e) => setCouponCode(e.target.value)}
                       type="text"
                       className="text-sm border rounded outline-none w-full px-3 py-[7px]"
                       placeholder="Enter Code"
-                      value={vCode}
+                      value={couponCode}
                     />
                     <div
                       onClick={handelDiscount}
                       className="primary_btn cursor-pointer"
                       style={{ fontSize: "13px" }}
+                      disabled={couponLoading && "disabled"}
                     >
-                      Apply
+                      {couponLoading ? "Loading..." : "Apply"}
                     </div>
                   </div>
+                  <p className="text-red-500 text-xs">{couponError}</p>
                 </div>
               </div>
 
@@ -468,7 +486,9 @@ export default function Checkout() {
                       {city !== "" &&
                         (city === "Dhaka City"
                           ? "(inside Dhaka)"
-                          : city === "Dhaka Out City" ? "(Dhaka Out City)" : "(outside Dhaka)")}
+                          : city === "Dhaka Out City"
+                          ? "(Dhaka Out City)"
+                          : "(outside Dhaka)")}
                     </small>
                   </h3>
                   <div className="text-end">

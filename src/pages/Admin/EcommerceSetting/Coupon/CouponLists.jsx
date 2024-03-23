@@ -3,6 +3,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import {
   useDeleteCouponMutation,
   useGetCouponsQuery,
+  useUpdateStatusMutation,
 } from "../../../../Redux/coupon/couponApi";
 import Spinner from "../../../../components/Spinner/Spinner";
 import Swal from "sweetalert2";
@@ -10,14 +11,31 @@ import Swal from "sweetalert2";
 export default function CouponLists() {
   const { data, isLoading } = useGetCouponsQuery();
   const [deleteCoupon] = useDeleteCouponMutation();
+  const [updateStatus] = useUpdateStatusMutation();
 
   const handleDeleteCoupon = async (id) => {
     const isConfirm = window.confirm("Are you sure delete this coupon?");
     if (isConfirm) {
       const res = await deleteCoupon(id);
-
-      console.log(res);
       Swal.fire("", "Delete success", "success");
+    }
+  };
+
+  const handleUpdateStatus = async (coupon) => {
+    const id = coupon?._id;
+    const status = {
+      status: !coupon?.status,
+    };
+
+    const isConfirm = window.confirm("Are you sure update this coupon status?");
+    if (isConfirm) {
+      const res = await updateStatus({ id, status });
+
+      if (res?.data?.success) {
+        Swal.fire("", "Update success", "success");
+      } else {
+        Swal.fire("", "Something went wrong", "error");
+      }
     }
   };
 
@@ -47,6 +65,7 @@ export default function CouponLists() {
                 <th>Minimum Ammount</th>
                 <th>Start Date-Time</th>
                 <th>End Date-Time</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -56,13 +75,22 @@ export default function CouponLists() {
                   <tr key={coupon?._id}>
                     <td>{i + 1}</td>
                     <td>{coupon?.code}</td>
-                    <td>{coupon?.discount}</td>
+                    <td>{coupon?.discount}%</td>
                     <td>{coupon?.minimumShopping}tk</td>
                     <td>
                       {coupon?.startDate}-{coupon?.startTime}
                     </td>
                     <td>
                       {coupon?.endDate}-{coupon?.endTime}
+                    </td>
+                    <td>
+                      <button onClick={() => handleUpdateStatus(coupon)}>
+                        <input
+                          type="checkbox"
+                          name=""
+                          checked={coupon?.status}
+                        />
+                      </button>
                     </td>
                     <td>
                       <div className="flex items-center gap-2 text-lg">

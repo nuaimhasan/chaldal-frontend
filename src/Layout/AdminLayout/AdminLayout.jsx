@@ -17,6 +17,7 @@ export default function AdminLayout() {
       }
     });
   }, []);
+
   return (
     <section className="flex">
       <aside className={`admin_sidebar ${sidebar && "admin_sidebar_show"}`}>

@@ -15,9 +15,9 @@ const AdminRoute = ({ children }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (!loggedUser?.success && !admin) {
+  if (!admin) {
     Swal.fire("", "You can't access this page", "error");
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (loggedUser?.success && admin) {

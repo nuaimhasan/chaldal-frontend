@@ -9,13 +9,13 @@ export default function ReviewEditForm({ editModal, setEditModal, review }) {
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0);
 
-  useEffect(()=>{
-    if(review?.rating){
-      setCurrentValue(review?.rating)
+  useEffect(() => {
+    if (review?.rating) {
+      setCurrentValue(review?.rating);
     }
-  },[review?.rating])
+  }, [review?.rating]);
 
-  const [editReview,{isLoading}] = useEditReviewMutation()
+  const [editReview, { isLoading }] = useEditReviewMutation();
 
   const handleEditReview = async (e) => {
     e.preventDefault();
@@ -27,10 +27,10 @@ export default function ReviewEditForm({ editModal, setEditModal, review }) {
       user: review?.user?._id,
       product: review?.product,
     };
-    const res = await editReview({data,id}).unwrap();
-    if(res?.success){
+    const res = await editReview({ data, id }).unwrap();
+    if (res?.success) {
       setEditModal(false);
-      Swal.fire("","Edit Success", "success")
+      Swal.fire("", "Edit Success", "success");
     }
   };
 
@@ -41,20 +41,22 @@ export default function ReviewEditForm({ editModal, setEditModal, review }) {
         className={`modal_overlay ${editModal && "modal_overlay_show"}`}
       ></button>
       <form
-      onSubmit={handleEditReview}
-        className={`modal w-[95%] sm:w-[500px] p-4 ${editModal && "modal_show"}`}
+        onSubmit={handleEditReview}
+        className={`modal w-[95%] sm:w-[500px] p-4 ${
+          editModal && "modal_show"
+        }`}
       >
         <div className="flex justify-between items-start">
           <div>
             <p>Product name</p>
             <p className="text-neutral-content text-sm">Rate this product</p>
           </div>
-          <button
+          <div
             onClick={() => setEditModal(false)}
-            className="text-neutral-content hover:text-primary duration-200 text-lg"
+            className="text-neutral-content hover:text-primary duration-200 text-lg cursor-pointer"
           >
             <IoClose />
-          </button>
+          </div>
         </div>
 
         <div className="mt-4">
@@ -94,9 +96,7 @@ export default function ReviewEditForm({ editModal, setEditModal, review }) {
             className="bg-primary text-base-100 px-4 py-1 rounded"
             disabled={isLoading && "disabled"}
           >
-            {
-              isLoading ? "Loading..." : "Edit"
-            }
+            {isLoading ? "Loading..." : "Edit"}
           </button>
         </div>
       </form>

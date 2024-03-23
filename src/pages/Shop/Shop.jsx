@@ -118,7 +118,7 @@ export default function Shop() {
         </ul>
 
         <div className="md:flex gap-4 mt-4">
-          <div className="shop_categories h-full">
+          <div className="hidden md:block shop_categories h-full">
             <h3 className="font-medium pb-1 border-b text-neutral">
               Categories
             </h3>

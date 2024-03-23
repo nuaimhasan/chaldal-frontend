@@ -1,32 +1,31 @@
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { useGetFlashProductsQuery } from "../../../Redux/product/productApi";
-import ProductCard from "../../ProductCard/ProductCard";
-import ProductCards from "../../Skeleton/ProductCards/ProductCards";
+// import { useGetFlashProductsQuery } from "../../../Redux/product/productApi";
+// import ProductCard from "../../ProductCard/ProductCard";
+// import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
-const FlashSale = () => {
-  const { data, isLoading, isError, error } = useGetFlashProductsQuery();
+export default function FlashSale() {
+  // const { data, isLoading, isError, error } = useGetFlashProductsQuery();
 
-
-  let content = null;
-  if (isLoading) {
-    content = <ProductCards />;
-  }
-  if (!isLoading && isError) {
-    content = <p>{error.error}</p>;
-  }
-  if (!isLoading && !isError && data?.data?.length > 0) {
-    content = data?.data?.map((product) => (
-      <ProductCard key={product?._id} product={product} />
-    ));
-  }
+  // let content = null;
+  // if (isLoading) {
+  //   content = <ProductCards />;
+  // }
+  // if (!isLoading && isError) {
+  //   content = <p>{error.error}</p>;
+  // }
+  // if (!isLoading && !isError && data?.data?.length > 0) {
+  //   content = data?.data?.map((product) => (
+  //     <ProductCard key={product?._id} product={product} />
+  //   ));
+  // }
 
   return (
     <div className="mt-4">
       <div className="container bg-base-100 p-4 rounded-lg shadow-lg">
         <div className="flex justify-between sm:items-center border-b pb-2 border-primary">
           <h1 className="md:text-xl font-medium md:font-semibold text-neutral">
-            Featured Products
+            Flash Sales
           </h1>
 
           <div>
@@ -41,11 +40,9 @@ const FlashSale = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-2">
-          {content}
+          {/* {content} */}
         </div>
       </div>
     </div>
   );
-};
-
-export default FlashSale;
+}

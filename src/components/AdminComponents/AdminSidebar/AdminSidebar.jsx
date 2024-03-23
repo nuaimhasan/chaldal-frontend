@@ -14,6 +14,7 @@ import SidebarItems from "./SidebarItems";
 import { useGetMainLogoQuery } from "../../../Redux/logo/logoApi";
 import { VscPreview } from "react-icons/vsc";
 import { IoMdSettings } from "react-icons/io";
+import { useGetBusinessInfoQuery } from "../../../Redux/businessInfoApi/businessInfoApi";
 
 const adminSidebarItems = [
   {
@@ -156,6 +157,8 @@ const adminSidebarItems = [
 
 export default function AdminSidebar() {
   const { data } = useGetMainLogoQuery();
+  const { data: businessInfo } = useGetBusinessInfoQuery();
+
   return (
     <div className="h-full flex flex-col justify-between">
       <div>
@@ -184,12 +187,8 @@ export default function AdminSidebar() {
 
       <div className="bg-[#445360] p-2 flex justify-between items-center font-light">
         <p>Visit Front-End</p>
-        <Link
-          to="/"
-          target="_blank"
-          className="text-orange-400 hover:underline"
-        >
-          Attica-Furniture
+        <Link to="/" target="_blank" className="text-primary hover:underline">
+          {businessInfo?.data[0]?.companyName}
         </Link>
       </div>
     </div>

@@ -1,8 +1,6 @@
 import { apiSlice } from "../api/apiSlice";
 
 export const couponApi = apiSlice.injectEndpoints({
-  tagTypes: ["contact"],
-
   endpoints: (builder) => ({
     addCoupon: builder.mutation({
       query: (coupon) => ({
@@ -10,34 +8,56 @@ export const couponApi = apiSlice.injectEndpoints({
         method: "POST",
         body: coupon,
       }),
-      invalidatesTags: ["contact"],
+      invalidatesTags: ["coupon"],
     }),
+
     getCoupons: builder.query({
       query: () => ({
         url: "/coupon/all",
       }),
-      providesTags: ["contact"],
+      providesTags: ["coupon"],
     }),
+
     getCouponById: builder.query({
       query: (id) => ({
         url: `/coupon/single/${id}`,
       }),
-      providesTags: ["contact"],
+      providesTags: ["coupon"],
     }),
+
     deleteCoupon: builder.mutation({
       query: (id) => ({
         url: `/coupon/delete/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["contact"],
+      invalidatesTags: ["coupon"],
     }),
+
     editCoupon: builder.mutation({
       query: ({ id, coupon }) => ({
         url: `/coupon/edit/${id}`,
         method: "PATCH",
         body: coupon,
       }),
-      invalidatesTags: ["contact"],
+      invalidatesTags: ["coupon"],
+    }),
+
+    applyCoupon: builder.mutation({
+      query: (couponInfo) => ({
+        url: "/coupon/apply",
+        method: "POST",
+        body: couponInfo,
+      }),
+      invalidatesTags: ["coupon"],
+    }),
+
+    updateStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/coupon/update/status/${id}`,
+        method: "PUT",
+        body: status,
+      }),
+      invalidatesTags: ["coupon"],
     }),
   }),
 });
@@ -48,4 +68,6 @@ export const {
   useDeleteCouponMutation,
   useGetCouponByIdQuery,
   useEditCouponMutation,
+  useApplyCouponMutation,
+  useUpdateStatusMutation,
 } = couponApi;

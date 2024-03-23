@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { FaOpencart } from "react-icons/fa";
 import { FiHeart, FiMinusCircle, FiPlusCircle } from "react-icons/fi";
+import { IoBagCheckOutline } from "react-icons/io5";
+import { MdAddCall } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { addToCart } from "../../Redux/cart/cartSlice";
-import { addToWishlist, removeFromWishlist } from "../../Redux/wishlist/wishlistSlice";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../Redux/wishlist/wishlistSlice";
 
-const ProductInfo = ({ product }) => {
+export default function ProductInfo({ product }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const carts = useSelector((state) => state.cart.carts);
@@ -41,15 +46,12 @@ const ProductInfo = ({ product }) => {
   const [availableStock, setAvailableStock] = useState(totakStock);
   const [selectedPrice, setSelectedPrice] = useState(price);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-  // eslint-disable-next-line no-unused-vars
   const [selectedVariant, setSelectedVariant] = useState({});
 
   const [colors, setColors] = useState([]);
   const sizes = [
     ...new Set(variants?.map((size) => size.size !== undefined && size.size)),
   ];
-
-  // console.log(sizes[0]);
 
   useEffect(() => {
     const uniqueSet = new Set();
@@ -194,11 +196,14 @@ const ProductInfo = ({ product }) => {
   };
   const isWishlist = wishlists?.find((item) => item._id === product._id);
 
+  // const img = `${import.meta.env.VITE_BACKEND_URL}/products/${showImage}`;
+
   return (
     <div className="lg:flex gap-6">
       {/* Image */}
       <div className="lg:w-[42%]">
         <div className="relative">
+          {/* <img src={img} alt="" className="w-full h-[350px] rounded" /> */}
           <img
             src={`${import.meta.env.VITE_BACKEND_URL}/products/${showImage}`}
             alt=""
@@ -283,7 +288,7 @@ const ProductInfo = ({ product }) => {
           </div>
         </div>
 
-        {colors?.length && (
+        {colors?.length > 0 && (
           <div className="flex gap-4 items-center my-4">
             <p>Color :</p>
 
@@ -305,7 +310,7 @@ const ProductInfo = ({ product }) => {
         )}
 
         {/* Sizes */}
-        {sizes?.length && sizes[0] && (
+        {sizes?.length > 0 && sizes[0] && (
           <div className="flex gap-4 items-center my-4">
             <p>Size :</p>
 
@@ -351,25 +356,32 @@ const ProductInfo = ({ product }) => {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-3 items-center mt-6">
+        <div className="flex gap-2 items-center mt-6">
           <button
             onClick={handleBuyNow}
-            className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded scale-[.97] hover:scale-[1] duration-300"
+            className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded scale-[.97] hover:scale-[1] duration-300 flex items-center justify-center gap-1"
           >
+            <IoBagCheckOutline />
             Buy Now
           </button>
 
           <button
             onClick={handelAddToCart}
-            className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
+            className="w-40 bg-accent text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
           >
             <FaOpencart />
             Add To Card
           </button>
+
+          <Link
+            to=""
+            className="w-40 bg-secondary text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
+          >
+            <MdAddCall />
+            Call Now
+          </Link>
         </div>
       </div>
     </div>
   );
-};
-
-export default ProductInfo;
+}

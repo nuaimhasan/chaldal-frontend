@@ -7,7 +7,7 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
   const token = localStorage.getItem("eshop_jwt");
 
-  if (!loggedUser?.success && !token) {
+  if (!loggedUser?.success || loggedUser == "undefined" || !token) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

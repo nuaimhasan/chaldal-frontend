@@ -22,7 +22,7 @@ h2 {
 }
 
 .container {
-  max-width: 90% !important;
+  max-width: 96% !important;
   margin: auto;
 }
 
@@ -136,6 +136,14 @@ h2 {
     top: 0;
     height: 100vh;
   }
+}
+
+/* ------Product Card--------------- */
+.product_card .product_img {
+  transition: all 0.3s ease;
+}
+.product_card:hover .product_img {
+  transform: scale(1.2);
 }
 
 /* ---------------Shop page -------------------*/
