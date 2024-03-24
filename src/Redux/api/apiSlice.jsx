@@ -13,5 +13,13 @@ export const apiSlice = createApi({
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["product", "review", "users", "admin", "favicon", "coupon"],
+  tagTypes: [
+    "product",
+    "flashDeal",
+    "review",
+    "users",
+    "admin",
+    "favicon",
+    "coupon",
+  ],
 });

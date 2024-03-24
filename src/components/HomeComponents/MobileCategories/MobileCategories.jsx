@@ -28,11 +28,11 @@ export default function MobileCategories() {
         breakpoints={{
           100: {
             slidesPerView: 2,
-            spaceBetween: 10,
+            spaceBetween: 3,
           },
           350: {
-            slidesPerView: 3,
-            spaceBetween: 10,
+            slidesPerView: 4,
+            spaceBetween: 3,
           },
           600: {
             slidesPerView: 5,
@@ -45,7 +45,7 @@ export default function MobileCategories() {
             <Link
               key={category?._id}
               to={`shops/${category.slug}`}
-              className="shadow border rounded p-4 flex justify-center items-center text-center h-[100px]"
+              className="shadow border rounded p-2 flex justify-center items-center text-center h-[90px]"
             >
               <div>
                 <img
@@ -53,9 +53,9 @@ export default function MobileCategories() {
                     category?.icon
                   }`}
                   alt=""
-                  className="w-11 h-10 mx-auto"
+                  className="w-10 h-9 mx-auto"
                 />
-                <h6 className="mt-2 font-medium text-[11px]">
+                <h6 className="mt-2 font-medium text-[10px]">
                   {category?.name}
                 </h6>
               </div>

@@ -4,6 +4,7 @@ import Footer from "../components/Footer/Footer";
 import Header from "../components/Header/Header";
 import AccountSidebar from "../components/AccountSidebar/AccountSidebar";
 import { RiMenu2Line } from "react-icons/ri";
+import MobileBottomHeader from "../components/Header/MobileBottomHeader/MobileBottomHeader";
 
 export default function AccountLayout() {
   const [sidebar, setSidebar] = useState(false);
@@ -59,6 +60,7 @@ export default function AccountLayout() {
         </div>
       </section>
       <Footer />
+      <MobileBottomHeader />
     </>
   );
 }

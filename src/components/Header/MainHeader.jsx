@@ -30,7 +30,7 @@ export default function MainHeader() {
   }, []);
 
   return (
-    <header className="py-2 text-neutral border-b sticky top-0 z-40 bg-[#ffffffcc] backdrop-blur-[10px]">
+    <header className="py-1 md:py-2 text-neutral border-b sticky top-0 z-40 bg-[#ffffffcc] backdrop-blur-[10px]">
       <div className="container">
         <div className="flex items-center justify-between gap-2">
           <div className="hidden sm:block">

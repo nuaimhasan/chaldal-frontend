@@ -45,9 +45,9 @@ export default function Login() {
   }, [isSuccess]);
 
   return (
-    <div className="py-6 bg-gray-50">
+    <div className="py-6 min-h-[70vh] flex justify-center items-center">
       <div className="container">
-        <div className="sm:w-[420px] mx-auto bg-base-100 shadow-lg rounded-lg p-6">
+        <div className="sm:w-[400px] mx-auto bg-base-100 shadow-lg rounded-lg p-6">
           <img
             src={
               logo?.data[0]?.logo === ""

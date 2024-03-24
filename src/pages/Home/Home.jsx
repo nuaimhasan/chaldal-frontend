@@ -16,7 +16,7 @@ export default function Home() {
       <Menu />
       <Hero />
       <MobileCategories />
-      {/* <FlashSale /> */}
+      <FlashSale />
       <FeaturedProducts />
       <ChooseByCategory />
       <CampaignBanner />

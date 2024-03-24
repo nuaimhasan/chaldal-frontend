@@ -4,6 +4,7 @@ import { FiHome } from "react-icons/fi";
 import { AiOutlineMenu } from "react-icons/ai";
 import { RiShoppingCartLine } from "react-icons/ri";
 import { FaRegCircleUser } from "react-icons/fa6";
+import { CiShop } from "react-icons/ci";
 import MobileMenuSidebar from "../MobileMenuSidebar";
 
 export default function MobileBottomHeader() {
@@ -19,7 +20,7 @@ export default function MobileBottomHeader() {
   return (
     <section className="fixed sm:hidden bottom-0 left-0 w-full z-50 bg-base-100 pt-2 pb-1">
       <div className="container">
-        <div className="grid grid-cols-4 gap-4 text-neutral-content">
+        <div className="grid grid-cols-5 text-neutral-content">
           <NavLink
             to="/"
             className="flex flex-col justify-center items-center gap-1"
@@ -47,6 +48,14 @@ export default function MobileBottomHeader() {
               </div>
             </div>
             <p className="text-xs">Cart</p>
+          </NavLink>
+
+          <NavLink
+            to="/shops"
+            className="flex flex-col justify-center items-center gap-1"
+          >
+            <CiShop className="text-xl" />
+            <p className="text-xs">Shop</p>
           </NavLink>
 
           <NavLink

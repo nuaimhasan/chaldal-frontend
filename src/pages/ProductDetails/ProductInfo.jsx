@@ -11,6 +11,7 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../Redux/wishlist/wishlistSlice";
+import ReactShare from "./ReactShare/ReactShare";
 
 export default function ProductInfo({ product }) {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function ProductInfo({ product }) {
   const wishlists = useSelector((state) => state.wishlist.wishlists);
 
   const {
+    slug,
     title,
     images,
     discount,
@@ -257,9 +259,7 @@ export default function ProductInfo({ product }) {
         </div>
 
         {/*  wishlist */}
-        <div className="flex justify-between items-center">
-          <p></p>
-
+        <div className="flex justify-end items-center gap-4">
           <button
             onClick={() => handelAddToWishlist(product)}
             className={`shadow-lg p-3 rounded-full ${
@@ -356,7 +356,7 @@ export default function ProductInfo({ product }) {
         </div>
 
         {/* Buttons */}
-        <div className="flex gap-2 items-center mt-6">
+        <div className="flex flex-wrap gap-2 items-center mt-6">
           <button
             onClick={handleBuyNow}
             className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded scale-[.97] hover:scale-[1] duration-300 flex items-center justify-center gap-1"
@@ -380,6 +380,12 @@ export default function ProductInfo({ product }) {
             <MdAddCall />
             Call Now
           </Link>
+        </div>
+
+        {/* Share */}
+        <div className="mt-4 flex items-center gap-3">
+          <p className="text-gray-500">Share: </p>
+          <ReactShare slug={slug} />
         </div>
       </div>
     </div>
