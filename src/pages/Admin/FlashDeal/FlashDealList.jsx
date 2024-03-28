@@ -7,13 +7,18 @@ import {
   useAllBrandsQuery,
   useDeleteBrandMutation,
 } from "../../../Redux/brand/brandApi";
+import { useGetFlashDealQuery } from "../../../Redux/flashDeal/flashDeal";
 
 export default function FlashDealList() {
-  const { data, isLoading, isError, error } = useAllBrandsQuery();
+  const { data, isLoading, isError, error } = useGetFlashDealQuery();
   const [deleteBrand] = useDeleteBrandMutation();
 
+  const handleUpdateStatus = async (id) => {
+    console.log(id);
+  };
+
   // Delete Brand
-  const handleDeleteBrand = async (id) => {
+  const handleDeleteFlashDeal = async (id) => {
     const isConfirm = window.confirm("Are you sure delete this Brand");
     if (isConfirm) {
       const result = await deleteBrand(id);
@@ -34,29 +39,49 @@ export default function FlashDealList() {
     content = <p>{error?.data?.error}</p>;
   }
   if (!isLoading && !isError && data?.data?.length > 0) {
-    content = data?.data?.map((brand, i) => (
-      <tr key={brand?._id}>
+    content = data?.data?.map((flashDeal, i) => (
+      <tr key={flashDeal?._id}>
         <td>{i + 1}</td>
+        <td>{flashDeal?.title}</td>
+        <td>{flashDeal?.flashProducts?.length}</td>
+        <td>{flashDeal?.startDate}</td>
+        <td>{flashDeal?.endDate}</td>
         <td>
-          <div className="flex items-center gap-2 ">
-            <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/brands/${brand?.icon}`}
-              alt=""
-              className="w-10 h-10 rounded-full border"
-            />
-          </div>
+          {flashDeal?.status ? (
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                checked={flashDeal?.status && flashDeal?.status}
+                type="checkbox"
+                value={flashDeal?.status}
+                class="sr-only peer"
+                onClick={() => handleUpdateStatus(flashDeal?._id)}
+              />
+              <div class="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          ) : (
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                checked={flashDeal?.status && flashDeal?.status}
+                type="checkbox"
+                value={flashDeal?.status}
+                class="sr-only peer"
+                onClick={() => handleUpdateStatus(flashDeal?._id)}
+              />
+              <div class="w-11 h-[23px] bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[1.5px] after:start-[1px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          )}
         </td>
-        <td>{brand?.name}</td>
+
         <td>
           <div className="flex items-center gap-2">
             <Link
-              to={`/admin/edit-brand/${brand?._id}`}
+              to={`/admin/flash-deal/edit/${flashDeal?._id}`}
               className="hover:text-green-700 duration-200"
             >
               <BiSolidPencil />
             </Link>
             <button
-              onClick={() => handleDeleteBrand(brand?._id)}
+              onClick={() => handleDeleteFlashDeal(flashDeal?._id)}
               className="hover:text-red-600 duration-200 text-lg"
             >
               <MdDeleteOutline />
@@ -82,10 +107,10 @@ export default function FlashDealList() {
             <tr>
               <th>SL</th>
               <th>Title</th>
-              <th>Status</th>
               <th>Total Products</th>
               <th>Start Date</th>
               <th>End Date</th>
+              <th>Status</th>
               <th>Action</th>
             </tr>
           </thead>

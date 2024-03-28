@@ -10,12 +10,16 @@ import { Link } from "react-router-dom";
 import { useGetMainLogoQuery } from "../../Redux/logo/logoApi";
 import { userLogout } from "../../Redux/user/userSlice";
 import SearchBox from "./SearchBox";
+import { BsSearch } from "react-icons/bs";
+import SearchSidebar from "./SearchSidebar/SearchSidebar";
 
 export default function MainHeader() {
   const dispatch = useDispatch();
   const carts = useSelector((state) => state.cart.carts);
   const { loggedUser } = useSelector((state) => state.user);
   const { data: logo } = useGetMainLogoQuery();
+
+  const [searchSidebar, setSearchSidebar] = useState(false);
 
   const [profileDropdown, setProfileDropdown] = useState(false);
   useEffect(() => {
@@ -33,7 +37,7 @@ export default function MainHeader() {
     <header className="py-1 md:py-2 text-neutral border-b sticky top-0 z-40 bg-[#ffffffcc] backdrop-blur-[10px]">
       <div className="container">
         <div className="flex items-center justify-between gap-2">
-          <div className="hidden sm:block">
+          <div>
             <Link to="/">
               <img
                 src={
@@ -44,12 +48,26 @@ export default function MainHeader() {
                       }`
                 }
                 alt=""
-                className="w-20 sm:w-32 h-14"
+                className="w-28 sm:w-32 h-12 sm:h-14"
               />
             </Link>
           </div>
 
-          <div className="block w-full sm:w-1/2 xl:w-3/5">
+          <div className="sm:hidden">
+            <button
+              onClick={() => setSearchSidebar(!searchSidebar)}
+              className="pr-2"
+            >
+              <BsSearch className="text-lg" />
+            </button>
+
+            <SearchSidebar
+              searchSidebar={searchSidebar}
+              setSearchSidebar={setSearchSidebar}
+            />
+          </div>
+
+          <div className="hidden sm:block sm:w-1/2 xl:w-3/5">
             <SearchBox />
           </div>
 

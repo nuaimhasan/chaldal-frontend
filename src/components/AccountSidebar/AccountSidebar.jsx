@@ -1,11 +1,14 @@
 import { AiOutlineHeart, AiOutlineSetting } from "react-icons/ai";
 import { FiMonitor } from "react-icons/fi";
 import { IoBagCheckOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { BiLogOutCircle } from "react-icons/bi";
+import { Link, NavLink } from "react-router-dom";
+import { userLogout } from "../../Redux/user/userSlice";
 
 export default function AccountSidebar() {
   const { loggedUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   return (
     <div>
@@ -66,6 +69,16 @@ export default function AccountSidebar() {
               Setting
             </span>
           </NavLink>
+        </li>
+        <li>
+          <button
+            onClick={() => dispatch(userLogout())}
+            className="text-red-500"
+          >
+            <span className="flex items-center gap-2 hover:text-primary duration-300">
+              <BiLogOutCircle /> Logout
+            </span>
+          </button>
         </li>
       </ul>
     </div>
