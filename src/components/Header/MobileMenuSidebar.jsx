@@ -5,7 +5,7 @@ import CategoryLists from "../CategoryLists/CategoryLists";
 import MobileCategoriesSidebar from "../MobileCategoriesSidebar/MobileCategoriesSidebar";
 
 export default function MobileMenuSidebar({ mobileMenu, setMobileMenu }) {
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(2);
   return (
     <div className="lg:hidden">
       <button

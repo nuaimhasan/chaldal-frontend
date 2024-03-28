@@ -1,4 +1,5 @@
-import CampaignBanner from "../../components/HomeComponents/CampaignBanner/CampaignBanner";
+import CampaignBanner from "../../components/HomeComponents/Campaign/CampaignBanner/CampaignBanner";
+import TopCampaignBanner from "../../components/HomeComponents/Campaign/TopCampaignBanner/TopCampaignBanner";
 import CategoryWaysProducts from "../../components/HomeComponents/CategoryWaysProducts/CategoryWaysProducts";
 import ChooseByCategory from "../../components/HomeComponents/ChooseByCategory/ChooseByCategory";
 import FeaturedProducts from "../../components/HomeComponents/FeaturedProducts/FeaturedProducts";
@@ -16,6 +17,7 @@ export default function Home() {
       <Menu />
       <Hero />
       <MobileCategories />
+      <TopCampaignBanner />
       <FlashSale />
       <FeaturedProducts />
       <ChooseByCategory />

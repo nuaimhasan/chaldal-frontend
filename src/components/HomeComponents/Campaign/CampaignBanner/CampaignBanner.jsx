@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useGetCampaignBannersQuery } from "../../../Redux/campaignBanner/campaignBannerApi";
+import { useGetCampaignBannersQuery } from "../../../../Redux/campaignBanner/campaignBannerApi";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";

@@ -8,7 +8,7 @@ export default function ProductsSection({ category }) {
   const query = {};
   query["page"] = 1;
   query["limit"] = 5;
-  query["category"] = JSON.stringify(category?.slug);
+  query["category"] = category?.slug;
   const { data, isLoading, isError, error } = useGetAllProductsQuery({
     ...query,
   });

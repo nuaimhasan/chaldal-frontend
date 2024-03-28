@@ -58,6 +58,29 @@ h2 {
   background: transparent;
 }
 
+.animate_btn {
+  animation: an 1000ms;
+  animation-iteration-count: infinite;
+}
+
+@keyframes an {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(0.99);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .form_group input,
 .form_group textarea,
 .form_group select {
