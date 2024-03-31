@@ -21,5 +21,8 @@ export const apiSlice = createApi({
     "admin",
     "favicon",
     "coupon",
+    "topCampaignBanner",
+    "seo",
+    "shippingConfig",
   ],
 });

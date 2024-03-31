@@ -38,8 +38,6 @@ export default function BusinessInfo() {
     const companyType = form.type.value;
     const bio = form.bio.value;
     const tagline = form.tagline.value;
-    const title = form.title.value;
-    const metaContent = form.metaContent.value;
 
     const data = {
       companyName,
@@ -47,8 +45,6 @@ export default function BusinessInfo() {
       companyType,
       bio,
       tagline,
-      title,
-      metaContent,
     };
 
     if (id) {
@@ -114,8 +110,8 @@ export default function BusinessInfo() {
             <input
               type="text"
               name="name"
-              required
               defaultValue={businessInfo?.companyName}
+              required
             />
           </div>
 
@@ -124,8 +120,8 @@ export default function BusinessInfo() {
             <input
               type="text"
               name="startYear"
-              required
               defaultValue={businessInfo?.companyStartYear}
+              required
             />
           </div>
 
@@ -135,6 +131,7 @@ export default function BusinessInfo() {
               type="text"
               name="type"
               defaultValue={businessInfo?.companyType}
+              required
             />
           </div>
 
@@ -144,6 +141,7 @@ export default function BusinessInfo() {
               name="tagline"
               rows="2"
               defaultValue={businessInfo?.tagline}
+              required
             ></textarea>
           </div>
 
@@ -153,30 +151,8 @@ export default function BusinessInfo() {
               name="bio"
               rows="2"
               defaultValue={businessInfo?.bio}
-            ></textarea>
-          </div>
-        </div>
-
-        <br />
-
-        {/*  */}
-        <div className="border rounded p-4 grid sm:grid-cols-2 md:grid-cols-3 gap-4 items-start">
-          <div>
-            <p className="mb-1">Title *</p>
-            <input
-              type="text"
-              name="title"
               required
-              defaultValue={businessInfo?.title}
-            />
-          </div>
-          <div className="col-span-2">
-            <p className="mb-1">Meta Content</p>
-            <input
-              type="text"
-              name="metaContent"
-              defaultValue={businessInfo?.metaContent}
-            />
+            ></textarea>
           </div>
         </div>
 
@@ -190,7 +166,7 @@ export default function BusinessInfo() {
                 ? "Loading..."
                 : id
                 ? "Update"
-                : "Add"}
+                : "Add Info"}
             </button>
           </div>
         </div>

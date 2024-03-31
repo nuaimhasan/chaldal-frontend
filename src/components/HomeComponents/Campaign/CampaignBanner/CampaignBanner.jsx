@@ -31,8 +31,8 @@ export default function CampaignBanner() {
         className="w-full"
       >
         {data?.data?.map((banner) => (
-          <SwiperSlide>
-            <Link key={banner?._id} to={`/${banner?.link}`}>
+          <SwiperSlide key={banner?._id}>
+            <Link to={`/${banner?.link}`}>
               <img
                 src={`${import.meta.env.VITE_BACKEND_URL}/campaignBanner/${
                   banner?.image

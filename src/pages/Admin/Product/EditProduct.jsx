@@ -14,6 +14,7 @@ import {
 } from "../../../Redux/product/productApi";
 import { useGetSubCategoryQuery } from "../../../Redux/subCategory/subCategoryApi";
 import Spinner from "../../../components/Spinner/Spinner";
+import { useAllBrandsQuery } from "../../../Redux/brand/brandApi";
 
 export default function EditProduct() {
   const navigate = useNavigate();
@@ -30,12 +31,13 @@ export default function EditProduct() {
   const { data: categories } = useGetCategoriesQuery();
   const { data: category } = useGetCategoryQuery(categoryId);
   const { data: subCategory } = useGetSubCategoryQuery(subCategoryId);
+  const { data: brands } = useAllBrandsQuery();
 
   const subCategories = category?.data?.subCategories;
   const subSubCategories = subCategory?.data?.subSubCategories;
 
   const [images, setImages] = useState([]);
-  const [featured, setFeatured] = useState(null);
+  const [featured, setFeatured] = useState(false);
   const [details, setDetails] = useState("");
   useEffect(() => {
     if (product?.featured) setFeatured(product?.featured);
@@ -272,11 +274,16 @@ export default function EditProduct() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm">Brand</p>
-                  <input
-                    type="text"
-                    name="brand"
-                    defaultValue={product?.brand}
-                  />
+                  <select name="brand" defaultValue={product?.brand}>
+                    <option value="">Select Brand</option>
+                    <option value="No Brand">No Brand</option>
+                    {brands?.data?.length > 0 &&
+                      brands?.data?.map((brand) => (
+                        <option key={brand?._id} value={brand?.name}>
+                          {brand?.name}
+                        </option>
+                      ))}
+                  </select>
                 </div>
 
                 <div>

@@ -11,12 +11,14 @@ export const campaignBannerApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["campaignBanner"],
     }),
+
     getCampaignBanners: builder.query({
       query: () => ({
         url: "/campaignBanner/all",
       }),
       providesTags: ["campaignBanner"],
     }),
+
     deleteCampaignBanner: builder.mutation({
       query: (id) => ({
         url: `/campaignBanner/delete/${id}`,
@@ -24,12 +26,14 @@ export const campaignBannerApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["campaignBanner"],
     }),
+
     getCampaignBannerById: builder.query({
       query: (id) => ({
         url: `/campaignBanner/single/${id}`,
       }),
       providesTags: ["campaignBanner"],
     }),
+
     editCampaignBanner: builder.mutation({
       query: ({ formData, id }) => ({
         url: `/campaignBanner/edit/${id}`,

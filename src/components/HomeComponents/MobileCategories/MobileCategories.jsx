@@ -47,9 +47,8 @@ export default function MobileCategories() {
         }}
       >
         {data?.data?.map((category) => (
-          <SwiperSlide>
+          <SwiperSlide key={category?._id}>
             <Link
-              key={category?._id}
               to={`shops/${category.slug}`}
               className="shadow border rounded p-2 flex justify-center items-center text-center h-[90px]"
             >

@@ -94,6 +94,9 @@ import EditAdministrator from "../pages/Admin/Administrator/EditAdmin";
 //--------------Flash Deal
 import FlashDealList from "../pages/Admin/FlashDeal/FlashDealList";
 import AddFlashDeal from "../pages/Admin/FlashDeal/AddFlashDeal";
+import TopCampaignBanner from "../pages/Admin/EcommerceSetting/TopCampaignBanner/TopCampaignBanner";
+import SEOSetting from "../pages/Admin/SEOSetting/SEOSetting";
+import ShippingConfiguration from "../pages/Admin/EcommerceSetting/ShippingConfiguration/ShippingConfiguration";
 
 export const routes = createBrowserRouter([
   {
@@ -118,6 +121,10 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/shops/:category/:subCategory/:subSubCategory",
+        element: <Shop />,
+      },
+      {
+        path: "/shops/brand/:brand",
         element: <Shop />,
       },
       {
@@ -332,7 +339,13 @@ export const routes = createBrowserRouter([
         path: "/admin/ecommerce-setting/coupons/edit-coupon/:id",
         element: <EditCoupon />,
       },
-      //--Banner
+
+      {
+        path: "/admin/ecommerce-setting/shipping-configuration",
+        element: <ShippingConfiguration />,
+      },
+
+      //-------------Banner
       {
         path: "/admin/ecommerce-setting/banner",
         element: <Banner />,
@@ -345,7 +358,14 @@ export const routes = createBrowserRouter([
         path: "/admin/ecommerce-setting/edit-banner/:id",
         element: <EditBanner />,
       },
-      //--CampaignBanner
+
+      //---------Top Campaign Banner
+      {
+        path: "/admin/ecommerce-setting/top-campaign-banner",
+        element: <TopCampaignBanner />,
+      },
+
+      //---------CampaignBanner
       {
         path: "/admin/ecommerce-setting/campaign-banner",
         element: <CampaignBanners />,
@@ -389,6 +409,12 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/front-end/contact-us",
         element: <Contact />,
+      },
+
+      //----------SEO Setting
+      {
+        path: "/admin/seo-setting",
+        element: <SEOSetting />,
       },
     ],
   },

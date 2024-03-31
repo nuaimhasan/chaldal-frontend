@@ -1,8 +1,12 @@
 import { CiDeliveryTruck } from "react-icons/ci";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { GrShieldSecurity } from "react-icons/gr";
+import { useGetShippingConfigQuery } from "../../Redux/shippingConfigApi";
 
 const RightSideInfo = () => {
+  const { data } = useGetShippingConfigQuery();
+  const shippingConfig = data?.data[0];
+
   return (
     <>
       {/* Delivery */}
@@ -14,26 +18,48 @@ const RightSideInfo = () => {
           <div className="flex gap-2">
             <CiDeliveryTruck className="text-2xl" />
             <div>
-              <h3>Standard Delivery</h3>
-              <p className="text-neutral/80 text-xs">2 - 3 days (in Dhaka)</p>
+              <h3>Dhaka City</h3>
+              <p className="text-neutral/80 text-xs">
+                {shippingConfig?.dhakaCity?.time} days
+              </p>
             </div>
           </div>
 
-          <p className="text-black font-semibold">৳80</p>
+          <p className="text-black font-semibold">
+            ৳{shippingConfig?.dhakaCity?.charge}
+          </p>
         </div>
 
         <div className="flex justify-between items-center mt-2">
           <div className="flex gap-2">
             <CiDeliveryTruck className="text-2xl" />
             <div>
-              <h3>Standard Delivery</h3>
+              <h3>Dhaka Out City</h3>
               <p className="text-neutral/80 text-xs">
-                3 - 5 days (outside Dhaka)
+                {shippingConfig?.dhakaOutCity?.time} days
               </p>
             </div>
           </div>
 
-          <p className="text-black font-semibold">৳150</p>
+          <p className="text-black font-semibold">
+            ৳{shippingConfig?.dhakaOutCity?.charge}
+          </p>
+        </div>
+
+        <div className="flex justify-between items-center mt-2">
+          <div className="flex gap-2">
+            <CiDeliveryTruck className="text-2xl" />
+            <div>
+              <h3>OutSide Dhaka</h3>
+              <p className="text-neutral/80 text-xs">
+                {shippingConfig?.outsideDhaka?.time} days
+              </p>
+            </div>
+          </div>
+
+          <p className="text-black font-semibold">
+            ৳{shippingConfig?.outsideDhaka?.charge}
+          </p>
         </div>
 
         <div className="flex gap-2 items-center mt-3">

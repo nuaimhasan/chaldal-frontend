@@ -356,10 +356,10 @@ export default function ProductInfo({ product }) {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-wrap gap-2 items-center mt-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 items-center mt-6">
           <button
             onClick={handleBuyNow}
-            className="w-40 bg-primary text-base-100 px-2 py-1.5 rounded scale-[.97] hover:scale-[1] duration-300 flex items-center justify-center gap-1"
+            className="bg-primary text-base-100 px-2 py-1.5 rounded scale-[.97] hover:scale-[1] duration-300 flex items-center justify-center gap-1"
           >
             <IoBagCheckOutline />
             Buy Now
@@ -367,15 +367,15 @@ export default function ProductInfo({ product }) {
 
           <button
             onClick={handelAddToCart}
-            className="w-40 bg-accent text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
+            className="bg-accent text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
           >
             <FaOpencart />
-            Add To Card
+            Add To Cart
           </button>
 
           <Link
             to=""
-            className="w-40 bg-secondary text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
+            className="bg-secondary text-base-100 px-2 py-1.5 rounded flex items-center gap-1 justify-center scale-[.97] hover:scale-[1] duration-300"
           >
             <MdAddCall />
             Call Now

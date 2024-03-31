@@ -13,6 +13,7 @@ export default function Shop() {
   let category = params?.category ? params?.category : "";
   let subCategory = params?.subCategory ? params?.subCategory : "";
   let subSubCategory = params?.subSubCategory ? params?.subSubCategory : "";
+  let brand = params?.brand ? params?.brand : "";
 
   const query = {};
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,6 +22,7 @@ export default function Shop() {
   query["category"] = category;
   query["subCategory"] = subCategory;
   query["subSubCategory"] = subSubCategory;
+  query["brand"] = brand;
   const { data, isLoading, isError, error } = useGetAllProductsQuery({
     ...query,
   });

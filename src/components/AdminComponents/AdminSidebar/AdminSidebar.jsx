@@ -15,6 +15,8 @@ import { useGetMainLogoQuery } from "../../../Redux/logo/logoApi";
 import { VscPreview } from "react-icons/vsc";
 import { IoMdSettings } from "react-icons/io";
 import { MdFlashOn } from "react-icons/md";
+import { CiSearch } from "react-icons/ci";
+
 import { useGetBusinessInfoQuery } from "../../../Redux/businessInfoApi/businessInfoApi";
 
 const adminSidebarItems = [
@@ -109,6 +111,10 @@ const adminSidebarItems = [
         path: "/admin/ecommerce-setting/banner",
       },
       {
+        title: "Top Campaign Banner",
+        path: "/admin/ecommerce-setting/top-campaign-banner",
+      },
+      {
         title: "Campaign Banner",
         path: "/admin/ecommerce-setting/campaign-banner",
       },
@@ -121,6 +127,10 @@ const adminSidebarItems = [
       {
         title: "Coupon",
         path: "/admin/ecommerce-setting/coupons",
+      },
+      {
+        title: "Shipping Configuration",
+        path: "/admin/ecommerce-setting/shipping-configuration",
       },
     ],
   },
@@ -164,6 +174,11 @@ const adminSidebarItems = [
         path: "/admin/front-end/contact-us",
       },
     ],
+  },
+  {
+    icon: <CiSearch className="text-lg" />,
+    title: "SEO Setting",
+    path: "/admin/seo-setting",
   },
 ];
 
