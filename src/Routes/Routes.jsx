@@ -71,18 +71,22 @@ import CouponLists from "../pages/Admin/EcommerceSetting/Coupon/CouponLists";
 import AddCoupon from "../pages/Admin/EcommerceSetting/Coupon/AddCoupon";
 import EditCoupon from "../pages/Admin/EcommerceSetting/Coupon/EditCoupon";
 
-import Banner from "../pages/Admin/EcommerceSetting/Banner/Banner";
-import AddBanner from "../pages/Admin/EcommerceSetting/Banner/AddBanner";
-import EditBanner from "../pages/Admin/EcommerceSetting/Banner/EditBanner";
+import ShippingConfiguration from "../pages/Admin/EcommerceSetting/ShippingConfiguration/ShippingConfiguration";
 
 //-----------General Setting
 import AdminProfile from "../pages/Admin/GeneralSetting/AdminProfile/AdminProfile";
 import Themes from "../pages/Admin/GeneralSetting/Theme/Themes";
 import BusinessInfo from "../pages/Admin/GeneralSetting/BusinessInfo/BusinessInfo";
 
+//------------Banners
+import Banner from "../pages/Admin/EcommerceSetting/Banner/Banner";
+import AddBanner from "../pages/Admin/EcommerceSetting/Banner/AddBanner";
+import EditBanner from "../pages/Admin/EcommerceSetting/Banner/EditBanner";
+
 import CampaignBanners from "../pages/Admin/EcommerceSetting/CampaignBanners/CampaignBanners";
 import AddCampaignBanner from "../pages/Admin/EcommerceSetting/CampaignBanners/AddCampaignBanner";
 import EditCampaignBanner from "../pages/Admin/EcommerceSetting/CampaignBanners/EditCampaignBanner";
+import TopCampaignBanner from "../pages/Admin/EcommerceSetting/TopCampaignBanner/TopCampaignBanner";
 
 //--------------Front-End
 import About from "../pages/Admin/FrontEnd/About/About";
@@ -94,9 +98,10 @@ import EditAdministrator from "../pages/Admin/Administrator/EditAdmin";
 //--------------Flash Deal
 import FlashDealList from "../pages/Admin/FlashDeal/FlashDealList";
 import AddFlashDeal from "../pages/Admin/FlashDeal/AddFlashDeal";
-import TopCampaignBanner from "../pages/Admin/EcommerceSetting/TopCampaignBanner/TopCampaignBanner";
+import EditFlashDeal from "../pages/Admin/FlashDeal/EditFlashDeal";
+
+//--------------SEO
 import SEOSetting from "../pages/Admin/SEOSetting/SEOSetting";
-import ShippingConfiguration from "../pages/Admin/EcommerceSetting/ShippingConfiguration/ShippingConfiguration";
 
 export const routes = createBrowserRouter([
   {
@@ -304,6 +309,10 @@ export const routes = createBrowserRouter([
       {
         path: "/admin/flash-deal",
         element: <FlashDealList />,
+      },
+      {
+        path: "/admin/flash-deal/edit/:id",
+        element: <EditFlashDeal />,
       },
 
       //--------------Review
