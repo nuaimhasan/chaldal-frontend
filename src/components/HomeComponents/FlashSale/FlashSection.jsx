@@ -25,7 +25,7 @@ export default function FlashSection({ deal, isLoading }) {
     <div className="container bg-base-100 p-4 rounded-lg shadow-lg">
       <div className="flex justify-between sm:items-center border-b pb-2 border-primary">
         <h1 className="md:text-xl font-medium md:font-semibold text-neutral">
-          {deal?.title} {deal?.flashProducts?.length}
+          {deal?.title}
         </h1>
 
         <div>
