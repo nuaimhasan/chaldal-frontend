@@ -4,7 +4,7 @@ import ProductCard from "../../ProductCard/ProductCard";
 import { useGetAllProductsQuery } from "../../../Redux/product/productApi";
 import ProductCards from "../../Skeleton/ProductCards/ProductCards";
 
-export default function ProductsSection({ category }) {
+export default function ProductSection({ category }) {
   const query = {};
   query["page"] = 1;
   query["limit"] = 5;
