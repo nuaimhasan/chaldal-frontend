@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import ImageUploading from "react-images-uploading";
 import Swal from "sweetalert2";
@@ -8,7 +8,6 @@ import {
 } from "../../../../Redux/category/categoryApi";
 import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../../../../components/Spinner/Spinner";
-import { useEffect } from "react";
 
 export default function EditCategory() {
   const { id } = useParams();
