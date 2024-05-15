@@ -1,4 +1,3 @@
-import React from "react";
 import { useGetCategoriesQuery } from "../../Redux/category/categoryApi";
 import MobileCategoriesList from "./MobileCategoriesList";
 import SideCategory from "../Skeleton/SideCategory/SideCategory";
@@ -20,8 +19,6 @@ export default function MobileCategoriesSidebar() {
     ));
   }
   return (
-    <ul className="w-full overflow-y-auto h-[83vh] mobile_categories">
-      {content}
-    </ul>
+    <ul className="w-full overflow-y-auto mobile_categories">{content}</ul>
   );
 }

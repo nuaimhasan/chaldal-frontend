@@ -133,17 +133,22 @@ export const routes = createBrowserRouter([
         element: <Shop />,
       },
       {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
         path: "/product/:id",
         element: <ProductDetails />,
       },
-      {
-        path: "/about-us",
-        element: <AboutUs />,
-      },
-      {
-        path: "/faq",
-        element: <FAQ />,
-      },
+      // {
+      //   path: "/about-us",
+      //   element: <AboutUs />,
+      // },
+      // {
+      //   path: "/faq",
+      //   element: <FAQ />,
+      // },
+
       {
         path: "/login",
         element: <Login />,
@@ -151,10 +156,6 @@ export const routes = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
-      },
-      {
-        path: "/cart",
-        element: <Cart />,
       },
       {
         path: "/checkout",

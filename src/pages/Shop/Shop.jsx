@@ -18,7 +18,7 @@ export default function Shop() {
   const query = {};
   const [currentPage, setCurrentPage] = useState(1);
   query["page"] = currentPage;
-  query["limit"] = 8;
+  query["limit"] = 15;
   query["category"] = category;
   query["subCategory"] = subCategory;
   query["subSubCategory"] = subSubCategory;
@@ -44,36 +44,13 @@ export default function Shop() {
   }
 
   return (
-    <section className="py-5 bg-gray-50 min-h-[70vh]">
+    <section className="py-5">
       <div className="container">
         <ul className="flex gap-2 items-center text-neutral-content text-sm">
-          <li>
-            <Link to="/" className="text-primary">
-              Home
-            </Link>
-          </li>
-          <li>
-            <MdKeyboardArrowRight />
-          </li>
-          {category ? (
-            <>
-              <li>
-                <Link to="/shops" className="text-primary">
-                  Shops
-                </Link>
-              </li>
-            </>
-          ) : (
-            <li>Shops</li>
-          )}
-
           {subCategory ? (
             <>
               <li>
-                <MdKeyboardArrowRight />
-              </li>
-              <li>
-                <Link to={`/shops/${category?.slug}`} className="text-primary">
+                <Link to={`/shops/${category}`} className="text-primary">
                   {category.split("_")[0]}
                 </Link>
               </li>
@@ -81,9 +58,6 @@ export default function Shop() {
           ) : (
             category && (
               <>
-                <li>
-                  <MdKeyboardArrowRight />
-                </li>
                 <li>{category.split("_")[0]}</li>
               </>
             )
@@ -119,26 +93,19 @@ export default function Shop() {
           )}
         </ul>
 
-        <div className="md:flex gap-4 mt-4">
-          <div className="hidden md:block shop_categories h-full">
-            <h3 className="font-medium pb-1 border-b text-neutral">
-              Categories
-            </h3>
-            <div className="mt-2 text-[15px]">
-              <MobileCategoriesSidebar />
-            </div>
-          </div>
-
-          <div className="shop_products min-h-[70vh]">
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+        <div className="mt-4">
+          <div className="min-h-[70vh]">
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2">
               {content}
             </div>
 
-            <Pagination
-              pages={data?.meta?.pages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
+            {data?.meta?.total > 15 && (
+              <Pagination
+                pages={data?.meta?.pages}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -1,26 +1,16 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FiHome } from "react-icons/fi";
-import { AiOutlineMenu } from "react-icons/ai";
 import { RiShoppingCartLine } from "react-icons/ri";
-import { FaRegCircleUser } from "react-icons/fa6";
-import { CiShop } from "react-icons/ci";
-import MobileMenuSidebar from "../MobileMenuSidebar";
+
+import { useSelector } from "react-redux";
 
 export default function MobileBottomHeader() {
-  const [mobileMenu, setMobileMenu] = useState(false);
-  useEffect(() => {
-    window.addEventListener("click", (e) => {
-      if (e.target.closest(".menu_wrap ul li a")) {
-        setMobileMenu(false);
-      }
-    });
-  }, []);
+  const carts = useSelector((state) => state.cart.carts);
 
   return (
-    <section className="fixed sm:hidden bottom-0 left-0 w-full z-50 bg-base-100 pt-2 pb-1">
+    <section className="border-y border-secondary/30 fixed sm:hidden bottom-0 left-0 w-full z-50 bg-base-100 pt-2 pb-1">
       <div className="container">
-        <div className="grid grid-cols-5 text-neutral-content">
+        <div className="grid grid-cols-6 text-neutral-content">
           <NavLink
             to="/"
             className="flex flex-col justify-center items-center gap-1"
@@ -29,13 +19,14 @@ export default function MobileBottomHeader() {
             <p className="text-xs">Home</p>
           </NavLink>
 
-          <button
-            onClick={() => setMobileMenu(true)}
-            className="flex flex-col justify-center items-center gap-1"
+          <Link
+            to={carts?.length > 0 ? "/checkout" : "/shops"}
+            className="col-span-4 bg-secondary text-base-100 flex items-center justify-center"
           >
-            <AiOutlineMenu className="text-xl" />
-            <p className="text-xs">Categories</p>
-          </button>
+            <p className="text-sm">
+              {carts?.length > 0 ? "Place Order" : "Start Shopping"}
+            </p>
+          </Link>
 
           <NavLink
             to="/cart"
@@ -44,34 +35,13 @@ export default function MobileBottomHeader() {
             <div className="relative">
               <RiShoppingCartLine className="text-lg" />
               <div className="absolute flex items-center justify-center w-3.5 h-3.5 font-bold bg-primary text-base-100 rounded-full -top-1.5 -right-2">
-                <span className="mt-px text-xs">0</span>
+                <span className="mt-px text-xs">{carts?.length}</span>
               </div>
             </div>
             <p className="text-xs">Cart</p>
           </NavLink>
-
-          <NavLink
-            to="/shops"
-            className="flex flex-col justify-center items-center gap-1"
-          >
-            <CiShop className="text-xl" />
-            <p className="text-xs">Shop</p>
-          </NavLink>
-
-          <NavLink
-            to="/account"
-            className="flex flex-col justify-center items-center gap-1"
-          >
-            <FaRegCircleUser className="text-lg" />
-            <p className="text-xs">Account</p>
-          </NavLink>
         </div>
       </div>
-
-      <MobileMenuSidebar
-        mobileMenu={mobileMenu}
-        setMobileMenu={setMobileMenu}
-      />
     </section>
   );
 }

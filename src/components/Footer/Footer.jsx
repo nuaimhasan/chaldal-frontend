@@ -25,7 +25,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="pt-8 pb-4 bg-gray-50">
+    <footer className="mt-10 pt-8 pb-4 bg-gray-50">
       <div className="container">
         <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
           <div className="md:col-span-2">

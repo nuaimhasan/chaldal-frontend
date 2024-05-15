@@ -60,12 +60,6 @@ const ProductCard = ({ product }) => {
             </p>
           </div>
         </div>
-
-        <div className="p-2">
-          <button className="bg-primary text-base-100 w-full text-sm py-1.5">
-            Buy Now
-          </button>
-        </div>
       </Link>
     </div>
   );

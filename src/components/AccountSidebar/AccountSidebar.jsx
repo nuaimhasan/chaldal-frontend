@@ -3,7 +3,7 @@ import { FiMonitor } from "react-icons/fi";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { BiLogOutCircle } from "react-icons/bi";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { userLogout } from "../../Redux/user/userSlice";
 
 export default function AccountSidebar() {

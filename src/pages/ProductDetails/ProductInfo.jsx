@@ -43,6 +43,10 @@ export default function ProductInfo({ product }) {
   const price = variants?.length ? variants[0]?.sellingPrice : sellingPrice;
 
   const [showImage, setShowImage] = useState(images[0]);
+  useEffect(() => {
+    setShowImage(images[0]);
+  }, [images]);
+
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [availableStock, setAvailableStock] = useState(totakStock);

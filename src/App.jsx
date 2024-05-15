@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
 import { routes } from "./Routes/Routes";
 import useAuthCheck from "./hooks/useAuthCheck";
@@ -6,37 +5,21 @@ import Spinner from "./components/Spinner/Spinner";
 import { Helmet } from "react-helmet";
 import { useGetFaviconQuery } from "./Redux/favicon/faviconApi";
 import { useGetBusinessInfoQuery } from "./Redux/businessInfoApi/businessInfoApi";
-import { useGetThemesQuery } from "./Redux/theme/themeApi";
 import { useGetSEOQuery } from "./Redux/seoApi";
 
 export default function App() {
   const authChecked = useAuthCheck();
 
-  const { data: favicon, isLoading } = useGetFaviconQuery();
+  const { data: favicon } = useGetFaviconQuery();
   const icon = favicon?.data[0]?.icon;
 
-  const { data: business, isLoading: businessIsLoading } =
-    useGetBusinessInfoQuery();
+  const { data: business, isLoading } = useGetBusinessInfoQuery();
   const businessInfo = business?.data[0];
 
-  const { data, isLoading: seoIsLoading } = useGetSEOQuery();
+  const { data } = useGetSEOQuery();
   const seo = data?.data[0];
 
-  const { data: color } = useGetThemesQuery();
-  const colors = color?.data[0];
-
-  useEffect(() => {
-    if (colors) {
-      document.documentElement.style.setProperty("--primary", colors?.primary);
-      document.documentElement.style.setProperty(
-        "--secondary",
-        colors?.secondary
-      );
-      document.documentElement.style.setProperty("--accent", colors?.accent);
-    }
-  }, [colors]);
-
-  if (!authChecked || isLoading || businessIsLoading || seoIsLoading) {
+  if (!authChecked || isLoading) {
     return <Spinner />;
   }
 

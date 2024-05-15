@@ -15,7 +15,7 @@ const authSlice = createSlice({
     },
     userLogout: (state) => {
       state.token = "";
-      localStorage.removeItem("eshop_jwt");
+      localStorage.removeItem("eManager_chaldal_jwt");
       state.loggedUser = undefined;
     },
   },
