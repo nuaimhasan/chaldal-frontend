@@ -32,8 +32,8 @@ import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 //---------------Category
 import AddCategory from "../pages/Admin/Category/Categories/AddCategory";
 import AllCategories from "../pages/Admin/Category/Categories/AllCategories";
-
 import EditCategory from "../pages/Admin/Category/Categories/EditCategory";
+import EditCategories from "../pages/Admin/Category/Categories/EditCategories";
 
 import AddSubCategory from "../pages/Admin/Category/SubCategories/AddSubCategory";
 import AllSubCategories from "../pages/Admin/Category/SubCategories/AllSubCategories";
@@ -240,7 +240,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/admin/category/edit/:id",
-        element: <EditCategory />,
+        element: <EditCategories />,
       },
       {
         path: "/admin/category/sub-categories",
