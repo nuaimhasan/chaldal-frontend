@@ -32,6 +32,7 @@ import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 //---------------Category
 import AddCategory from "../pages/Admin/Category/Categories/AddCategory";
 import AllCategories from "../pages/Admin/Category/Categories/AllCategories";
+
 import EditCategory from "../pages/Admin/Category/Categories/EditCategory";
 
 import AddSubCategory from "../pages/Admin/Category/SubCategories/AddSubCategory";
