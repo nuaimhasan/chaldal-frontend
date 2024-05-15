@@ -61,7 +61,8 @@ import OrderDetails from "../pages/Admin/Order/OrderDetails";
 import AllReview from "../pages/Admin/AllReview/AllReview";
 
 //---------------User
-import AllUsers from "../pages/Admin/user/AllUsers";
+// import AllUsers from "../pages/Admin/user/AllUsers";
+import AllUser from "../pages/Admin/User/AllUser";
 
 //---------------Administrator
 import AddAdministrator from "../pages/Admin/Administrator/AddAdministrator";
@@ -300,7 +301,7 @@ export const routes = createBrowserRouter([
       },
       {
         path: "/admin/customer/all-customers",
-        element: <AllUsers />,
+        element: <AllUser />,
       },
 
       //--------------Flash Deal
