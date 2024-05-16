@@ -104,6 +104,7 @@ import EditFlashDeal from "../pages/Admin/FlashDeal/EditFlashDeal";
 
 //--------------SEO
 import SEOSetting from "../pages/Admin/SEOSetting/SEOSetting";
+import FlashSales from "../pages/FlashSales/FlashSales";
 
 export const routes = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ export const routes = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/flash-sales",
+        element: <FlashSales />,
       },
       {
         path: "/shops",

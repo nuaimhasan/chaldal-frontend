@@ -11,7 +11,7 @@ export default function MainSidebar() {
     <div className="p-2 text-sm w-full">
       <ul className="border-b pb-3 mb-3">
         <li className="hover:bg-[#f3f4f6] duration-300 rounded px-2 py-1.5">
-          <Link to="/offers" className="flex items-center gap-2">
+          <Link to="/shops" className="flex items-center gap-2">
             <MdLocalOffer className="text-secondary text-lg" />
             Offers
           </Link>
@@ -23,7 +23,7 @@ export default function MainSidebar() {
           </Link>
         </li>
         <li className="hover:bg-[#f3f4f6] duration-300 rounded px-2 py-1.5">
-          <Link to="/populer-products" className="flex items-center gap-1.5">
+          <Link to="/shops" className="flex items-center gap-1.5">
             <FaSellsy className="text-xl text-primary" />
             Populer Products
           </Link>
